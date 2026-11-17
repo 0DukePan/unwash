@@ -12,7 +12,7 @@
   <img src="https://img.shields.io/badge/python-3.10%2B-blue.svg" alt="python 3.10+">
   <img src="https://img.shields.io/badge/dependencies-none-brightgreen.svg" alt="no dependencies">
   <img src="https://img.shields.io/badge/schema-v1-informational.svg" alt="schema v1">
-  <a href="https://github.com/0DukePan/unwash/releases"><img src="https://img.shields.io/badge/version-1.0.0-orange.svg" alt="0.4.2"></a>
+  <a href="https://github.com/0DukePan/unwash/releases"><img src="https://img.shields.io/badge/version-1.0.0-orange.svg" alt="1.0.0"></a>
 </p>
 
 <p align="center">
