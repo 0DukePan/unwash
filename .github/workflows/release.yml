@@ -107,4 +107,30 @@ jobs:
           name: dist
           path: dist/
       - name: Publish
+        id: upload
+        continue-on-error: true
         uses: pypa/gh-action-pypi-publish@release/v1
+      - name: Explain a refused publisher
+        if: steps.upload.outcome == 'failure'
+        run: |
+          cat <<'EOF'
+          ::warning::PyPI refused the upload: no Trusted Publisher is configured for this project.
+
+          This is not a code defect -- the wheel built and passed every gate. To finish it:
+
+            1. https://pypi.org/manage/account/publishing/  (or the project's own Publishing page)
+            2. PyPI Project Name: unwash-cli
+               Owner:            0DukePan
+               Repository:       unwash
+               Workflow:         release.yml
+               Environment:      pypi
+            3. Re-run this job.
+
+          Until then the supported install is:
+            pipx install git+https://github.com/0DukePan/unwash@v1.0.0
+
+          See RELEASING.md.
+          EOF
+          echo "### PyPI not configured -- see the warning above" >> "$GITHUB_STEP_SUMMARY"
+          echo "The build and every gate passed; only the registry upload needs the publisher entry." >> "$GITHUB_STEP_SUMMARY"
+          exit 1
