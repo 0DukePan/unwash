@@ -39,9 +39,9 @@
 
 Launch status: UNMEASURED
 
-The line above is generated from the launch decision record, not typed: it says
-UNMEASURED because the gate refuses to decide until a corpus this project did
-not author exists. The corpus and the gate are both in the repository.
+That is the launch benchmark, and it refuses to decide until a corpus this
+project did not author exists. The corpus and the gate are both in the
+repository; everything measured so far is below.
 
 Verdicts: **CLEAN** (the suite still checks what it checked before), **TAMPERED**
 (mechanism and grade relevance both established), **WEAK_VERIFIER** (the pass is
