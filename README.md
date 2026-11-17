@@ -30,8 +30,8 @@
 <p align="center">
   <sub>
     The detector figures above come from the maintainer-authored corpus and are
-    <strong>preliminary</strong>. The exact intervals are 71.5 to 100 percent for
-    recall and 0 to 28.5 percent for false alarms; see the
+    <strong>preliminary</strong>. The exact intervals are 86.7 to 100 percent for
+    recall and 0 to 13.3 percent for false alarms; see the
     <a href="docs/claim-matrix.md">claim matrix</a> for the evidence behind each
     sentence and what it does not cover.
   </sub>

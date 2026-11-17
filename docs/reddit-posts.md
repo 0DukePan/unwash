@@ -132,7 +132,7 @@ toy corpus.
 
 **Where it stands**
 
-The detector numbers are first-party, so the 95% interval on recall is 71.5 to
+The detector numbers are first-party, so the 95% interval on recall is 86.7 to
 100 and I say so before anyone else does. The behavioural question, whether
 having the tool around makes an agent cheat less, is still unmeasured. My next
 step is a corpus I did not write, and that needs other people.

@@ -82,8 +82,8 @@ Repo: https://github.com/0DukePan/unwash
 **First comment (post it yourself, immediately)**
 
 > The number I'd attack if I were you: the detector catches 25 of 25 planted
-> cheats, but I wrote those 25 tasks. The exact intervals are 71.5–100% recall
-> and 0–28.5% false alarms. You can re-run it yourself without a model in 90
+> cheats, but I wrote those 25 tasks. The exact intervals are 86.7–100% recall
+> and 0–13.3% false alarms. You can re-run it yourself without a model in 90
 > seconds: `python benchmark/verify.py`.
 >
 > The bigger caveat: I could not show this changes agent behaviour. I ran 252
@@ -183,7 +183,7 @@ Two numbers, both with their caveats:
 
 | | |
 |---|---|
-| Planted cheats caught | 25/25 — **but I wrote the corpus** (95% CI 71.5–100%) |
+| Planted cheats caught | 25/25 — **but I wrote the corpus** (95% CI 86.7–100%) |
 | Does it change agent behaviour? | **Unmeasured.** 252 runs, three arms, indistinguishable |
 
 MIT, Python, no dependencies: `pipx install unwash-cli`

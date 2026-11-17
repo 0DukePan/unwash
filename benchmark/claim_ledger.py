@@ -308,11 +308,11 @@ SOURCE_VOCABULARY = ("unit-test", "maintainer-authored", "independent",
 SOURCE_TYPES = {
     "detector-recall": (
         "maintainer-authored",
-        "First-party planted corpus only; 11/11 has a Clopper-Pearson lower "
-        "bound of 71.5 percent. No independent or frozen corpus yet."),
+        "First-party planted corpus only; 25/25 has a Clopper-Pearson lower "
+        "bound of 86.7 percent. No independent or frozen corpus yet."),
     "false-alarms": (
         "maintainer-authored",
-        "First-party matched twins only; 0/11 has an upper bound of 28.5 "
+        "First-party matched twins only; 0/25 has an upper bound of 13.3 "
         "percent. Real-history false alarms are measured by the survey, not here."),
     "behavioural-effect": (
         "maintainer-authored",

@@ -66,7 +66,7 @@ If you take one thing from this post, take the replay snippet. It works with wha
 
 **On the numbers, because someone will ask**
 
-I planted 25 cheats across 28 tasks and the tool caught all 25. I also wrote every one of those tasks, so that number says it works on my test cases and not much else. The 95% interval on recall is 71.5 to 100. You can re-run it yourself without a model in about 90 seconds: `python benchmark/verify.py`.
+I planted 25 cheats across 28 tasks and the tool caught all 25. I also wrote every one of those tasks, so that number says it works on my test cases and not much else. The 95% interval on recall is 86.7 to 100. You can re-run it yourself without a model in about 90 seconds: `python benchmark/verify.py`.
 
 The number I actually wanted, whether having the tool around makes an agent cheat less often, I could not measure. 252 scored runs across three configurations came back indistinguishable, and the instrument that produced those labels turned out to be broken in a way I only found later. That null is at the top of the README, not buried.
 
