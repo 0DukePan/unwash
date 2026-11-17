@@ -201,10 +201,14 @@ that appear in prose are guarded by tests that fail when the artifact moves.
   blind instrument returns zero either way. Anchoring each scan to its
   repository made it see: two flags on one `pytest` change, one a true ask and
   one a false positive, neither a cheat.
-- **Two namesakes.** The PyPI name `unwash` belongs to another project and
-  the npm name is not owned here. The distribution is now `unwash-cli`, and
-  `npx unwash` is no longer advertised -- because a public install command
-  that installs someone else's package is worse than no install command.
+- **The project is on its third name.** It started as a description of the
+  problem, which turned out to be a name an unrelated package already held
+  on PyPI -- so every install instruction needed a footnote explaining which
+  package you were *not* getting. Then a near-miss: a second PyPI token
+  landed scoped to a project called `unswallow`, which is somebody else's
+  reasoning-channel library. I did not publish with it. The name is now
+  `unwash`, checked free on PyPI, npm and GitHub before anything moved, and
+  the install line and the package name finally agree.
 - **The detector numbers were once the headline.** They describe a corpus this
   project wrote. The claim that matters is the behavioural one, and that one is
   a null.

@@ -48,6 +48,7 @@ their question. This page is the map.
 
 [launch-post.md](launch-post.md) is the long-form post, [launch.md](launch.md) the
 sequence, [launch-sequence.md](launch-sequence.md) the order and the gates,
+[reddit-launch.md](reddit-launch.md) three channel-specific posts,
 [social-preview.md](social-preview.md) the card. These describe how the project
 presents itself; the numbers in them come from the pages above and are checked
 against the same artifacts by `tests/test_launch_docs.py`.
