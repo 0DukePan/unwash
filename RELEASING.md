@@ -7,16 +7,18 @@ and pre-commit reference -- plus, now, a PyPI upload that makes
 
 ## The current state, stated plainly
 
-`unwash-cli` is **not on PyPI yet**. The wheel builds and installs cleanly
-from the tag, so the supported install today is:
+`unwash-cli` **is on PyPI**, published 1.0.0 through Trusted Publishing -- the
+release workflow builds, runs the gate, installs the wheel into a clean
+environment, and uploads with an OIDC token. There is no API token stored in
+this repository and none to rotate.
 
 ```bash
-pipx install git+https://github.com/0DukePan/unwash@v0.5.0
+pipx install unwash-cli
 ```
 
-The README says so. Do not put `pipx install unwash-cli` back in any page
-until the file exists at <https://pypi.org/project/unwash-cli/> -- an install
-instruction that does not work is the same defect this tool exists to catch.
+If a future release is ever unpublished, say so in the README rather than
+leaving an install line that 404s: an install instruction that does not work is
+the same defect this tool exists to catch.
 
 ## First-time setup
 
@@ -97,7 +99,7 @@ python -m venv /tmp/check && /tmp/check/bin/pip install unwash-cli
 
 Then change the install lines in `README.md`, `docs/ADOPTION_GUIDE.md` and
 `docs/launch-post.md` from `git+https://...` back to the distribution name, and
-turn the "not on PyPI yet" note into a link to the project page.
+point every install line at the project page.
 
 ## The benchmark is separate
 

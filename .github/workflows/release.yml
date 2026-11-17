@@ -8,9 +8,9 @@ name: release
 # https://pypi.org/manage/project/unwash-cli/settings/publishing/ with:
 #   owner 0DukePan, repository unwash, workflow release.yml, environment pypi
 #
-# If the package does not exist on PyPI yet, create it with a one-off upload or
-# a "pending publisher" entry; after the first release the Trusted Publisher is
-# what authorises every later one.
+# If the package did not exist on PyPI, the first release is authorised by a
+# "pending publisher" entry created before the first upload; after 1.0.0 the
+# Trusted Publisher on the project authorises every later one.
 
 on:
   push:

@@ -97,26 +97,23 @@ modifies your code, never calls a model, and never leaves your machine.
 ## Sixty-second start
 
 ```bash
-pipx install git+https://github.com/0DukePan/unwash@v1.0.0
+pipx install unwash-cli      # or: pip install unwash-cli
 cd your-repo
-unwash                     # a trust report for the current diff
+unwash                       # a trust report for the current diff
 ```
 
-Works today, from the tag, with no account and no build step. The distribution
-is **`unwash-cli`** and the import name and command are both `unwash`; an
-unrelated project owns the PyPI name `greenwash`, so `pip install greenwash`
-installs someone else's package and this README will not tell you to.
-
-**`unwash-cli` is not on PyPI yet.** The wheel builds and installs cleanly
-from the tag; publishing is the next release step, tracked in
-[RELEASING.md](RELEASING.md). Until then the `git+https://` line above is the
-supported install, and an install instruction that does not work would be the
-same defect this tool exists to catch.
+The distribution is **`unwash-cli`**; the import name and the command are both
+`unwash`.
 
 ```bash
-pip install git+https://github.com/0DukePan/unwash@v1.0.0   # the pip equivalent
-python -m unwash --version                                  # 0.5.0
+pip install unwash-cli
+unwash --version             # 1.0.0
 ```
+
+An unrelated project owns the PyPI name `greenwash`, so `pip install greenwash`
+installs someone else's package and this README will not tell you to. That
+collision is why the project is named what it is -- see
+[CHANGELOG.md](CHANGELOG.md).
 
 ### Check it before you believe it
 
@@ -556,7 +553,7 @@ pinned artifacts.
 
 | Where | How |
 |---|---|
-| Any repo (CLI) | `pipx install git+https://github.com/0DukePan/unwash@v1.0.0` -- **not on PyPI yet**, see [RELEASING.md](RELEASING.md) |
+| Any repo (CLI) | `pipx install unwash-cli` -- [on PyPI](https://pypi.org/project/unwash-cli/) |
 | Node projects | the shim in [`npm/`](npm/) -- **not published under this name yet**, see [npm/README.md](npm/README.md) |
 | **Claude Code** (the unskippable hook) | `/plugin marketplace add 0DukePan/unwash` then `/plugin install unwash@unwash` |
 | **Codex** (strict by default) | the plugin in [`codex/`](codex/README.md) -- same checker, same policy, strict gate |
