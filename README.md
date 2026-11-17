@@ -16,7 +16,7 @@
 </p>
 
 <p align="center">
-  <strong>25/25 planted tampers caught &middot; 0 false positives on 25 matched fixes &middot; 1067 tests</strong><br>
+  <strong>25/25 planted tampers caught &middot; 0 false positives on 25 matched fixes &middot; 1068 tests</strong><br>
   <sub>
     An agent under pressure to show green will skip the test, mock the unit under
     test, hardcode the expected value, or swallow the exception that would have
