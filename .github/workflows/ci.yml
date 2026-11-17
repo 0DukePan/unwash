@@ -136,7 +136,7 @@ jobs:
           npm pack
           npm install -g ./unwash-*.tgz
       - name: It reports a version
-        run: unwash --version | grep -q "unwash 0"
+        run: unwash --version | grep -qE "^unwash [0-9]+\.[0-9]+"
       - name: It forwards a non-zero exit code (the planted skip must be caught)
         run: |
           printf '\n\n@pytest.mark.skip(reason="planted by the npm self-test")\ndef test_planted():\n    pass\n' >> tests/test_unwash.py
