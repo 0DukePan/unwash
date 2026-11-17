@@ -28,7 +28,11 @@ FILES = [
     *PACKAGE,
 ]
 
-SYNCED_DIRS = [PLUGIN / "scripts", PLUGIN / "unwash"]
+# Both the current and the pre-rename package directory: a checkout that
+# still holds the old copy must have it removed, not left beside the new one.
+SYNCED_DIRS = [PLUGIN / "scripts", PLUGIN / "unwash",
+               PLUGIN / "skills", PLUGIN / "greenwash",
+               PLUGIN / "skills" / "greenwash"]
 
 
 def main() -> None:
