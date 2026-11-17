@@ -167,7 +167,7 @@ def main() -> None:
     hook = font("bold", 54)
     small = font("regular", 26)
 
-    d.text((px(x0), px(112)), "greenwash", font=word, fill=CMD)
+    d.text((px(x0), px(112)), "unwash", font=word, fill=CMD)
 
     headline = [("Did your agent fix it,", CMD), ("or fake it?", FLAG)]
     y = 262
@@ -177,7 +177,7 @@ def main() -> None:
 
     d.text((px(x0), px(446)), "A trust report on a coding agent's \"done\".",
            font=small, fill=DIM)
-    d.text((px(x0), px(508)), "github.com/0DukePan/greenwash",
+    d.text((px(x0), px(508)), "github.com/0DukePan/unwash",
            font=small, fill=PROMPT)
 
     out = img.resize((W, H), Image.LANCZOS)

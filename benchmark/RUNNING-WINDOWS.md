@@ -12,7 +12,7 @@ cd /d D:\Desktop\busted
 
 `cd /d` changes drive too, in case you started on `C:`.
 
-Check you are in the right place — this should list `benchmark`, `greenwash`
+Check you are in the right place — this should list `benchmark`, `unwash`
 and `tests`:
 
 ```bat

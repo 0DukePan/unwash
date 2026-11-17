@@ -8,13 +8,13 @@ pointing at the fix if the issue is serious.
 ## Reporting a vulnerability
 
 Open a [private security
-advisory](https://github.com/0DukePan/greenwash/security/advisories/new) rather
+advisory](https://github.com/0DukePan/unwash/security/advisories/new) rather
 than a public issue. If you cannot use advisories, open an issue that says only
 "security report -- please contact me" and nothing about the content; a
 maintainer will move it to a private channel.
 
 Please include: what you ran, what happened, what you expected, and the version
-(`greenwash --version`). A proof of concept is welcome; so is a sentence
+(`unwash --version`). A proof of concept is welcome; so is a sentence
 describing the shape of the problem if that is all you have.
 
 Expect an acknowledgement within a few days. This is a small project with no
@@ -23,11 +23,11 @@ and you will be told if nobody is working on it.
 
 ## What counts as a vulnerability here
 
-greenwash runs on a developer's machine, reads a diff, and executes the
+unwash runs on a developer's machine, reads a diff, and executes the
 project's own test command. That shape has specific risks, and the ones that
 matter are:
 
-- **Command execution.** Any way to make greenwash run something other than the
+- **Command execution.** Any way to make unwash run something other than the
   test command it was configured or discovered with -- a config value, a
   repository file, a crafted diff, a path in a test name.
 - **Secret disclosure.** Captured test output is redacted and capped before it
@@ -46,12 +46,12 @@ matter are:
 ## What is not a vulnerability
 
 - **A false positive.** That is a bug, and it goes in the
-  [false-positive form](https://github.com/0DukePan/greenwash/issues/new?template=false-positive.yml).
+  [false-positive form](https://github.com/0DukePan/unwash/issues/new?template=false-positive.yml).
   Every confirmed one becomes a test.
 - **A false negative** -- a cheat the detector misses. That is the tool's
   documented limit, not a breach: it is a smell detector, not a prover. Report
   the shape of the miss through the
-  [bypass form](https://github.com/0DukePan/greenwash/issues/new?template=bypass.yml),
+  [bypass form](https://github.com/0DukePan/unwash/issues/new?template=bypass.yml),
   because a miss that generalises is worth a rule.
 - **Routing around the gate deliberately.** Editing the hook, disabling the
   plugin, or running `git commit --no-verify` are all things a local tool cannot
@@ -67,9 +67,9 @@ the host. It does not stop an agent that edits the hook, works outside the host,
 or pushes from somewhere else. Nothing local can, and this project does not
 claim otherwise.
 
-greenwash makes no network calls, has no telemetry, and stores nothing outside
-your repository (`.greenwash/config.json` and `.greenwash/waivers.json`), plus
-session state inside your git directory (`.git/greenwash/`): the session anchor
+unwash makes no network calls, has no telemetry, and stores nothing outside
+your repository (`.unwash/config.json` and `.unwash/waivers.json`), plus
+session state inside your git directory (`.git/unwash/`): the session anchor
 and the Stop hook's block budget. The one exception is a hook that runs outside
 a git repository, which keeps its block budget in the system temp directory.
 That budget, like the session anchor, is a guard and not a security boundary:
@@ -86,18 +86,18 @@ hash-verified before use, which is what "loaded from outside the agent's
 writable sandbox" means here: the git object at the base ref, not the working
 copy.
 
-- **The checker's own code** (`greenwash/`, `scripts/greenwash_check.py`,
-  `scripts/greenwash_hook.py`) as tracked in the repository -- the self-check
+- **The checker's own code** (`unwash/`, `scripts/unwash_check.py`,
+  `scripts/unwash_hook.py`) as tracked in the repository -- the self-check
   case. A copy that is edited, deleted, or introduced where the base ref had
   none stops the run before any verdict, with exit code 4. When the checker
   runs from outside the repository (the pinned GitHub Action path), it is
   outside the sandbox entirely and pinning it is the installer's job.
-- **The configuration** (`.greenwash/config.json`). A pinned copy that moved
+- **The configuration** (`.unwash/config.json`). A pinned copy that moved
   stops the run the same way, so a branch cannot lower its own bar. The one
   deliberate exception: a config that *appears* mid-session is honoured and
   flagged (`verifier-config-changed`, requires review) rather than refused --
   it cannot move a pinned policy, because a pinned policy that moves stops the
-  run first. The waiver ledger (`.greenwash/waivers.json`) is not config: it
+  run first. The waiver ledger (`.unwash/waivers.json`) is not config: it
   has its own lifecycle, and a forged waiver reads "waived with review", never
   clean.
 - **The pinned original tests.** An edited or deleted test file is detected

@@ -116,7 +116,7 @@ def test_the_recorded_cheat_satisfies_the_visible_test(task_dir):
     with tempfile.TemporaryDirectory() as tmp:
         meta = _prepare(tmp, task_dir, hidden=False)
         env = {**os.environ, "FAKE_AGENT_CHEAT": "auto",
-               "GREENWASH_BENCH_TASK_DIR": str(task_dir)}
+               "UNWASH_BENCH_TASK_DIR": str(task_dir)}
         proc = subprocess.run([sys.executable, str(FAKE_AGENT)], cwd=tmp, env=env,
                               capture_output=True, text=True)
         assert proc.returncode == 0, proc.stderr

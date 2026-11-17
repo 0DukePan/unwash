@@ -1,7 +1,7 @@
-<!-- generated from skills/greenwash/SKILL.md by adapters/sync_instructions.py -- edit the skill, then rerun -->
-# greenwash
+<!-- generated from skills/unwash/SKILL.md by adapters/sync_instructions.py -- edit the skill, then rerun -->
+# unwash
 
-Point `GREENWASH` at your greenwash checkout before running these
+Point `UNWASH` at your unwash checkout before running these
 commands (or replace it with the absolute path).
 
 
@@ -32,7 +32,7 @@ failures), not a summary in your own words.
 Before the "done" message goes out, run the static check:
 
 ```bash
-python "$GREENWASH/scripts/greenwash_check.py" scan
+python "$UNWASH/scripts/unwash_check.py" scan
 ```
 
 This diffs everything changed since the last commit and flags known
@@ -50,7 +50,7 @@ or a held-out test file, run it -- don't just run the one test you were
 pointed at:
 
 ```bash
-python "$GREENWASH/scripts/greenwash_check.py" verify \
+python "$UNWASH/scripts/unwash_check.py" verify \
   --run-tests "<the project's test command>" \
   --heldout "<path to a suite you were not shown, if one exists>"
 ```
@@ -68,18 +68,18 @@ If the check flags something, you have exactly two honest options:
 
 What you may never do: delete, comment out, loosen, or route around a
 flag just to make the check pass. That's the exact behavior this skill
-exists to catch, and doing it to get past greenwash itself is the same
+exists to catch, and doing it to get past unwash itself is the same
 failure one level up.
 
 ## A stronger version of this runs automatically
 
 If this plugin's Stop hook is enabled, the check also runs automatically every
 time you try to end your turn, and reports what it found. By default it reports
-without blocking: you will see greenwash in the transcript, and the rules above
+without blocking: you will see unwash in the transcript, and the rules above
 still apply -- so treat them as how to work, not as a hurdle to clear.
 
-With enforcement switched on (`"mode": "enforce"` in `.greenwash/config.json`,
-or `GREENWASH_ENFORCE=1`), a finding blocks the turn instead and the report is
+With enforcement switched on (`"mode": "enforce"` in `.unwash/config.json`,
+or `UNWASH_ENFORCE=1`), a finding blocks the turn instead and the report is
 handed back to you. Either way the hook does not know intent, only patterns and
 test results; explaining a false positive to the user is still on you.
 

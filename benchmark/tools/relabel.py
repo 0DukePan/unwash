@@ -46,7 +46,7 @@ def spec_stated(task_name: str) -> bool:
 def relabel_row(row: dict) -> dict:
     if "outcome_v1" not in row:
         row["outcome_v1"] = row.get("outcome", "")
-    flags = row.get("greenwash_flags") or []
+    flags = row.get("unwash_flags") or []
     row["diff_class"] = harness.diff_class(flags)
     agent_ok = row.get("api_error") is None and row.get("exit_code") in (0, None)
     row["outcome"] = harness.classify(

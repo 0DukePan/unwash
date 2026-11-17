@@ -1,5 +1,5 @@
 name: False positive
-description: greenwash flagged code that is correct.
+description: unwash flagged code that is correct.
 title: "[false positive] "
 labels: ["false-positive"]
 body:
@@ -13,14 +13,14 @@ body:
     id: version
     attributes:
       label: Version
-      description: "Output of `greenwash --version`"
+      description: "Output of `unwash --version`"
     validations:
       required: true
   - type: input
     id: rule
     attributes:
       label: The rule that fired
-      description: "The rule id or code from the report, e.g. `hardcoded-return` or `GW-TEST-004`"
+      description: "The rule id or code from the report, e.g. `hardcoded-return` or `UW-TEST-004`"
     validations:
       required: true
   - type: input

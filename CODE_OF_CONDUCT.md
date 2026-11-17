@@ -35,7 +35,7 @@ Examples of unacceptable behaviour:
 - Other conduct which could reasonably be considered inappropriate in a
   professional setting
 
-**One standard specific to this project.** greenwash exists to make claims
+**One standard specific to this project.** unwash exists to make claims
 about code auditable. Disagreeing with a measurement, a method or a conclusion
 is welcome and expected; impugning the motives of the person who published it
 is not. A null result is a result here, and the person who published one does

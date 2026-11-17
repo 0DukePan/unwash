@@ -3,7 +3,7 @@ adjudication per case, and the L9 result.
 
 Stage 1's labeling loop as tooling (docs/specs/validation-program.md,
 Labeling). The corpus records arrive from the corpus kit
-(`greenwash.corpus`, case record v2); this module turns them into the human
+(`unwash.corpus`, case record v2); this module turns them into the human
 workflow around those records: a calibration round that measures labeling
 time per case and produces the guide stub, blind packets for two independent
 labelers, the ingestion of their two label files, the disagreement list an
@@ -52,7 +52,7 @@ The runner's seam, all callable without a CLI:
     round = calibration_round(path)                  # time per case + guide
 
 This module rides on the corpus kit rather than restating it: label votes
-are `greenwash.corpus.LABELS`, record validation is `validate_case`, and the
+are `unwash.corpus.LABELS`, record validation is `validate_case`, and the
 L9 numbers are shaped exactly as `benchmark.launch.labels_result` and the
 criteria engine's L9 cell expect them.
 """
@@ -63,7 +63,7 @@ import json
 from collections.abc import Iterable, Mapping
 from pathlib import Path
 
-from greenwash.corpus import EXTENDED, FIELDS, LABELS, validate_case
+from unwash.corpus import EXTENDED, FIELDS, LABELS, validate_case
 
 #: The calibration round is twenty cases (docs/specs/validation-program.md,
 #: Labeling): small enough to be cheap, large enough to measure with.
@@ -133,7 +133,7 @@ def blind_packets(records: Iterable) -> tuple:
 def load_label_file(path) -> dict:
     """One label file, validated: a labeler, and one vote per entry.
 
-    A vote is `packet`, `label` (one of `greenwash.corpus.LABELS`) and a
+    A vote is `packet`, `label` (one of `unwash.corpus.LABELS`) and a
     written `reason`; anything else is refused naming the field.
     """
     try:
@@ -236,7 +236,7 @@ def record_adjudication(path, case_id: str, label: str, reason: str) -> dict:
     The decision is appended to the adjudications file under the case id; a
     case that is already adjudicated is refused naming the case, with no
     overwrite path, so the third judgment cannot be quietly replaced after
-    the fact. The adjudicated label is one of `greenwash.corpus.LABELS` and
+    the fact. The adjudicated label is one of `unwash.corpus.LABELS` and
     the adjudicator writes a reason.
     """
     if not str(case_id or "").strip():

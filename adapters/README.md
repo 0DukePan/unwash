@@ -1,6 +1,6 @@
-# Running greenwash outside Claude Code
+# Running unwash outside Claude Code
 
-greenwash is not tied to one host. The core is a CLI over a git diff plus an
+unwash is not tied to one host. The core is a CLI over a git diff plus an
 optional test run; anything that can run Python can run it.
 
 ## Hosts, and how much of the mechanism each one gets
@@ -10,11 +10,11 @@ One ruleset, generated into every host's file by
 
 | Host | File | Enforcement |
 |---|---|---|
-| Claude Code | `skills/greenwash/SKILL.md` + `hooks/hooks.json` | skill **and** Stop hook -- the turn cannot end on a flagged diff |
+| Claude Code | `skills/unwash/SKILL.md` + `hooks/hooks.json` | skill **and** Stop hook -- the turn cannot end on a flagged diff |
 | Codex | `codex/` plugin, `AGENTS.md` | Stop hook (strict by default) **and** rules |
-| Cursor | `.cursor/rules/greenwash.mdc` | rules only |
-| Windsurf | `.windsurf/rules/greenwash.md` | rules only |
-| Cline | `.clinerules/greenwash.md` | rules only |
+| Cursor | `.cursor/rules/unwash.mdc` | rules only |
+| Windsurf | `.windsurf/rules/unwash.md` | rules only |
+| Cline | `.clinerules/unwash.md` | rules only |
 | GitHub Copilot | `.github/copilot-instructions.md` | rules only |
 | Gemini CLI / Antigravity | `GEMINI.md` | rules only |
 | Amp, Jules, Zed, Qoder, CodeWhale, ... | `AGENTS.md` | rules only |
@@ -31,20 +31,20 @@ If you use Cursor or Windsurf, the enforcement is one of these, and both live
 outside the chat:
 
 ```bash
-greenwash init                 # write .greenwash/config.json
-greenwash waive --help         # the auditable way to resolve a finding
+unwash init                 # write .unwash/config.json
+unwash waive --help         # the auditable way to resolve a finding
 ```
 
-- **pre-commit** — `repos: [{repo: https://github.com/0DukePan/greenwash, rev: v0.5.1}]`
+- **pre-commit** — `repos: [{repo: https://github.com/0DukePan/unwash, rev: v1.0.0}]`
   runs the checker on every commit, before it reaches a branch.
-- **The GitHub Action** — `.github/workflows/greenwash-report-only.yml` in this
+- **The GitHub Action** — `.github/workflows/unwash-report-only.yml` in this
   repository is a working example: report-only, read-only permissions, no
   secrets, the report uploaded as an artifact. Delete `continue-on-error` and
   add `--fail-on suspicious` when you want it to block.
 
 Neither needs the agent's cooperation, which is the point.
 
-Copy the file for your host into your project, and point `GREENWASH` at this
+Copy the file for your host into your project, and point `UNWASH` at this
 checkout (or replace it with the absolute path).
 
 ## Which rules each host receives
@@ -59,16 +59,16 @@ result -- `tests/test_manifests.py` fails if they drift.
 it can still skip that under pressure, which is exactly why the Claude Code
 Stop hook exists, and why pre-commit / the GitHub Action are the enforcement
 everywhere else. Copy the file for your host into your project, and point
-`GREENWASH` at this checkout (or replace it with the absolute path).
+`UNWASH` at this checkout (or replace it with the absolute path).
 
 ## As a Claude Code plugin (the mechanism layer)
 
 ```
-claude --plugin-dir /path/to/greenwash
+claude --plugin-dir /path/to/unwash
 ```
 
 This is the only mode where the **Stop hook** runs automatically, blocking the
-agent from ending its turn on a faked "done". Everywhere else, greenwash is a
+agent from ending its turn on a faked "done". Everywhere else, unwash is a
 check *you* run.
 
 The hook runs the behavioral layer by default: it discovers the project's test
@@ -76,8 +76,8 @@ command, runs it, and compares against the committed baseline. Pin the command
 or add a held-out suite when you want more than discovery:
 
 ```bash
-export GREENWASH_TEST_CMD="python -m pytest -q"      # pin the command
-export GREENWASH_HELDOUT="tests/heldout"             # a suite the agent never saw
+export UNWASH_TEST_CMD="python -m pytest -q"      # pin the command
+export UNWASH_HELDOUT="tests/heldout"             # a suite the agent never saw
 ```
 
 `hooks/hooks.json` runs `python3` and falls back to `python`, since neither name
@@ -91,10 +91,10 @@ the hook locally) and add:
 
 ```yaml
 repos:
-  - repo: https://github.com/0DukePan/greenwash
-    rev: v0.5.1
+  - repo: https://github.com/0DukePan/unwash
+    rev: v1.0.0
     hooks:
-      - id: greenwash
+      - id: unwash
 ```
 
 It runs `scan --staged`, so it sees exactly what's about to be committed.
@@ -104,7 +104,7 @@ It runs `scan --staged`, so it sees exactly what's about to be committed.
 `action.yml` is a composite action:
 
 ```yaml
-- uses: 0DukePan/greenwash@v0.5.1
+- uses: 0DukePan/unwash@v1.0.0
   with:
     base: ${{ github.event.pull_request.base.sha }}
     run-tests: "pytest -q"

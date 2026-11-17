@@ -14,7 +14,7 @@ jobs:
     runs-on: ubuntu-latest
     env:
       ANTHROPIC_API_KEY: ${{ secrets.ANTHROPIC_API_KEY }}
-      GREENWASH_BENCH_MODEL: ${{ vars.GREENWASH_BENCH_MODEL }}
+      UNWASH_BENCH_MODEL: ${{ vars.UNWASH_BENCH_MODEL }}
     steps:
       - uses: actions/checkout@v4
       - uses: actions/setup-python@v5

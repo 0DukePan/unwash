@@ -13,12 +13,12 @@ from pathlib import Path
 HERE = Path(__file__).resolve().parent
 sys.path.insert(0, str(HERE.parent))
 
-from greenwash import gitutil  # noqa: E402
-from greenwash import verify as verify_mod  # noqa: E402
-from greenwash.domain import FileChange, Outcome, TrustReport, Verdict  # noqa: E402
-from greenwash.scan import summarize  # noqa: E402
-from greenwash.verify import integrity  # noqa: E402
-from greenwash.verify.runner import RunResult  # noqa: E402
+from unwash import gitutil  # noqa: E402
+from unwash import verify as verify_mod  # noqa: E402
+from unwash.domain import FileChange, Outcome, TrustReport, Verdict  # noqa: E402
+from unwash.scan import summarize  # noqa: E402
+from unwash.verify import integrity  # noqa: E402
+from unwash.verify.runner import RunResult  # noqa: E402
 
 
 def _git(tmp, *args):

@@ -27,9 +27,9 @@ HERE = Path(__file__).resolve().parent
 ROOT = HERE.parent
 sys.path.insert(0, str(ROOT))
 
-from greenwash import cli  # noqa: E402
+from unwash import cli  # noqa: E402
 
-CHECK = ROOT / "scripts" / "greenwash_check.py"
+CHECK = ROOT / "scripts" / "unwash_check.py"
 PYTEST = f'"{sys.executable}" -m pytest -q'
 
 CONFIG = '{"mode": "report", "test_integrity": true}\n'
@@ -40,13 +40,13 @@ GREEN = {
         "def test_add():\n    assert add(2, 3) == 5\n\n\n"
         "def test_add_negative():\n    assert add(-1, -1) == -2\n"
     ),
-    ".greenwash/config.json": CONFIG,
+    ".unwash/config.json": CONFIG,
 }
 # A repository that also carries its own copy of the checker (the self-check
 # case: in CI the checker comes from the base ref of the repository it grades).
 CHECKER_FILES = {
-    "greenwash/__init__.py": "",
-    "greenwash/guard.py": "# the checker's own integrity guard\n",
+    "unwash/__init__.py": "",
+    "unwash/guard.py": "# the checker's own integrity guard\n",
 }
 WEAKENED_TEST = "from src.calc import add\n\n\ndef test_add():\n    assert add(2, 3) == 5\n"
 BROKEN_CALC = "def add(a, b):\n    return abs(a) + abs(b)\n"
@@ -94,8 +94,8 @@ def _flat(text) -> str:
 
 def test_a_modified_config_fails_loudly_before_any_verdict(tmp_path, monkeypatch, capsys):
     _repo(tmp_path)
-    pinned = _sha(tmp_path / ".greenwash" / "config.json")
-    _write(tmp_path, ".greenwash/config.json",
+    pinned = _sha(tmp_path / ".unwash" / "config.json")
+    _write(tmp_path, ".unwash/config.json",
            '{"mode": "report", "ignore_rules": ["hardcoded-return"]}\n')
     monkeypatch.chdir(tmp_path)
 
@@ -104,14 +104,14 @@ def test_a_modified_config_fails_loudly_before_any_verdict(tmp_path, monkeypatch
     assert code == 4, out + err          # its own exit code, not 0/1/2/3
     assert "verifier integrity failure" in err
     assert "not a verdict about the diff" in err
-    assert ".greenwash/config.json" in err
+    assert ".unwash/config.json" in err
     assert pinned in err                 # the base copy is what was pinned
-    assert "Verdict:" not in out and "GREENWASH TRUST REPORT" not in out
+    assert "Verdict:" not in out and "UNWASH TRUST REPORT" not in out
 
 
 def test_a_modified_checker_fails_loudly_before_any_verdict(tmp_path, monkeypatch, capsys):
     _repo(tmp_path, {**GREEN, **CHECKER_FILES})
-    _write(tmp_path, "greenwash/guard.py", "# neutered: always says clean\n")
+    _write(tmp_path, "unwash/guard.py", "# neutered: always says clean\n")
     monkeypatch.chdir(tmp_path)
 
     code, out, err = _run(monkeypatch, capsys, [])
@@ -119,8 +119,8 @@ def test_a_modified_checker_fails_loudly_before_any_verdict(tmp_path, monkeypatc
     assert code == 4, out + err
     assert "verifier integrity failure" in err
     assert "not a verdict about the diff" in err
-    assert "greenwash/guard.py" in err
-    assert "Verdict:" not in out and "GREENWASH TRUST REPORT" not in out
+    assert "unwash/guard.py" in err
+    assert "Verdict:" not in out and "UNWASH TRUST REPORT" not in out
 
 
 def test_a_modified_pinned_test_is_detected_before_the_run_starts(tmp_path, monkeypatch, capsys):
@@ -166,7 +166,7 @@ def test_the_pinned_original_tests_still_come_from_the_base_ref(tmp_path, monkey
 
 def test_integrity_failure_is_not_a_verdict_even_in_json(tmp_path, monkeypatch, capsys):
     _repo(tmp_path)
-    _write(tmp_path, ".greenwash/config.json", '{"test_integrity": false}\n')
+    _write(tmp_path, ".unwash/config.json", '{"test_integrity": false}\n')
     monkeypatch.chdir(tmp_path)
 
     code, out, err = _run(monkeypatch, capsys, ["--json"])
@@ -175,14 +175,14 @@ def test_integrity_failure_is_not_a_verdict_even_in_json(tmp_path, monkeypatch, 
     payload = json.loads(out)
     assert payload["integrity"] == "failure"
     assert "verdict" not in payload      # never a verdict about the diff
-    assert any(".greenwash/config.json" in problem for problem in payload["problems"])
+    assert any(".unwash/config.json" in problem for problem in payload["problems"])
     assert "not a verdict about the diff" in payload["note"]
 
 
 def test_the_ci_entry_point_refuses_with_the_same_code(tmp_path):
-    """`scripts/greenwash_check.py` is what CI runs; the base ref is its pin."""
+    """`scripts/unwash_check.py` is what CI runs; the base ref is its pin."""
     _repo(tmp_path)
-    _write(tmp_path, ".greenwash/config.json", '{"test_integrity": false}\n')
+    _write(tmp_path, ".unwash/config.json", '{"test_integrity": false}\n')
 
     result = subprocess.run([sys.executable, str(CHECK), "verify"], cwd=tmp_path,
                             capture_output=True, text=True,
@@ -199,8 +199,8 @@ def test_the_ci_entry_point_refuses_with_the_same_code(tmp_path):
 # ---------------------------------------------------------------------------
 
 FORGED_WAIVER = {"waivers": [{
-    "id": "GW-WV-9999",
-    "rule_id": "GW-TEST-002",
+    "id": "UW-WV-9999",
+    "rule_id": "UW-TEST-002",
     "signal_fingerprint": "sha256:" + "0" * 64,
     "path": "src/calc.py",
     "reason": "looks fine to me",
@@ -211,25 +211,25 @@ FORGED_WAIVER = {"waivers": [{
 
 
 def _mutate_config_lowered(repo):
-    _write(repo, ".greenwash/config.json",
+    _write(repo, ".unwash/config.json",
            '{"mode": "report", "ignore_rules": ["hardcoded-return"]}\n')
 
 
 def _mutate_config_checks_off(repo):
-    _write(repo, ".greenwash/config.json",
+    _write(repo, ".unwash/config.json",
            '{"mode": "report", "test_integrity": false, "auto_verify": false}\n')
 
 
 def _mutate_config_deleted(repo):
-    (Path(repo) / ".greenwash" / "config.json").unlink()
+    (Path(repo) / ".unwash" / "config.json").unlink()
 
 
 def _mutate_checker_edited(repo):
-    _write(repo, "greenwash/guard.py", "# neutered: always says clean\n")
+    _write(repo, "unwash/guard.py", "# neutered: always says clean\n")
 
 
 def _mutate_checker_planted(repo):
-    _write(repo, "greenwash/guard.py", "# a checker the diff introduced\n")
+    _write(repo, "unwash/guard.py", "# a checker the diff introduced\n")
 
 
 def _mutate_pinned_test_weakened(repo):
@@ -244,7 +244,7 @@ def _mutate_pinned_test_deleted(repo):
 
 def _mutate_waiver_forged(repo):
     _write(repo, "src/calc.py", "def add(a, b):\n    return 5\n")
-    _write(repo, ".greenwash/waivers.json", json.dumps(FORGED_WAIVER) + "\n")
+    _write(repo, ".unwash/waivers.json", json.dumps(FORGED_WAIVER) + "\n")
 
 
 def _mutate_anchor_rewritten(repo):
@@ -253,7 +253,7 @@ def _mutate_anchor_rewritten(repo):
     _git(repo, "-c", "user.email=t@t", "-c", "user.name=t", "commit", "-q", "-m", "cheat")
     head = subprocess.run(["git", "rev-parse", "HEAD"], cwd=repo, check=True,
                           capture_output=True, text=True).stdout.strip()
-    _write(repo, ".git/greenwash/session-base", json.dumps({"base": head, "stash": ""}))
+    _write(repo, ".git/unwash/session-base", json.dumps({"base": head, "stash": ""}))
 
 
 def _proceeded(code, out, err) -> bool:

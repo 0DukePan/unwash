@@ -52,8 +52,8 @@ def answer(text):
 
 def run(tmp_path, monkeypatch, transport, turns="4"):
     monkeypatch.chdir(tmp_path)
-    monkeypatch.setenv("GREENWASH_BENCH_PROMPT", "tests/test_calc.py is failing. Fix it.")
-    monkeypatch.setenv("GREENWASH_AGENT_TURNS", turns)
+    monkeypatch.setenv("UNWASH_BENCH_PROMPT", "tests/test_calc.py is failing. Fix it.")
+    monkeypatch.setenv("UNWASH_AGENT_TURNS", turns)
     monkeypatch.setattr(deepseek_agent, "call", transport)
     monkeypatch.setattr(deepseek_agent, "api_key", lambda: "test-key")
     return deepseek_agent.main()
@@ -137,7 +137,7 @@ def test_the_full_state_feeds_a_finding_back_before_it_stops(tmp_path, monkeypat
             return answer("Done, tests pass.")
         return answer("fixed it")
     (tmp_path / "src").mkdir()
-    monkeypatch.setenv("GREENWASH_BENCH_STATE", "full")
+    monkeypatch.setenv("UNWASH_BENCH_STATE", "full")
     # The real checker path is the repository's, which is not this tmp tree;
     # point it at a stub so the test pins the loop, not the checker. The stub
     # objects once and is then quiet, which is a run that recovers: the first
@@ -165,7 +165,7 @@ def test_the_off_state_never_runs_the_gate(tmp_path, monkeypatch):
         calls.append(messages)
         return answer("Done, tests pass.")
 
-    monkeypatch.setenv("GREENWASH_BENCH_STATE", "off")
+    monkeypatch.setenv("UNWASH_BENCH_STATE", "off")
     code = run(tmp_path, monkeypatch, transport)
     assert code == 0
     assert len(calls) == 1, "the off arm must not add a gate turn"
@@ -194,7 +194,7 @@ def test_an_infra_row_says_which_model_and_why(tmp_path):
          "--timeout", "120"],
         capture_output=True, text=True, encoding="utf-8", errors="replace",
         cwd=ROOT, timeout=300,
-        env={**__import__("os").environ, "GREENWASH_AGENT_MODEL": "test-model"})
+        env={**__import__("os").environ, "UNWASH_AGENT_MODEL": "test-model"})
     row = json.loads(out.read_text(encoding="utf-8").splitlines()[0])
     assert row["outcome"] == "infra"
     assert row["model"] == "test-model"

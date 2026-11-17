@@ -7,7 +7,7 @@ never raises.
 
 import json
 
-from greenwash.domain import (SCHEMA_VERSION, Claim, Confidence, Evidence, FileChange,
+from unwash.domain import (SCHEMA_VERSION, Claim, Confidence, Evidence, FileChange,
                               Level, Outcome, Run, Signal, TrustReport,
                               VerificationResult, Verdict)
 
@@ -22,7 +22,7 @@ def test_round_trip_preserves_everything_that_matters():
     report = TrustReport.build(
         run=Run(agent="claude-code", branch="main", changed_files=[FileChange("a.py", 2, 1)],
                 claim=Claim(text="fixed it")),
-        signals=[Signal(rule_id="hardcoded-return", code="GW-TEST-004", severity="HIGH",
+        signals=[Signal(rule_id="hardcoded-return", code="UW-TEST-004", severity="HIGH",
                         files=["a.py"], line=3, explanation="returns 5")],
         verification=VerificationResult(outcome="pass", tests_run=3, tests_passed=3,
                                         baseline="pass", heldout="fail",

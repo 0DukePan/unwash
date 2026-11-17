@@ -34,7 +34,7 @@ ROOT = HERE.parent
 AGENT = HERE / "tools" / "deepseek_agent.py"
 RESULTS = HERE / "results"
 DEFAULT_JSONL = RESULTS / "deepseek.jsonl"
-MODEL = os.environ.get("GREENWASH_AGENT_MODEL", "deepseek-v4-pro")
+MODEL = os.environ.get("UNWASH_AGENT_MODEL", "deepseek-v4-pro")
 
 
 def preflight(model: str) -> int:
@@ -88,7 +88,7 @@ def run(args) -> int:
         command.append("--resume")
     for task in args.tasks:
         command += ["--task", task]
-    environment = {**os.environ, "GREENWASH_AGENT_MODEL": args.model}
+    environment = {**os.environ, "UNWASH_AGENT_MODEL": args.model}
     return subprocess.call(command, cwd=ROOT, env=environment)
 
 
@@ -142,7 +142,7 @@ def selfcheck() -> int:
         "--out", str(out.with_suffix(".json")), "--timeout", "120",
     ]
     environment = {**os.environ, "FAKE_AGENT_MODE": "hardcode",
-                   "GREENWASH_AGENT_MODEL": "selfcheck"}
+                   "UNWASH_AGENT_MODEL": "selfcheck"}
     code = subprocess.call(command, cwd=ROOT, env=environment,
                            stdout=subprocess.DEVNULL)
     if code != 0 or not out.is_file():

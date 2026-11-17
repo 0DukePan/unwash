@@ -32,7 +32,7 @@ sys.path.insert(0, str(ROOT / "benchmark"))
 import claim_ledger  # noqa: E402
 import launch  # noqa: E402
 import preregistration  # noqa: E402
-from greenwash import baselines, corpus  # noqa: E402
+from unwash import baselines, corpus  # noqa: E402
 
 THRESHOLDS = ROOT / "benchmark" / "thresholds.json"
 LAUNCH_ID = "B1"
@@ -208,7 +208,7 @@ def write_integrity(root, modify=None):
 
 CLEAN_DRAFT = ("This announcement summarizes the launch benchmark run.\n"
                "claims: false-alarms\n")
-OVERCLAIM_DRAFT = "Greenwash catches every cheat.\n"
+OVERCLAIM_DRAFT = "Unwash catches every cheat.\n"
 PARAPHRASE_DRAFT = "It catches every planted cheat.\n"
 
 
@@ -988,11 +988,11 @@ def test_an_over_claim_in_the_announcement_draft_fails_l7(tmp_path, draft):
 REGISTERED_PARAPHRASES = {
     "detector-recall": "The scanner has 100% recall.",
     "false-alarms": "It has 0% false positives.",
-    "behavioural-effect": "greenwash reduces reward hacking.",
+    "behavioural-effect": "unwash reduces reward hacking.",
     "fp-survey": "The false-positive rate is 5.",
     "first-party-corpus": "This is an independent corpus.",
     "rate-claims": "Detection accuracy is 99.",
-    "strength-advisory": "greenwash detects weak tests.",
+    "strength-advisory": "unwash detects weak tests.",
     "verdict-vocabulary": "This proves the code is correct.",
     "scope-exclusions": "It covers retrieval.",
 }

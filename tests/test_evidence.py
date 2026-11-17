@@ -8,7 +8,7 @@ import subprocess
 import sys
 from pathlib import Path
 
-from greenwash import evidence
+from unwash import evidence
 
 
 ROOT = Path(__file__).resolve().parent.parent
@@ -33,10 +33,10 @@ def corpus():
                 "acceptance": {key: True for key in evidence.ACCEPTANCE},
             })
     return {
-        "schema": "greenwash-evaluation-corpus/v1", "status": "frozen",
+        "schema": "unwash-evaluation-corpus/v1", "status": "frozen",
         "governance": {
             "core_maintainers": ["core-maintainer"],
-            "repository": "https://code.example.org/external/greenwash-evaluation",
+            "repository": "https://code.example.org/external/unwash-evaluation",
             "merge_authorities": [
                 {"id": "governor-a", "affiliation": "group-a"},
                 {"id": "governor-b", "affiliation": "group-b"},
@@ -52,7 +52,7 @@ def corpus():
 
 def registration(manifest_digest: str, source: dict):
     return {
-        "schema": "greenwash-study-registration/v1", "status": "frozen",
+        "schema": "unwash-study-registration/v1", "status": "frozen",
         "corpus_manifest_sha256": manifest_digest,
         "sealed_task_hashes": {task["id"]: task["sealed_sha256"] for task in source["tasks"]},
         "detector_commit": "a" * 40, "runner_commit": "b" * 40,
@@ -89,7 +89,7 @@ def test_registration_binds_exact_bytes_and_all_task_hashes(tmp_path):
 
 
 def test_adoption_requires_a_real_external_receipt():
-    data = {"schema": "greenwash-adoption-ledger/v1", "status": "ongoing",
+    data = {"schema": "unwash-adoption-ledger/v1", "status": "ongoing",
             "updated_at": "2026-09-28T00:00:00Z", "pilots": []}
     issues = evidence.validate_adoption(data)
     assert any("real pilot" in issue for issue in issues)
@@ -97,10 +97,10 @@ def test_adoption_requires_a_real_external_receipt():
 
 def test_cli_emits_a_machine_readable_failed_evidence_check(tmp_path):
     record = tmp_path / "adoption.json"
-    record.write_text(json.dumps({"schema": "greenwash-adoption-ledger/v1",
+    record.write_text(json.dumps({"schema": "unwash-adoption-ledger/v1",
                                   "status": "ongoing", "updated_at": "2026-09-28",
                                   "pilots": []}), encoding="utf-8")
-    result = subprocess.run([sys.executable, "-m", "greenwash", "evidence", "adoption",
+    result = subprocess.run([sys.executable, "-m", "unwash", "evidence", "adoption",
                              str(record), "--json"], cwd=ROOT, capture_output=True,
                             text=True, encoding="utf-8")
     payload = json.loads(result.stdout)

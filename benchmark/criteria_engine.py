@@ -73,7 +73,7 @@ sys.path.insert(0, str(HERE))
 
 import evaluation  # noqa: E402
 import preregistration  # noqa: E402
-from greenwash.evidence import EvidenceError  # noqa: E402
+from unwash.evidence import EvidenceError  # noqa: E402
 
 LAUNCH = "LAUNCH"
 NARROW = "NARROW"

@@ -14,8 +14,8 @@ import pytest
 HERE = Path(__file__).resolve().parent
 sys.path.insert(0, str(HERE.parent))
 
-from greenwash import scan as scan_mod  # noqa: E402
-from greenwash.scan.rules import RULES  # noqa: E402
+from unwash import scan as scan_mod  # noqa: E402
+from unwash.scan.rules import RULES  # noqa: E402
 
 BASE = {
     "src/calc.py": "def add(a, b):\n    return a - b\n",
@@ -255,7 +255,7 @@ def test_a_parse_error_carries_the_line_it_failed_on(tmp_path, monkeypatch):
 
 def test_module_failure_distinguishes_missing_from_unreadable(tmp_path):
     """The rule asks the module a question; it does not string-match a type."""
-    from greenwash.scan.languages.python_ast import PythonModule
+    from unwash.scan.languages.python_ast import PythonModule
 
     missing = PythonModule(str(tmp_path / "gone.py"))
     assert missing.missing
@@ -343,7 +343,7 @@ def test_codes_are_unique_and_well_formed():
     codes = [rule.code for rule in RULES]
     assert len(codes) == len(set(codes))
     for code in codes:
-        assert code.startswith("GW-")
+        assert code.startswith("UW-")
         assert len(code.split("-")) == 3
 
 
@@ -459,7 +459,7 @@ def test_a_diff_with_invalid_utf8_bytes_is_not_fatal(tmp_path, monkeypatch):
 
 def test_a_verifier_config_change_is_flagged(tmp_path, monkeypatch):
     _repo(tmp_path)
-    _write(tmp_path, ".greenwash/config.json", '{"mode": "strict"}\n')
+    _write(tmp_path, ".unwash/config.json", '{"mode": "strict"}\n')
     assert "verifier-config-changed" in _kinds(tmp_path, monkeypatch)
 
 

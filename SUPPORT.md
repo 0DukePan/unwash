@@ -1,14 +1,14 @@
 # Support
 
-greenwash is a small project maintained by people who do this alongside other
+unwash is a small project maintained by people who do this alongside other
 work. This page says where to ask, and what to include so the first reply can be
 useful instead of "can you paste the output".
 
 ## Before you ask
 
 ```bash
-greenwash doctor          # what greenwash can and cannot see here
-greenwash --version
+unwash doctor          # what unwash can and cannot see here
+unwash --version
 ```
 
 `doctor` answers most "why didn't it check anything" questions by itself: no git
@@ -19,25 +19,25 @@ off. Its output is the thing to paste.
 
 | Question | Where |
 |---|---|
-| "Why did it say `VERIFICATION_FAILED`?" | [Discussions](https://github.com/0DukePan/greenwash/discussions) -- integration help |
-| "It flagged my correct code" | [false-positive form](https://github.com/0DukePan/greenwash/issues/new?template=false-positive.yml) |
-| "It missed a cheat" | [bypass form](https://github.com/0DukePan/greenwash/issues/new?template=bypass.yml) |
-| "The hook doesn't start on my host" | [host integration form](https://github.com/0DukePan/greenwash/issues/new?template=host-integration.yml) |
-| "I want to use it on a real project and tell you how it goes" | [design partner form](https://github.com/0DukePan/greenwash/issues/new?template=design-partner.yml) |
-| "I want to author evaluation tasks" | [task proposal form](https://github.com/0DukePan/greenwash/issues/new?template=external-task.yml) |
+| "Why did it say `VERIFICATION_FAILED`?" | [Discussions](https://github.com/0DukePan/unwash/discussions) -- integration help |
+| "It flagged my correct code" | [false-positive form](https://github.com/0DukePan/unwash/issues/new?template=false-positive.yml) |
+| "It missed a cheat" | [bypass form](https://github.com/0DukePan/unwash/issues/new?template=bypass.yml) |
+| "The hook doesn't start on my host" | [host integration form](https://github.com/0DukePan/unwash/issues/new?template=host-integration.yml) |
+| "I want to use it on a real project and tell you how it goes" | [design partner form](https://github.com/0DukePan/unwash/issues/new?template=design-partner.yml) |
+| "I want to author evaluation tasks" | [task proposal form](https://github.com/0DukePan/unwash/issues/new?template=external-task.yml) |
 | A security problem | [SECURITY.md](SECURITY.md), privately |
-| Anything else | [Discussions](https://github.com/0DukePan/greenwash/discussions) |
+| Anything else | [Discussions](https://github.com/0DukePan/unwash/discussions) |
 
 ## What to include
 
-1. `greenwash doctor` output.
+1. `unwash doctor` output.
 2. The command you ran, and its full output -- not a summary of it. This project
    runs on receipts, and issue reports are held to the same standard.
-3. `greenwash --version`, your OS, and your Python version.
+3. `unwash --version`, your OS, and your Python version.
 4. For a false positive: the commit and the flag, and one sentence on why the
    flagged line is correct. Every confirmed false positive becomes a test.
 5. For a host integration problem: which host and version, the relevant hook or
-   config file, and whether `python codex/scripts/greenwash_hook.py` (or the
+   config file, and whether `python codex/scripts/unwash_hook.py` (or the
    Claude equivalent) starts when you run it by hand.
 
 ## What you will get

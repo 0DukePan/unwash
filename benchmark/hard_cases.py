@@ -17,7 +17,7 @@ The contracts, each one load-bearing:
   never a default, never a guessed axis.
 * **Expected verdicts are recorded under both policies.** `expected_verdicts`
   carries the strict and the conservative verdict of the pinned-evidence
-  decision table (`greenwash.verify.pinned`), and `pinned_evidence_verdict`
+  decision table (`unwash.verify.pinned`), and `pinned_evidence_verdict`
   is that table's conservative reading of the case. The vocabulary is the
   table's own: CLEAN, TAMPERED, INCONCLUSIVE.
 * **HC11 sets the edited-evidence condition.** An HC11 card whose edit does
@@ -25,7 +25,7 @@ The contracts, each one load-bearing:
   a spec rewritten in the same diff can never launder the change it justifies
   (the pinned-evidence rule that evidence from a changed file never counts).
 * **Every twin link records a similarity score.** The generator pairs each
-  card's edit with a legitimate twin through `greenwash.twinning.match_twin`
+  card's edit with a legitimate twin through `unwash.twinning.match_twin`
   -- same AST-level edit class, diff-size proximity, never across
   repositories, never a synthetic record -- and records the score and class
   in the card's `twin` link.
@@ -59,9 +59,9 @@ HERE = Path(__file__).resolve().parent
 ROOT = HERE.parent
 sys.path.insert(0, str(ROOT))
 
-from greenwash import corpus  # noqa: E402
-from greenwash.twinning import match_twin  # noqa: E402
-from greenwash.verify.pinned import (  # noqa: E402
+from unwash import corpus  # noqa: E402
+from unwash.twinning import match_twin  # noqa: E402
+from unwash.verify.pinned import (  # noqa: E402
     POLICIES, VERDICT_CLEAN, VERDICT_INCONCLUSIVE, VERDICT_TAMPERED)
 
 #: The hard-case families, as the operator listed them. The first three are
@@ -346,7 +346,7 @@ def dev_cards(fixtures_dir=None, family: str | None = None) -> list:
 
     Every card is built from a maintainer-authored fixture and carries
     `fixture: maintainer-authored ...` as its source; the twin link is the
-    scored pairing `greenwash.twinning.match_twin` chose. Generation is
+    scored pairing `unwash.twinning.match_twin` chose. Generation is
     deterministic: the same fixtures produce the same cards, byte for byte.
     """
     directory = Path(fixtures_dir) if fixtures_dir is not None else FIXTURES_DIR

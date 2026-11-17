@@ -148,7 +148,7 @@ looks like weakening and an empty handler that is deliberate.
 
 `error-path-default` reads the parsed Python file, not only the diff, so the
 first two passes could not see it at all: `fp_survey.py` scanned every diff
-from the greenwash checkout, which meant the rule parsed `src/_pytest/approx.py`
+from the unwash checkout, which meant the rule parsed `src/_pytest/approx.py`
 against this repository, found no such file, and returned no module. The
 survey said nothing about the rule because the instrument was blind, not
 because the history was clean. Scanning each diff with the repository it came

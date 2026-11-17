@@ -14,8 +14,8 @@ import pytest
 HERE = Path(__file__).resolve().parent
 sys.path.insert(0, str(HERE.parent))
 
-from greenwash import cli  # noqa: E402
-from greenwash.domain import TrustReport, Verdict  # noqa: E402
+from unwash import cli  # noqa: E402
+from unwash.domain import TrustReport, Verdict  # noqa: E402
 
 BASE = {
     "src/calc.py": "def add(a, b):\n    return a - b\n",
@@ -58,7 +58,7 @@ def cheat(tmp_path, monkeypatch):
 def test_report_is_the_default_and_never_blocks(cheat, monkeypatch, capsys):
     code, out, err = _run(monkeypatch, capsys, [])
     assert code == 0, err
-    assert "GREENWASH TRUST REPORT" in out
+    assert "UNWASH TRUST REPORT" in out
     assert "SUSPICIOUS" in out            # signals, no behavioral check
     assert "[hardcoded-return]" in out
 
@@ -193,7 +193,7 @@ def test_json_output_is_the_versioned_report(cheat, monkeypatch, capsys):
 
 def test_markdown_output(cheat, monkeypatch, capsys):
     _, out, _ = _run(monkeypatch, capsys, ["--format", "markdown"])
-    assert out.startswith("## Greenwash trust report")
+    assert out.startswith("## Unwash trust report")
 
 
 def test_verify_with_a_heldout_failure_is_not_verified(cheat, monkeypatch, capsys):
@@ -213,7 +213,7 @@ def test_an_unusable_repository_exits_three_with_a_clear_message(tmp_path, monke
     monkeypatch.chdir(tmp_path)
     code, out, err = _run(monkeypatch, capsys, [])
     assert code == 3
-    assert err.startswith("greenwash: ")
+    assert err.startswith("unwash: ")
     assert "Traceback" not in err
     assert out == ""
 
@@ -228,12 +228,12 @@ def test_a_repository_with_no_commits_says_so(tmp_path, monkeypatch, capsys):
 
 
 def test_config_can_turn_on_enforcement(cheat, monkeypatch, capsys):
-    (cheat / ".greenwash").mkdir()
-    (cheat / ".greenwash" / "config.json").write_text(
+    (cheat / ".unwash").mkdir()
+    (cheat / ".unwash" / "config.json").write_text(
         json.dumps({"mode": "enforce"}), encoding="utf-8")
     code, out, _ = _run(monkeypatch, capsys, [])
     assert code == 2
-    assert "GREENWASH TRUST REPORT" in out
+    assert "UNWASH TRUST REPORT" in out
 
 
 def test_zero_config_runs_the_behavioral_layer(cheat, monkeypatch, capsys):
@@ -252,8 +252,8 @@ def test_an_explicit_command_turns_discovery_off(cheat, monkeypatch, capsys):
 
 
 def test_config_can_opt_out_of_the_behavioral_layer(cheat, monkeypatch, capsys):
-    (cheat / ".greenwash").mkdir()
-    (cheat / ".greenwash" / "config.json").write_text(
+    (cheat / ".unwash").mkdir()
+    (cheat / ".unwash" / "config.json").write_text(
         json.dumps({"auto_verify": False}), encoding="utf-8")
     code, out, _ = _run(monkeypatch, capsys, [])
     assert code == 0
@@ -263,7 +263,7 @@ def test_config_can_opt_out_of_the_behavioral_layer(cheat, monkeypatch, capsys):
 def test_rules_lists_every_rule(cheat, monkeypatch, capsys):
     code, out, _ = _run(monkeypatch, capsys, ["rules"])
     assert code == 0
-    assert "GW-TEST-001" in out and "GW-VER-002" not in out
+    assert "UW-TEST-001" in out and "UW-VER-002" not in out
     assert "hardcoded-return" in out
 
 
@@ -277,7 +277,7 @@ def test_doctor_runs_and_explains(cheat, monkeypatch, capsys):
 def test_init_writes_a_config(cheat, monkeypatch, capsys):
     code, out, _ = _run(monkeypatch, capsys, ["init"])
     assert code == 0
-    assert (cheat / ".greenwash" / "config.json").is_file()
+    assert (cheat / ".unwash" / "config.json").is_file()
     assert "report mode is on" in out
 
 

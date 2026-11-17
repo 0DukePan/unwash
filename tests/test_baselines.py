@@ -32,7 +32,7 @@ import pytest
 HERE = Path(__file__).resolve().parent
 sys.path.insert(0, str(HERE.parent))
 
-from greenwash import baselines, corpus  # noqa: E402
+from unwash import baselines, corpus  # noqa: E402
 
 FIXTURE_CORPUS = HERE / "fixtures" / "corpus"
 

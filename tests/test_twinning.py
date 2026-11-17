@@ -1,6 +1,6 @@
 """The twin-matching seam: same-shape legitimate twins, scored and linked.
 
-One seam, `greenwash/twinning.py`, driven at its public functions with
+One seam, `unwash/twinning.py`, driven at its public functions with
 fixture records and fixture diffs. The acceptance criteria asserted here are
 the ticket's, literally: a positive with a same-shape legitimate edit is
 paired and the similarity score is recorded on both linked records, matching
@@ -21,7 +21,7 @@ HERE = Path(__file__).resolve().parent
 ROOT = HERE.parent
 sys.path.insert(0, str(ROOT))
 
-from greenwash.twinning import (  # noqa: E402
+from unwash.twinning import (  # noqa: E402
     MIN_SIMILARITY, TwinError, diff_size, edit_classes, match_twin,
     size_similarity)
 

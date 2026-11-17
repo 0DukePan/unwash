@@ -1,18 +1,18 @@
 <p align="center">
-  <img src="assets/logo.svg" width="76" alt="greenwash">
+  <img src="assets/logo.svg" width="76" alt="unwash">
 </p>
 
-<h1 align="center">greenwash</h1>
+<h1 align="center">unwash</h1>
 
 <p align="center"><strong>A trust report on what a coding agent's "done" actually means.</strong></p>
 
 <p align="center">
-  <a href="https://github.com/0DukePan/greenwash/actions/workflows/ci.yml"><img src="https://github.com/0DukePan/greenwash/actions/workflows/ci.yml/badge.svg" alt="CI"></a>
+  <a href="https://github.com/0DukePan/unwash/actions/workflows/ci.yml"><img src="https://github.com/0DukePan/unwash/actions/workflows/ci.yml/badge.svg" alt="CI"></a>
   <a href="LICENSE"><img src="https://img.shields.io/badge/license-MIT-blue.svg" alt="MIT"></a>
   <img src="https://img.shields.io/badge/python-3.10%2B-blue.svg" alt="python 3.10+">
   <img src="https://img.shields.io/badge/dependencies-none-brightgreen.svg" alt="no dependencies">
   <img src="https://img.shields.io/badge/schema-v1-informational.svg" alt="schema v1">
-  <a href="https://github.com/0DukePan/greenwash/releases"><img src="https://img.shields.io/badge/version-0.5.1-orange.svg" alt="0.4.2"></a>
+  <a href="https://github.com/0DukePan/unwash/releases"><img src="https://img.shields.io/badge/version-1.0.0-orange.svg" alt="0.4.2"></a>
 </p>
 
 <p align="center">
@@ -21,7 +21,7 @@
     An agent under pressure to show green will skip the test, mock the unit under
     test, hardcode the expected value, or swallow the exception that would have
     failed loudly. All four produce the same visible result: a passing suite.
-    greenwash reads the diff <em>and</em> runs the tests, then reports what the
+    unwash reads the diff <em>and</em> runs the tests, then reports what the
     claim is worth -- with the evidence, and an honest "I could not tell" when
     there is none.
   </sub>
@@ -69,13 +69,13 @@ the map of every document is [docs/README.md](docs/README.md).
 </p>
 
 <p align="center">
-  <img src="assets/demo.gif" width="720" alt="The agent's diff turns add() into 'return 5 # matches the test'; greenwash shows visible tests 1/1 passing, held-out checks 0/1 failing, and a verdict of NOT_VERIFIED">
+  <img src="assets/demo.gif" width="720" alt="The agent's diff turns add() into 'return 5 # matches the test'; unwash shows visible tests 1/1 passing, held-out checks 0/1 failing, and a verdict of NOT_VERIFIED">
   <br>
   <sub><code>python demo/run_demo.py --terse --with-diff</code> -- the diff, the command and the report are verbatim output, scrolled by the generator because the report is taller than the window. The framing, chrome, colour and scroll are presentation only.</sub>
 </p>
 
 <p align="center">
-  <img src="assets/receipt-not-vibes.gif" width="720" alt="A green test checkmark is covered by a receipt showing visible tests 1/1 and held-out tests 0/1; greenwash says a green check is not evidence.">
+  <img src="assets/receipt-not-vibes.gif" width="720" alt="A green test checkmark is covered by a receipt showing visible tests 1/1 and held-out tests 0/1; unwash says a green check is not evidence.">
   <br>
   <sub>The shareable version: passed the vibe check, not the test. The terminal replay above is the proof.</sub>
 </p>
@@ -88,7 +88,7 @@ An agent that says "done, tests pass" is making a claim. Usually it's true.
 Sometimes the suite passes because the agent made the checkmark green instead
 of making the code correct -- and from the outside those two look identical.
 
-greenwash is the second opinion. It starts from the one thing an agent cannot
+unwash is the second opinion. It starts from the one thing an agent cannot
 edit after the fact: what actually happened when the tests ran.
 
 **It is a report, not a gate.** By default it prints and exits 0. It never
@@ -97,31 +97,31 @@ modifies your code, never calls a model, and never leaves your machine.
 ## Sixty-second start
 
 ```bash
-pipx install git+https://github.com/0DukePan/greenwash@v0.5.1
+pipx install git+https://github.com/0DukePan/unwash@v1.0.0
 cd your-repo
-greenwash                     # a trust report for the current diff
+unwash                     # a trust report for the current diff
 ```
 
 Works today, from the tag, with no account and no build step. The distribution
-is **`greenwash-cli`** and the import name and command are both `greenwash`; an
+is **`unwash-cli`** and the import name and command are both `unwash`; an
 unrelated project owns the PyPI name `greenwash`, so `pip install greenwash`
 installs someone else's package and this README will not tell you to.
 
-**`greenwash-cli` is not on PyPI yet.** The wheel builds and installs cleanly
+**`unwash-cli` is not on PyPI yet.** The wheel builds and installs cleanly
 from the tag; publishing is the next release step, tracked in
 [RELEASING.md](RELEASING.md). Until then the `git+https://` line above is the
 supported install, and an install instruction that does not work would be the
 same defect this tool exists to catch.
 
 ```bash
-pip install git+https://github.com/0DukePan/greenwash@v0.5.1   # the pip equivalent
-python -m greenwash --version                                  # 0.5.0
+pip install git+https://github.com/0DukePan/unwash@v1.0.0   # the pip equivalent
+python -m unwash --version                                  # 0.5.0
 ```
 
 ### Check it before you believe it
 
 ```bash
-git clone https://github.com/0DukePan/greenwash && cd greenwash
+git clone https://github.com/0DukePan/unwash && cd unwash
 python benchmark/verify.py          # 90 seconds, no model, no network
 ```
 
@@ -135,10 +135,10 @@ What it does not prove is in [docs/what-did-not-work.md](docs/what-did-not-work.
 the short version is that a passing suite is never proof of correctness, and
 neither is this benchmark.
 
-No configuration, no account, no network. If your project has tests, greenwash
+No configuration, no account, no network. If your project has tests, unwash
 finds them. In a JavaScript project, the shim in [`npm/`](npm/) runs the same
 Python implementation -- read [`npm/README.md`](npm/README.md) first: the npm
-name is not published yet, so `npx greenwash` is not a supported install today.
+name is not published yet, so `npx unwash` is not a supported install today.
 
 To watch it before you install anything:
 
@@ -150,8 +150,8 @@ Inside Claude Code, install the plugin instead and the report appears every time
 the agent tries to finish its turn:
 
 ```bash
-/plugin marketplace add 0DukePan/greenwash
-/plugin install greenwash@greenwash
+/plugin marketplace add 0DukePan/unwash
+/plugin install unwash@unwash
 ```
 
 Codex gets the same checker with strict enforcement on by default -- see
@@ -160,11 +160,11 @@ Codex gets the same checker with strict enforcement on by default -- see
 ### What would make the evidence stronger
 
 The shipped benchmark is first-party and the measured outcome is a null. This
-repository does not treat either as proof that greenwash changes agent
+repository does not treat either as proof that unwash changes agent
 behaviour. The executable [external evidence kit](docs/EVIDENCE_KIT.md) is the
 release bar: an independently governed 60-task corpus, a hash-bound
 preregistration, a fully published result (including null or negative results),
-and externally maintained pilot receipts. `greenwash evidence` validates the
+and externally maintained pilot receipts. `unwash evidence` validates the
 records locally; it cannot manufacture the independence or the outcomes.
 
 ## What the report looks like
@@ -173,11 +173,11 @@ This is the verbatim output of `python demo/run_demo.py --terse`, on a repo wher
 the agent "fixed" a failing test by returning the number the test expected:
 
 ```
-$ greenwash --claim "Fixed the failing test" \
+$ unwash --claim "Fixed the failing test" \
       --run-tests "python -m pytest -q tests/test_calc.py" \
       --heldout "python -m pytest -q tests/test_calc_hidden.py"
-GREENWASH TRUST REPORT
-----------------------
+UNWASH TRUST REPORT
+-------------------
 
 Agent claim: "Fixed the failing test"
 Run          mode: report
@@ -193,9 +193,9 @@ Verification:
   - Regression checks     not run
 
 Suspicious patterns:
-  ! [hardcoded-return] GW-TEST-004  src/calc.py:2
+  ! [hardcoded-return] UW-TEST-004  src/calc.py:2
       returns literal 5 (directly), which a test asserts against
-  ! [heldout-failed] GW-VER-002
+  ! [heldout-failed] UW-VER-002
       the visible suite passes but the held-out suite fails -- the change
           overfits what it was allowed to see
 
@@ -239,12 +239,12 @@ Three things to notice, because they are the whole design:
              integrity, held-out)
 ```
 
-**Static layer (`greenwash scan`)** reads the diff. Python is parsed with `ast`,
+**Static layer (`unwash scan`)** reads the diff. Python is parsed with `ast`,
 so a literal routed through a local variable and a trailing comment are both
 caught, and a docstring that merely *mentions* an exploit is not. Other
 languages use regex packs and are labelled as such.
 
-**Behavioral layer (`greenwash verify`)** runs the tests: the ones on disk, the
+**Behavioral layer (`unwash verify`)** runs the tests: the ones on disk, the
 same command against a detached worktree of `HEAD` for a before/after
 comparison, and optionally a held-out suite the agent never saw. Exit status,
 per-test results, and output are captured, secrets redacted, output capped.
@@ -253,7 +253,7 @@ per-test results, and output are captured, secrets redacted, output capped.
 
 The strongest evidence available is a suite the agent never saw, and almost
 nobody has one configured. The repository's own history supplies the next best
-thing. When a diff changes a test file, greenwash takes the **committed** version
+thing. When a diff changes a test file, unwash takes the **committed** version
 of that test — the worktree at `HEAD` already holds it — overlays only the
 changed *implementation* files onto it, and runs it against the new code.
 
@@ -275,7 +275,7 @@ A claim is prose, and prose cannot be checked. A requirement can, when it names
 the thing that would prove it:
 
 ```bash
-greenwash --claim "Implement OAuth login" \
+unwash --claim "Implement OAuth login" \
   --require "Login succeeds => tests/test_auth.py::test_login_succeeds" \
   --require "Invalid credentials rejected => tests/test_auth.py::test_rejects" \
   --require "Refresh-token rotation"
@@ -285,8 +285,8 @@ Each requirement bound with `=>` is run and reported as a pass or a failure. One
 with no binding is reported as **unverifiable** — never as a pass — and a
 requirement that fails produces `NOT_VERIFIED`, because it is a check the claim
 itself named. No model is involved: the agent says what it did and points at the
-evidence, and greenwash runs it. The same list can live in
-`.greenwash/config.json` as `"requirements": [...]`.
+evidence, and unwash runs it. The same list can live in
+`.unwash/config.json` as `"requirements": [...]`.
 
 ### Requirement coverage
 
@@ -295,7 +295,7 @@ have evidence, and which have none. Repeating a sentence binds more evidence to
 it, which is how contradictory evidence becomes visible:
 
 ```bash
-greenwash coverage --run-tests "python -m pytest -q" \
+unwash coverage --run-tests "python -m pytest -q" \
   --require "Login succeeds => tests/test_auth.py::test_login" \
   --require "Login succeeds => tests/test_auth.py::test_login_after_refresh" \
   --require "Invalid credentials rejected => tests/test_auth.py::test_rejects" \
@@ -325,30 +325,30 @@ Eleven static rules, and seven signals that only a run can produce:
 
 | Code | Rule | Severity | What it means |
 |---|---|---|---|
-| `GW-TEST-001` | `test-skipped` | high | A test was disabled (`.skip`, `@pytest.mark.skip`, `#[ignore]`, `@Disabled`, RSpec `pending`, ...) instead of fixed |
-| `GW-TEST-002` | `test-file-deleted` | high | An entire test file vanished in this diff |
-| `GW-TEST-003` | `assertion-weakened` | high | Assertions were removed and nothing equivalent replaced them |
-| `GW-TEST-004` | `hardcoded-return` | high | A returned literal matches a value a test asserts against -- caught through a local variable, and checked against related test files on disk |
-| `GW-DIV-001` | `swallowed-exception` | medium | An exception is caught and dropped |
-| `GW-DIV-002` | `error-path-default` | medium | An `except` block turns an error into a default value and no related test file mentions that path -- **asks**, never accuses |
-| `GW-DIV-003` | `unreadable-file` | low | A changed Python file could not be read -- binary to git, or unparseable -- so the static checks did not run on it -- it names the file, **asks**, never accuses, and the report cannot be `CLEAN` or `VERIFIED` |
-| `GW-EXP-001` | `known-exploit-pattern` | high | An unconditional `__eq__`, or `sys.exit(0)` / `os._exit(0)` / `process.exit(0)` |
-| `GW-TEST-005` | `mock-in-test` | medium | A mock appears in a test file -- **asks**, never accuses |
-| `GW-TEST-006` | `conftest-changed` | medium | `conftest.py` was touched -- **asks**, never accuses |
-| `GW-TEST-007` | `verifier-config-changed` | medium | Files that decide what gets checked and what may pass changed in a way that can alter what runs -- **asks**, never accuses |
-| `GW-VER-001` | `tests-failed` | high | The test command exits non-zero after "done" |
-| `GW-VER-002` | `heldout-failed` | high | The visible suite passes but the held-out suite fails |
-| `GW-VER-003` | `regression` | high | A test that passed at the committed baseline fails now |
-| `GW-VER-005` | `test-weakened` | high | A test file the diff changed does not pass in its committed form against the code as it now stands |
-| `GW-VER-006` | `requirement-failed` | high | A requirement the claim bound to a test or a command does not hold |
-| `GW-VER-007` | `tests-not-run` | high | The suite executes less than at the baseline: everything skipped, more skipped, or fewer collected |
-| `GW-VER-004` | `verification-failed` | low | The verifier could not complete -- an honest gap, not a pass |
+| `UW-TEST-001` | `test-skipped` | high | A test was disabled (`.skip`, `@pytest.mark.skip`, `#[ignore]`, `@Disabled`, RSpec `pending`, ...) instead of fixed |
+| `UW-TEST-002` | `test-file-deleted` | high | An entire test file vanished in this diff |
+| `UW-TEST-003` | `assertion-weakened` | high | Assertions were removed and nothing equivalent replaced them |
+| `UW-TEST-004` | `hardcoded-return` | high | A returned literal matches a value a test asserts against -- caught through a local variable, and checked against related test files on disk |
+| `UW-DIV-001` | `swallowed-exception` | medium | An exception is caught and dropped |
+| `UW-DIV-002` | `error-path-default` | medium | An `except` block turns an error into a default value and no related test file mentions that path -- **asks**, never accuses |
+| `UW-DIV-003` | `unreadable-file` | low | A changed Python file could not be read -- binary to git, or unparseable -- so the static checks did not run on it -- it names the file, **asks**, never accuses, and the report cannot be `CLEAN` or `VERIFIED` |
+| `UW-EXP-001` | `known-exploit-pattern` | high | An unconditional `__eq__`, or `sys.exit(0)` / `os._exit(0)` / `process.exit(0)` |
+| `UW-TEST-005` | `mock-in-test` | medium | A mock appears in a test file -- **asks**, never accuses |
+| `UW-TEST-006` | `conftest-changed` | medium | `conftest.py` was touched -- **asks**, never accuses |
+| `UW-TEST-007` | `verifier-config-changed` | medium | Files that decide what gets checked and what may pass changed in a way that can alter what runs -- **asks**, never accuses |
+| `UW-VER-001` | `tests-failed` | high | The test command exits non-zero after "done" |
+| `UW-VER-002` | `heldout-failed` | high | The visible suite passes but the held-out suite fails |
+| `UW-VER-003` | `regression` | high | A test that passed at the committed baseline fails now |
+| `UW-VER-005` | `test-weakened` | high | A test file the diff changed does not pass in its committed form against the code as it now stands |
+| `UW-VER-006` | `requirement-failed` | high | A requirement the claim bound to a test or a command does not hold |
+| `UW-VER-007` | `tests-not-run` | high | The suite executes less than at the baseline: everything skipped, more skipped, or fewer collected |
+| `UW-VER-004` | `verification-failed` | low | The verifier could not complete -- an honest gap, not a pass |
 
-`greenwash rules` prints the same table from the source of truth.
+`unwash rules` prints the same table from the source of truth.
 
 What it does *not* catch is data too. The technique taxonomy names every
 tampering technique, what catches it, whether catching it needs replay, and
-whether it is `covered`, `partial` or `not covered`; `greenwash rules` prints
+whether it is `covered`, `partial` or `not covered`; `unwash rules` prints
 the coverage matrix generated from that table, and a record naming a technique
 the taxonomy does not know is rejected with the offending field named. This
 release pins **technique taxonomy v1**: spec, docstring or fixture rewrites,
@@ -556,38 +556,38 @@ pinned artifacts.
 
 | Where | How |
 |---|---|
-| Any repo (CLI) | `pipx install git+https://github.com/0DukePan/greenwash@v0.5.1` -- **not on PyPI yet**, see [RELEASING.md](RELEASING.md) |
+| Any repo (CLI) | `pipx install git+https://github.com/0DukePan/unwash@v1.0.0` -- **not on PyPI yet**, see [RELEASING.md](RELEASING.md) |
 | Node projects | the shim in [`npm/`](npm/) -- **not published under this name yet**, see [npm/README.md](npm/README.md) |
-| **Claude Code** (the unskippable hook) | `/plugin marketplace add 0DukePan/greenwash` then `/plugin install greenwash@greenwash` |
+| **Claude Code** (the unskippable hook) | `/plugin marketplace add 0DukePan/unwash` then `/plugin install unwash@unwash` |
 | **Codex** (strict by default) | the plugin in [`codex/`](codex/README.md) -- same checker, same policy, strict gate |
-| GitHub Actions | `uses: 0DukePan/greenwash@v0.5.1` (see [`action.yml`](action.yml)) |
-| pre-commit | add `0DukePan/greenwash` to `repos` (see [`.pre-commit-hooks.yaml`](.pre-commit-hooks.yaml)) |
+| GitHub Actions | `uses: 0DukePan/unwash@v1.0.0` (see [`action.yml`](action.yml)) |
+| pre-commit | add `0DukePan/unwash` to `repos` (see [`.pre-commit-hooks.yaml`](.pre-commit-hooks.yaml)) |
 | Cursor / Copilot / Cline / Windsurf / Gemini / Amp | the rules file generated for that host in [`adapters/`](adapters/) -- rules only, no hook |
 
 The Claude Code and Codex plugins are the only integrations with an
-unskippable hook -- everywhere else greenwash is a command you or your CI choose
+unskippable hook -- everywhere else unwash is a command you or your CI choose
 to run, and `adapters/README.md` says so plainly.
 
 ## Use it
 
 ```bash
-greenwash                                   # the report for the current diff
-greenwash --json                            # schema-versioned JSON
-greenwash --format markdown                 # paste into a PR
-greenwash --quiet                           # one line, for a status bar
-greenwash --verbose                         # every change and every reason
+unwash                                   # the report for the current diff
+unwash --json                            # schema-versioned JSON
+unwash --format markdown                 # paste into a PR
+unwash --quiet                           # one line, for a status bar
+unwash --verbose                         # every change and every reason
 
-greenwash scan                              # static only
-greenwash verify --run-tests "pytest -q" \
+unwash scan                              # static only
+unwash verify --run-tests "pytest -q" \
                  --heldout tests/hidden     # behavioral only
-greenwash --fail-on not_verified,suspicious # a policy: only what you name blocks
-greenwash init                              # write .greenwash/config.json
-greenwash doctor                            # what greenwash can and cannot see
+unwash --fail-on not_verified,suspicious # a policy: only what you name blocks
+unwash init                              # write .unwash/config.json
+unwash doctor                            # what unwash can and cannot see
 ```
 
 ### Zero configuration
 
-`greenwash init` detects the repository and the test framework, writes a config
+`unwash init` detects the repository and the test framework, writes a config
 that records what it found, and tells you what it could not find:
 
 ```
@@ -602,7 +602,7 @@ that records what it found, and tells you what it could not find:
 If there is no test command, the report says the behavioral layer did not run,
 rather than implying it passed.
 
-A plain `greenwash` is already behavioral, with no config and no flags: the
+A plain `unwash` is already behavioral, with no config and no flags: the
 test command is discovered, run, and run again against a detached worktree of
 `HEAD`, so a test that passed before and fails now is a `regression` rather
 than a mystery. Naming `--run-tests`, naming a `heldout` suite, or writing
@@ -610,7 +610,7 @@ than a mystery. Naming `--run-tests`, naming a `heldout` suite, or writing
 
 ### Configuration
 
-`.greenwash/config.json` is optional and every key is an override:
+`.unwash/config.json` is optional and every key is an override:
 
 | Key | Default | Meaning |
 |---|---|---|
@@ -672,23 +672,23 @@ constant that is the right answer -- the resolution is a waiver, not a
 suppression:
 
 ```bash
-greenwash waive \
-  --rule GW-DIV-002 \
+unwash waive \
+  --rule UW-DIV-002 \
   --path src/loader.py \
   --reason "the fallback is the documented behaviour and an integration test covers it" \
   --reviewer "@maintainer" \
   --expires 2026-10-26
 ```
 
-That writes one entry to `.greenwash/waivers.json`, committed with the code:
+That writes one entry to `.unwash/waivers.json`, committed with the code:
 
 ```json
 {
   "version": 1,
   "waivers": [
     {
-      "id": "GW-2026-0001",
-      "rule_id": "GW-DIV-002",
+      "id": "UW-2026-0001",
+      "rule_id": "UW-DIV-002",
       "signal_fingerprint": "sha256:1f0câ€¦",
       "path": "src/loader.py",
       "reason": "the fallback is the documented behaviour and an integration test covers it",
@@ -732,13 +732,13 @@ behavioral check ran -- a clean diff is not evidence that the work is correct.
 rules were suppressed, so a quiet report is never a silent one.
 
 **Is this the same as running my tests in CI?**
-CI tells you whether the suite passes. greenwash asks whether the suite still
+CI tells you whether the suite passes. unwash asks whether the suite still
 means what it used to: whether a test was weakened, skipped, or satisfied by a
 constant, and whether a held-out suite agrees.
 
 **npx?**
 Not yet, and deliberately not advertised: the npm package name is not owned by
-this project, so `npx greenwash` installs someone else's package today. The shim
+this project, so `npx unwash` installs someone else's package today. The shim
 in [`npm/`](npm/) is real -- it runs the Python implementation, forwarding argv
 and the exit code untouched, and it is a wrapper rather than a second
 implementation, because two codebases that can disagree about whether your tests
@@ -754,19 +754,19 @@ becomes a test -- that is the policy, not a promise.
 
 | Path | What lives there |
 |---|---|
-| `greenwash/domain.py` | `Run`, `Claim`, `Signal`, `VerificationResult`, `Verdict`, `TrustReport` -- the versioned wire format |
-| `greenwash/scan/` | the static engine: `rules/` (one file per rule), `languages/` (packs + the Python AST checks) |
-| `greenwash/verify/` | the behavioral engine: discovery, runner, baseline worktree, held-out suites, redaction |
-| `greenwash/report/` | terminal, JSON and markdown renderers |
-| `greenwash/confidence.py` | the scoring and the verdict table |
-| `greenwash/strict.py`, `waivers.py` | the strict gate and the auditable decisions it honours |
-| `greenwash/cli.py`, `doctor.py`, `config.py` | the entry point, diagnostics, `.greenwash/config.json` |
+| `unwash/domain.py` | `Run`, `Claim`, `Signal`, `VerificationResult`, `Verdict`, `TrustReport` -- the versioned wire format |
+| `unwash/scan/` | the static engine: `rules/` (one file per rule), `languages/` (packs + the Python AST checks) |
+| `unwash/verify/` | the behavioral engine: discovery, runner, baseline worktree, held-out suites, redaction |
+| `unwash/report/` | terminal, JSON and markdown renderers |
+| `unwash/confidence.py` | the scoring and the verdict table |
+| `unwash/strict.py`, `waivers.py` | the strict gate and the auditable decisions it honours |
+| `unwash/cli.py`, `doctor.py`, `config.py` | the entry point, diagnostics, `.unwash/config.json` |
 | `codex/` | the Codex plugin: strict by default, manifests in both spellings, its own hook |
 | `docs/` | [confidence.md](docs/confidence.md), [false-positives.md](docs/false-positives.md), [claim-matrix.md](docs/claim-matrix.md), [audit.md](docs/audit.md), [phase1-report.md](docs/phase1-report.md), [threat-model.md](docs/threat-model.md), [beta.md](docs/beta.md), the benchmark one-pager and the launch material |
 | `docs/specs/` | the evidence-verdicts, launch-benchmark, validation-program and dev-corpus-run specifications |
 | `benchmark/` | 28 tasks across six languages (each with its own runner), harness, detection measurement, FP survey, Wilson-CI report, the evaluation runner, the launch command and criteria engine, the corpus kit, miners, importers, the label workflow, twin matching and hard-case cards, Gate A, the friction harness and the usability kit |
 | `benchmark/polyglot/` | 15 static cases across Go, Rust, Ruby, Java and JavaScript -- one negative per language |
-| `npm/` | the `npx greenwash` shim, which runs the Python implementation rather than reimplementing it |
+| `npm/` | the `npx unwash` shim, which runs the Python implementation rather than reimplementing it |
 | `skills/`, `hooks/`, `adapters/` | the skill the agent reads, the Claude Stop hook, and the generated rule files for other hosts |
 | `scripts/` | the two compatibility entry points CI and the plugin call |
 | `tests/` | the suite -- domain, confidence, rules, language packs, reporting, CLI, waivers, strict mode, both hook contracts, test integrity, requirements, the compatibility entry point, the inconclusive corpus, benchmark tasks |
@@ -794,7 +794,7 @@ evaluation; its sample-size gate is expected to fail and says so.
 ## Development
 
 ```bash
-git clone https://github.com/0DukePan/greenwash && cd greenwash
+git clone https://github.com/0DukePan/unwash && cd unwash
 python -m pytest -q            # the suite, no model or network needed
 python demo/run_demo.py        # the catch, end to end
 python demo/strict_claude.py   # the strict gate, through the real hook
@@ -806,13 +806,13 @@ for how the pieces fit and [CONTRIBUTING.md](CONTRIBUTING.md) for what a change
 is expected to arrive with.
 
 Adding a language to the scanner is data, not code: edit
-`greenwash/scan/languages/packs.py` and add its extension to `LANGUAGE_BY_EXT`.
+`unwash/scan/languages/packs.py` and add its extension to `LANGUAGE_BY_EXT`.
 Backing that pack with a task is the part that has code: a runner in
 `benchmark/harness.py`, a cheat in `benchmark/tools/fake_agent.py`, a positive
 and a negative case in `benchmark/polyglot/`, and the task itself under
 `benchmark/tasks/`.
 
-Adding a rule means a new module in `greenwash/scan/rules/` with its metadata,
+Adding a rule means a new module in `unwash/scan/rules/` with its metadata,
 a positive and a negative test, and a row in the table above --
 `tests/test_rules.py` fails if the README and the registry disagree.
 

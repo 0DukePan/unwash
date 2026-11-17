@@ -5,8 +5,8 @@ name: release
 #
 # Authentication is PyPI Trusted Publishing (OIDC) -- there is no API token in
 # this repository and no secret to rotate. Configure it once at
-# https://pypi.org/manage/project/greenwash-cli/settings/publishing/ with:
-#   owner 0DukePan, repository greenwash, workflow release.yml, environment pypi
+# https://pypi.org/manage/project/unwash-cli/settings/publishing/ with:
+#   owner 0DukePan, repository unwash, workflow release.yml, environment pypi
 #
 # If the package does not exist on PyPI yet, create it with a one-off upload or
 # a "pending publisher" entry; after the first release the Trusted Publisher is
@@ -42,10 +42,10 @@ jobs:
         if: startsWith(github.ref, 'refs/tags/')
         run: |
           tag="${GITHUB_REF_NAME#v}"
-          declared=$(python -c "import greenwash; print(greenwash.__version__)")
+          declared=$(python -c "import unwash; print(unwash.__version__)")
           echo "tag=$tag declared=$declared"
           test "$tag" = "$declared" || {
-            echo "::error::tag $GITHUB_REF_NAME does not match greenwash.__version__ $declared"
+            echo "::error::tag $GITHUB_REF_NAME does not match unwash.__version__ $declared"
             exit 1
           }
       - name: Build
@@ -81,9 +81,9 @@ jobs:
       - name: The built wheel installs and runs in a clean environment
         run: |
           python -m venv /tmp/clean
-          /tmp/clean/bin/python -m pip install --quiet dist/greenwash_cli-*.whl
-          /tmp/clean/bin/greenwash --version
-          /tmp/clean/bin/greenwash doctor
+          /tmp/clean/bin/python -m pip install --quiet dist/unwash_cli-*.whl
+          /tmp/clean/bin/unwash --version
+          /tmp/clean/bin/unwash doctor
       - name: The installed CLI catches the demo cheat
         run: |
           /tmp/clean/bin/python demo/run_demo.py --terse | tee /tmp/demo.txt
@@ -97,7 +97,7 @@ jobs:
     runs-on: ubuntu-latest
     environment:
       name: pypi
-      url: https://pypi.org/p/greenwash-cli
+      url: https://pypi.org/p/unwash-cli
     permissions:
       id-token: write
     steps:

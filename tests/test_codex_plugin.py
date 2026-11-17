@@ -44,7 +44,7 @@ def hook_entries():
 def test_both_manifest_spellings_are_present_and_agree():
     root_manifest = manifest(CODEX / "plugin.json")
     dotted = manifest(CODEX / ".codex-plugin" / "plugin.json")
-    assert root_manifest["name"] == dotted["name"] == "greenwash"
+    assert root_manifest["name"] == dotted["name"] == "unwash"
     assert root_manifest["version"] == dotted["version"]
     assert root_manifest["hooks"] == dotted["hooks"] == "hooks/codex-hooks.json"
 
@@ -66,16 +66,16 @@ def test_the_version_matches_the_other_two_packages():
 
 def test_every_file_the_manifests_name_exists():
     assert (CODEX / "hooks" / "codex-hooks.json").is_file()
-    assert (CODEX / "skills" / "greenwash" / "SKILL.md").is_file()
+    assert (CODEX / "skills" / "unwash" / "SKILL.md").is_file()
     for entry in hook_entries():
-        assert "greenwash_hook.py" in entry["command"]
-        assert (CODEX / "scripts" / "greenwash_hook.py").is_file()
+        assert "unwash_hook.py" in entry["command"]
+        assert (CODEX / "scripts" / "unwash_hook.py").is_file()
 
 
 def test_the_codex_skill_has_valid_frontmatter():
-    text = (CODEX / "skills" / "greenwash" / "SKILL.md").read_text(encoding="utf-8")
+    text = (CODEX / "skills" / "unwash" / "SKILL.md").read_text(encoding="utf-8")
     assert text.startswith("---")
-    assert "name: greenwash" in text.split("---")[1]
+    assert "name: unwash" in text.split("---")[1]
 
 
 # ---- the hook command, run the way the host runs it --------------------------
@@ -90,7 +90,7 @@ def test_the_posix_command_starts_a_hook(tmp_path):
                             env={**os.environ, "PLUGIN_ROOT": str(CODEX)},
                             encoding="utf-8", errors="replace", timeout=300)
     assert result.returncode == 2, result.stderr
-    assert "greenwash" in (result.stdout + result.stderr)
+    assert "unwash" in (result.stdout + result.stderr)
 
 
 def test_the_windows_command_starts_a_hook(tmp_path):
@@ -110,7 +110,7 @@ def test_the_windows_command_starts_a_hook(tmp_path):
                             env={**os.environ, "PLUGIN_ROOT": str(CODEX)},
                             encoding="utf-8", errors="replace", timeout=300)
     assert result.returncode == 2, result.stderr
-    assert "greenwash" in (result.stdout + result.stderr)
+    assert "unwash" in (result.stdout + result.stderr)
 
 
 def test_the_windows_command_names_an_interpreter_the_other_one_does_not():
@@ -140,7 +140,7 @@ def codex_hook(cwd, payload=None, env=None):
     message = {"hook_event_name": "Stop", **(payload or {})}
     message.setdefault("session_id", str(os.path.realpath(str(cwd))))
     return subprocess.run(
-        [sys.executable, str(CODEX / "scripts" / "greenwash_hook.py")], cwd=cwd,
+        [sys.executable, str(CODEX / "scripts" / "unwash_hook.py")], cwd=cwd,
         input=json.dumps(message),
         capture_output=True, text=True, encoding="utf-8", errors="replace",
         env={**os.environ, "PYTHONPATH": str(ROOT), "PYTHONIOENCODING": "utf-8",
@@ -148,7 +148,7 @@ def codex_hook(cwd, payload=None, env=None):
 
 
 def test_strict_is_the_default_profile_here(cheat):
-    """No GREENWASH_STRICT, no config file: the plugin is the opt-in."""
+    """No UNWASH_STRICT, no config file: the plugin is the opt-in."""
     result = codex_hook(cheat)
     assert result.returncode == 2, (result.stdout, result.stderr)
     assert "BLOCKED" in result.stderr
@@ -159,7 +159,7 @@ def test_strict_is_the_default_profile_here(cheat):
 def test_the_message_carries_the_four_things_it_promises(cheat):
     result = codex_hook(cheat)
     message = result.stderr
-    assert "greenwash (strict): BLOCKED -- SUSPICIOUS" in message   # verdict
+    assert "unwash (strict): BLOCKED -- SUSPICIOUS" in message   # verdict
     assert "checks: " in message                                    # checks run
     assert "blocked: " in message                                   # blocked reasons
     assert "waivers: 0 active, 0 lapsed" in message                 # waiver status
@@ -180,7 +180,7 @@ def test_the_hook_resolves_its_own_root_when_no_variable_is_set(cheat):
            if key not in ("PLUGIN_ROOT", "CODEX_PLUGIN_ROOT", "CLAUDE_PLUGIN_ROOT")}
     env["PYTHONPATH"] = str(ROOT)
     result = subprocess.run(
-        [sys.executable, str(CODEX / "scripts" / "greenwash_hook.py")], cwd=cheat,
+        [sys.executable, str(CODEX / "scripts" / "unwash_hook.py")], cwd=cheat,
         input=json.dumps({"hook_event_name": "Stop",
                           "session_id": str(cheat.resolve())}),
         capture_output=True, text=True,
@@ -198,7 +198,7 @@ def test_the_plugin_root_is_resolved_defensively(monkeypatch):
     import importlib.util
 
     spec = importlib.util.spec_from_file_location(
-        "gw_codex_hook_under_test", CODEX / "scripts" / "greenwash_hook.py")
+        "gw_codex_hook_under_test", CODEX / "scripts" / "unwash_hook.py")
     module = importlib.util.module_from_spec(spec)
     spec.loader.exec_module(module)
 
@@ -225,7 +225,7 @@ def test_the_python_path_covers_a_checkout(tmp_path):
     import importlib.util
 
     spec = importlib.util.spec_from_file_location(
-        "gw_codex_hook_under_test", CODEX / "scripts" / "greenwash_hook.py")
+        "gw_codex_hook_under_test", CODEX / "scripts" / "unwash_hook.py")
     module = importlib.util.module_from_spec(spec)
     spec.loader.exec_module(module)
     parts = module.python_path(str(CODEX)).split(os.pathsep)
@@ -236,12 +236,12 @@ def test_the_python_path_covers_a_checkout(tmp_path):
 def test_the_two_gates_agree_on_the_same_fixture(cheat):
     """One checker, two host packs: a difference here is a bug in one of them."""
     claude = subprocess.run(
-        [sys.executable, str(ROOT / "scripts" / "greenwash_hook.py")], cwd=cheat,
+        [sys.executable, str(ROOT / "scripts" / "unwash_hook.py")], cwd=cheat,
         input=json.dumps({"hook_event_name": "Stop",
                           "session_id": str(cheat.resolve())}),
         capture_output=True, text=True,
         encoding="utf-8", errors="replace",
-        env={**os.environ, "PYTHONPATH": str(ROOT), "GREENWASH_STRICT": "1"},
+        env={**os.environ, "PYTHONPATH": str(ROOT), "UNWASH_STRICT": "1"},
         timeout=300)
     codex = codex_hook(cheat)
     assert claude.returncode == codex.returncode == 2
@@ -250,7 +250,7 @@ def test_the_two_gates_agree_on_the_same_fixture(cheat):
 
 def test_invalid_stdin_does_not_crash_the_hook(cheat):
     result = subprocess.run(
-        [sys.executable, str(CODEX / "scripts" / "greenwash_hook.py")], cwd=cheat,
+        [sys.executable, str(CODEX / "scripts" / "unwash_hook.py")], cwd=cheat,
         input="not json at all", capture_output=True, text=True, encoding="utf-8",
         errors="replace", env={**os.environ, "PYTHONPATH": str(ROOT)}, timeout=300)
     assert result.returncode in (0, 2)

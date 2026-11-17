@@ -26,7 +26,7 @@ sys.path.insert(0, str(ROOT / "benchmark"))
 
 import claim_ledger  # noqa: E402
 from report import wilson  # noqa: E402  one interval implementation
-from greenwash.scan.rules import RULES  # noqa: E402
+from unwash.scan.rules import RULES  # noqa: E402
 
 # One implementation: the ledger's ASKING set is what the pages are checked
 # against, so a second copy here would drift exactly the way the two stop-gate

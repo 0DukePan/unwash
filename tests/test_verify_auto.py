@@ -7,8 +7,8 @@ from pathlib import Path
 HERE = Path(__file__).resolve().parent
 sys.path.insert(0, str(HERE.parent))
 
-from greenwash import verify as verify_mod  # noqa: E402
-from greenwash.domain import Outcome  # noqa: E402
+from unwash import verify as verify_mod  # noqa: E402
+from unwash.domain import Outcome  # noqa: E402
 
 
 def _git(tmp, *args):

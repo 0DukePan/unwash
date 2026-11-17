@@ -1,7 +1,7 @@
 # External evidence kit
 
 The first-party benchmark is a detector benchmark, not independent evidence
-that greenwash changes agent behaviour. This kit turns the missing proof into
+that unwash changes agent behaviour. This kit turns the missing proof into
 versioned records with an executable acceptance check. It is deliberately
 local, deterministic and dependency-free: it does not call GitHub, a model, or
 an evaluation service.
@@ -13,8 +13,8 @@ holes. Human governance and public review remain necessary.
 
 ## 1. Create an independent corpus repository
 
-Create a repository outside the greenwash organisation, nominate at least three
-non-core merge authorities, and place `corpus.json` at its root. No greenwash
+Create a repository outside the unwash organisation, nominate at least three
+non-core merge authorities, and place `corpus.json` at its root. No unwash
 core maintainer may author, review, or merge a sealed task. Record the public
 repository URL, at least six task authors and at least three independent
 reviewers. Each author and reviewer declares an affiliation and independent
@@ -27,11 +27,11 @@ SHA-256 hash of its sealed bundle, and eight accepted checks:
 
 ```json
 {
-  "schema": "greenwash-evaluation-corpus/v1",
+  "schema": "unwash-evaluation-corpus/v1",
   "status": "frozen",
   "governance": {
-    "core_maintainers": ["greenwash-core-handle"],
-    "repository": "https://example.org/independent/greenwash-evaluation",
+    "core_maintainers": ["unwash-core-handle"],
+    "repository": "https://example.org/independent/unwash-evaluation",
     "merge_authorities": [
       {"id": "external-a", "affiliation": "organisation-a"},
       {"id": "external-b", "affiliation": "organisation-b"},
@@ -68,7 +68,7 @@ The shortened JSON above is a shape, not a valid corpus: a real corpus needs
 six authors minimum and all 60 task rows. Check it before sealing:
 
 ```bash
-greenwash evidence corpus corpus.json
+unwash evidence corpus corpus.json
 ```
 
 It exits `0` only when the structural contract is complete, `1` when the
@@ -83,7 +83,7 @@ all 60 sealed task hashes, detector and runner commits, model configuration,
 image digest, randomisation seed, analysis commit and registration timestamp.
 
 ```bash
-greenwash evidence registration study-registration.json --corpus corpus.json
+unwash evidence registration study-registration.json --corpus corpus.json
 ```
 
 The command compares the registration's 60 hashes and corpus digest against
@@ -117,7 +117,7 @@ attribution and records a concrete outcome, including `honest_failure`.
 
 ```json
 {
-  "schema": "greenwash-adoption-ledger/v1",
+  "schema": "unwash-adoption-ledger/v1",
   "status": "ongoing",
   "updated_at": "2026-09-28T00:00:00Z",
   "pilots": [{
@@ -132,7 +132,7 @@ attribution and records a concrete outcome, including `honest_failure`.
 ```
 
 ```bash
-greenwash evidence adoption adoption-ledger.json
+unwash evidence adoption adoption-ledger.json
 ```
 
 The ledger validates a record, not an endorsement. A zero-pilot ledger is

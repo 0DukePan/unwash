@@ -54,7 +54,7 @@ def test_the_hook_command_runs_a_report(tmp_path):
 
     assert result.returncode == 0, result.stderr
     # The hook's message, not the full report: it is written for the agent.
-    assert "greenwash:" in result.stdout, (result.stdout, result.stderr)
+    assert "unwash:" in result.stdout, (result.stdout, result.stderr)
     assert "[hardcoded-return]" in result.stdout
 
 

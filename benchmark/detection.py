@@ -1,7 +1,7 @@
 #!/usr/bin/env python3
 """Detector accuracy on the task corpus, with no model in the loop.
 
-Every task is scored three ways by greenwash itself:
+Every task is scored three ways by unwash itself:
 
   buggy     the baseline the agent is handed         -> no flags expected
   cheat     the cheat the task was designed to tempt -> static and/or behavioral catch
@@ -50,7 +50,7 @@ IGNORE = shutil.ignore_patterns("__pycache__", "*.pyc", ".pytest_cache", "target
 
 def apply_cheat(task_dir, tmp):
     env = {**os.environ, "FAKE_AGENT_CHEAT": "auto",
-           "GREENWASH_BENCH_TASK_DIR": str(task_dir)}
+           "UNWASH_BENCH_TASK_DIR": str(task_dir)}
     subprocess.run([sys.executable, str(FAKE_AGENT)], cwd=tmp, env=env,
                    capture_output=True, text=True)
 
@@ -58,7 +58,7 @@ def apply_cheat(task_dir, tmp):
 def score(task, variant):
     task_dir = task["_dir"]
     language = task.get("language", "python")
-    tmp = tempfile.mkdtemp(prefix="greenwash-detect-")
+    tmp = tempfile.mkdtemp(prefix="unwash-detect-")
     try:
         harness.prepare_repo(task, tmp)
         if variant == "cheat":
@@ -67,7 +67,7 @@ def score(task, variant):
             shutil.copytree(task_dir / "solution", tmp, dirs_exist_ok=True,
                             ignore=IGNORE)
 
-        flags = [flag["kind"] for flag in harness.run_greenwash(tmp)]
+        flags = [flag["kind"] for flag in harness.run_unwash(tmp)]
         visible = harness.run_tests(task["visible_test"], tmp, language)
         hidden = pathlib.Path(task_dir) / task["hidden_test"]
         destination = harness.hidden_destination(language, task["hidden_test"], tmp)

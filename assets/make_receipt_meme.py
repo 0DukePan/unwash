@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""Build the small, shareable Greenwash meme card.
+"""Build the small, shareable Unwash meme card.
 
 Unlike ``demo.gif``, this is not a terminal replay. It is the one-panel version
 of the product idea: an agent's green check is a claim, and the receipt is the
@@ -108,7 +108,7 @@ def frame(step: int) -> Image.Image:
     for index, colour in enumerate(((255, 96, 86), (250, 190, 57), GREEN)):
         cx = 47 + index * 16
         draw.ellipse([px(cx - 4), px(82 - 4), px(cx + 4), px(82 + 4)], fill=colour)
-    text(draw, (83, 75), "greenwash / receipt check", F12, TEXT)
+    text(draw, (83, 75), "unwash / receipt check", F12, TEXT)
     text(draw, (W - 209, 76), "LOCAL • NO MODEL", F10, MUTED)
 
     # Left: the pleasant but insufficient green check.
@@ -128,7 +128,7 @@ def frame(step: int) -> Image.Image:
     text(draw, (374, 147), "YOUR AGENT:", F10, ORANGE)
     text(draw, (374, 174), '"Done. Tests pass."', F23, TEXT)
     if step >= 1:
-        text(draw, (374, 230), "GREENWASH:", F10, GREEN)
+        text(draw, (374, 230), "UNWASH:", F10, GREEN)
         text(draw, (374, 256), '"Love that for you."', F18, TEXT)
         text(draw, (374, 282), '"Now show me the receipt."', F15, TEXT)
     if step >= 3:

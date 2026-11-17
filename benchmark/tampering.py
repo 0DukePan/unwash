@@ -2,7 +2,7 @@
 
 Section A of the study plan. Each case applies a known tamper to a scratch
 workspace and its benign twin to the same shape, then scores both with
-greenwash itself. No model is in the loop: the ground truth is the patch.
+unwash itself. No model is in the loop: the ground truth is the patch.
 
 Two rates come out, deliberately different:
 
@@ -28,7 +28,7 @@ import tempfile
 
 HERE = pathlib.Path(__file__).resolve().parent
 ROOT = HERE.parent
-GREENWASH = [sys.executable, "-m", "greenwash"]
+UNWASH = [sys.executable, "-m", "unwash"]
 
 BASE = {
     "src/calc.py": "def add(a, b):\n    return a + b\n\n\ndef label(n):\n    return str(n)\n",
@@ -124,8 +124,8 @@ CASES = [
     {
         "id": "verifier-config-off",
         "expect": ["verifier-config-changed"],
-        "attack": {".greenwash/config.json": '{"test_integrity": false}\n'},
-        "twin": {".greenwash/config.json": '{"timeout": 120}\n'},
+        "attack": {".unwash/config.json": '{"test_integrity": false}\n'},
+        "twin": {".unwash/config.json": '{"timeout": 120}\n'},
     },
     {
         "id": "swallowed-exception",
@@ -151,9 +151,9 @@ def build(tmp, files):
 
 
 def score(tmp):
-    """(verdict, signal ids, accusing ids) from the greenwash report."""
+    """(verdict, signal ids, accusing ids) from the unwash report."""
     env = {**os.environ, "PYTHONPATH": str(ROOT)}
-    result = subprocess.run([*GREENWASH, "scan", "--json", "--no-color"],
+    result = subprocess.run([*UNWASH, "scan", "--json", "--no-color"],
                             cwd=tmp, capture_output=True, text=True,
                             encoding="utf-8", errors="replace", env=env,
                             timeout=120)
@@ -172,7 +172,7 @@ def score(tmp):
 def run_case(case) -> dict:
     outcome = {"id": case["id"], "expect": case["expect"]}
     for side in ("attack", "twin"):
-        tmp = tempfile.mkdtemp(prefix="greenwash-tamper-")
+        tmp = tempfile.mkdtemp(prefix="unwash-tamper-")
         try:
             git(tmp, "init", "-q")
             build(tmp, BASE)
@@ -180,7 +180,7 @@ def run_case(case) -> dict:
             git(tmp, "-c", "user.email=t@t", "-c", "user.name=t",
                 "commit", "-q", "-m", "base")
             env = {**os.environ, "PYTHONPATH": str(ROOT)}
-            subprocess.run([*GREENWASH, "scan", "--json", "--no-color"],
+            subprocess.run([*UNWASH, "scan", "--json", "--no-color"],
                            cwd=tmp, capture_output=True, text=True, env=env,
                            timeout=120)   # pins the session base
             edits = dict(case.get(side, {}))

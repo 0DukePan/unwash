@@ -14,7 +14,7 @@ HERE = Path(__file__).resolve().parent
 ROOT = HERE.parent
 sys.path.insert(0, str(ROOT))
 
-from greenwash.verify import pinned  # noqa: E402
+from unwash.verify import pinned  # noqa: E402
 
 
 def change(old="5", new="6", path="tests/test_calc.py", expression="add(2, 3)"):
@@ -125,8 +125,8 @@ def _repo(tmp_path, pinned_record=None):
         "from src.calc import add\n\n\ndef test_add():\n"
         "    assert add(2, 3) == 5\n", encoding="utf-8")
     if pinned_record is not None:
-        (tmp_path / ".greenwash").mkdir(exist_ok=True)
-        (tmp_path / ".greenwash" / "pinned.json").write_text(
+        (tmp_path / ".unwash").mkdir(exist_ok=True)
+        (tmp_path / ".unwash" / "pinned.json").write_text(
             json.dumps(pinned_record), encoding="utf-8")
     git("add", "-A")
     git("-c", "user.email=t@t", "-c", "user.name=t", "commit", "-q", "-m", "scaffold")

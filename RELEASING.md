@@ -1,35 +1,35 @@
-# Releasing greenwash
+# Releasing unwash
 
 The repo ships as a Claude Code plugin (and as a plain CLI / pre-commit hook /
 GitHub Action). A release is a git tag that the marketplace, the GitHub Action
 and pre-commit reference -- plus, now, a PyPI upload that makes
-`pipx install greenwash-cli` true.
+`pipx install unwash-cli` true.
 
 ## The current state, stated plainly
 
-`greenwash-cli` is **not on PyPI yet**. The wheel builds and installs cleanly
+`unwash-cli` is **not on PyPI yet**. The wheel builds and installs cleanly
 from the tag, so the supported install today is:
 
 ```bash
-pipx install git+https://github.com/0DukePan/greenwash@v0.5.0
+pipx install git+https://github.com/0DukePan/unwash@v0.5.0
 ```
 
-The README says so. Do not put `pipx install greenwash-cli` back in any page
-until the file exists at <https://pypi.org/project/greenwash-cli/> -- an install
+The README says so. Do not put `pipx install unwash-cli` back in any page
+until the file exists at <https://pypi.org/project/unwash-cli/> -- an install
 instruction that does not work is the same defect this tool exists to catch.
 
 ## First-time setup
 
 This checkout is already initialized, on `main`, and points at
-`git@github.com:0DukePan/greenwash.git`. These are the equivalent steps for a
+`git@github.com:0DukePan/unwash.git`. These are the equivalent steps for a
 plain copy:
 
 ```bash
 git init
 git add -A
-git commit -m "greenwash 0.3.0"
+git commit -m "unwash 0.3.0"
 git branch -M main
-git remote add origin git@github.com:0DukePan/greenwash.git
+git remote add origin git@github.com:0DukePan/unwash.git
 git push -u origin main
 ```
 
@@ -38,21 +38,21 @@ git push -u origin main
 The release workflow authenticates with OIDC; no token is stored and there is
 no secret to rotate.
 
-1. Claim the name. If `greenwash-cli` is unregistered the first upload creates
+1. Claim the name. If `unwash-cli` is unregistered the first upload creates
    it; if it is taken, the distribution has to change before anything else
    happens.
 2. Add a Trusted Publisher at
-   `https://pypi.org/manage/project/greenwash-cli/settings/publishing/`:
-   owner `0DukePan`, repository `greenwash`, workflow `release.yml`,
+   `https://pypi.org/manage/project/unwash-cli/settings/publishing/`:
+   owner `0DukePan`, repository `unwash`, workflow `release.yml`,
    environment `pypi`.
 3. Create the `pypi` environment in the repository's settings.
 
 ## Cut a release
 
 1. Bump the version in **four** places -- the release workflow fails if the tag
-   and `greenwash.__version__` disagree: `pyproject.toml`,
-   `greenwash/__init__.py`, `.claude-plugin/plugin.json`, and
-   `benchmark/plugins/greenwash-skill-only/.claude-plugin/plugin.json`.
+   and `unwash.__version__` disagree: `pyproject.toml`,
+   `unwash/__init__.py`, `.claude-plugin/plugin.json`, and
+   `benchmark/plugins/unwash-skill-only/.claude-plugin/plugin.json`.
 2. Move the changelog's `Unreleased` section under the new version.
 3. Tag it. Claude Code can create the tag for you, validating that
    `plugin.json` and any marketplace entry agree:
@@ -64,7 +64,7 @@ no secret to rotate.
    Or by hand:
 
    ```bash
-   git tag -a v0.5.0 -m "greenwash 0.5.0"
+   git tag -a v0.5.0 -m "unwash 0.5.0"
    git push origin v0.5.0
    ```
 
@@ -90,9 +90,9 @@ A release that cannot pass its own gate does not reach the registry.
 ## After the first upload
 
 ```bash
-pipx install greenwash-cli          # now true
-python -m venv /tmp/check && /tmp/check/bin/pip install greenwash-cli
-/tmp/check/bin/greenwash --version  # the released version
+pipx install unwash-cli          # now true
+python -m venv /tmp/check && /tmp/check/bin/pip install unwash-cli
+/tmp/check/bin/unwash --version  # the released version
 ```
 
 Then change the install lines in `README.md`, `docs/ADOPTION_GUIDE.md` and

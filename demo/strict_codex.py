@@ -27,12 +27,12 @@ from pathlib import Path
 
 TERSE = "--terse" in sys.argv
 ROOT = Path(__file__).resolve().parent.parent
-HOOK = ROOT / "codex" / "scripts" / "greenwash_hook.py"
+HOOK = ROOT / "codex" / "scripts" / "unwash_hook.py"
 COLUMNS = "76"
 
 sys.path.insert(0, str(ROOT))
 
-from greenwash.report import terminal  # noqa: E402
+from unwash.report import terminal  # noqa: E402
 
 STEPS: list = []
 
@@ -64,7 +64,7 @@ def hook(cwd, summary="Fixed the failing test"):
 
 
 def cli(args, cwd):
-    return run([sys.executable, "-m", "greenwash", *args], cwd)
+    return run([sys.executable, "-m", "unwash", *args], cwd)
 
 
 def build_repo(root: Path) -> Path:
@@ -94,33 +94,33 @@ def show(step: str, command: str, result, stream: str = "stderr") -> None:
 
 
 def main() -> int:
-    with tempfile.TemporaryDirectory(prefix="greenwash-strict-codex-") as tmp:
+    with tempfile.TemporaryDirectory(prefix="unwash-strict-codex-") as tmp:
         repo = build_repo(Path(tmp))
         say("The Codex plugin, on a repository this script just built. No config\n"
-            "file, no GREENWASH_STRICT: strict is what the plugin does.\n")
+            "file, no UNWASH_STRICT: strict is what the plugin does.\n")
 
         say("1. The agent hardcodes the value its test asserts.\n")
         (repo / "src" / "calc.py").write_text("def add(a, b):\n    return 5\n",
                                               encoding="utf-8")
-        show("blocked", "python codex/scripts/greenwash_hook.py < stop.json", hook(repo))
+        show("blocked", "python codex/scripts/unwash_hook.py < stop.json", hook(repo))
 
         expires = (datetime.now(timezone.utc) + timedelta(days=27)).strftime("%Y-%m-%d")
         say("2. The constant is the documented answer here, so the decision is\n"
             "   recorded rather than the rule switched off.\n")
         show("waived",
-             "greenwash waive --rule hardcoded-return --path src/calc.py --reason ... "
+             "unwash waive --rule hardcoded-return --path src/calc.py --reason ... "
              "--reviewer @maintainer --expires " + expires,
              cli(["waive", "--rule", "hardcoded-return", "--path", "src/calc.py",
                   "--reason", "the constant is the documented answer for this fixture",
                   "--reviewer", "@maintainer", "--expires", expires], repo),
              stream="stdout")
-        show("allowed", "python codex/scripts/greenwash_hook.py < stop.json", hook(repo),
+        show("allowed", "python codex/scripts/unwash_hook.py < stop.json", hook(repo),
              stream="stdout")
 
         say("3. The real fix is also the cheapest thing to do, and the gate is quiet.\n")
         (repo / "src" / "calc.py").write_text("def add(a, b):\n    return a + b\n",
                                               encoding="utf-8")
-        show("fixed", "python codex/scripts/greenwash_hook.py < stop.json", hook(repo),
+        show("fixed", "python codex/scripts/unwash_hook.py < stop.json", hook(repo),
              stream="stdout")
 
         say("4. When the checker cannot analyse anything, the turn is not blocked --\n"
@@ -129,7 +129,7 @@ def main() -> int:
         broken = Path(tmp) / "no-history"
         broken.mkdir()
         (broken / "README.md").write_text("nothing to compare against\n", encoding="utf-8")
-        show("error", "python codex/scripts/greenwash_hook.py < stop.json "
+        show("error", "python codex/scripts/unwash_hook.py < stop.json "
                       "(a directory with no git history)", hook(broken))
 
         emit("Receipts")

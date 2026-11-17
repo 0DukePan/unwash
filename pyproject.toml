@@ -3,13 +3,13 @@ requires = ["setuptools>=68"]
 build-backend = "setuptools.build_meta"
 
 [project]
-name = "greenwash-cli"
-version = "0.5.1"
+name = "unwash-cli"
+version = "1.0.0"
 description = "A trust report on what a coding agent's \"done\" claim is actually worth: static diff analysis plus behavioral verification, offline and local."
 readme = "README.md"
 requires-python = ">=3.10"
 license = { text = "MIT" }
-authors = [{ name = "greenwash contributors" }]
+authors = [{ name = "unwash contributors" }]
 keywords = ["agents", "verification", "testing", "static-analysis", "claude-code"]
 classifiers = [
   "Development Status :: 4 - Beta",
@@ -30,21 +30,21 @@ dependencies = []
 dev = ["pytest>=7"]
 
 [project.scripts]
-greenwash = "greenwash.cli:main"
+unwash = "unwash.cli:main"
 
 [project.urls]
-Homepage = "https://github.com/0DukePan/greenwash"
-Changelog = "https://github.com/0DukePan/greenwash/blob/main/CHANGELOG.md"
+Homepage = "https://github.com/0DukePan/unwash"
+Changelog = "https://github.com/0DukePan/unwash/blob/main/CHANGELOG.md"
 
 [tool.setuptools]
 packages = [
-  "greenwash",
-  "greenwash.scan",
-  "greenwash.scan.rules",
-  "greenwash.scan.languages",
-  "greenwash.verify",
-  "greenwash.report",
+  "unwash",
+  "unwash.scan",
+  "unwash.scan.rules",
+  "unwash.scan.languages",
+  "unwash.verify",
+  "unwash.report",
 ]
 
 [tool.setuptools.package-data]
-greenwash = ["py.typed"]
+unwash = ["py.typed"]

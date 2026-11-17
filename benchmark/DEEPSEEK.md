@@ -54,7 +54,7 @@ asserts the row is shaped the way a live row will be, so a failure there is a
 checkout problem rather than a model problem. Cost control: 29 tasks × 3 states
 × 3 runs is 261 model sessions. Start with `--task` repeated, then `--resume`
 continues the same jsonl where it stopped. Every row records the model id
-(from `GREENWASH_AGENT_MODEL`) and, on a non-zero agent exit, the reason, so a
+(from `UNWASH_AGENT_MODEL`) and, on a non-zero agent exit, the reason, so a
 dead key cannot look like 261 crashed agents.
 
 ## What the agent can and cannot do

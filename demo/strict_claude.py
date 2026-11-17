@@ -23,13 +23,13 @@ from pathlib import Path
 
 TERSE = "--terse" in sys.argv
 ROOT = Path(__file__).resolve().parent.parent
-HOOK = ROOT / "scripts" / "greenwash_hook.py"
+HOOK = ROOT / "scripts" / "unwash_hook.py"
 COLUMNS = "76"
 CLAUDE_PLUGIN_ROOT = ROOT
 
 sys.path.insert(0, str(ROOT))
 
-from greenwash.report import terminal  # noqa: E402
+from unwash.report import terminal  # noqa: E402
 
 STEPS: list = []
 
@@ -57,13 +57,13 @@ def run(args, cwd, env=None, stdin=""):
 def hook(cwd):
     """The hook, started the way the host starts it: payload on stdin."""
     return run([sys.executable, str(HOOK)], cwd,
-               env={"CLAUDE_PLUGIN_ROOT": str(CLAUDE_PLUGIN_ROOT), "GREENWASH_STRICT": "1"},
+               env={"CLAUDE_PLUGIN_ROOT": str(CLAUDE_PLUGIN_ROOT), "UNWASH_STRICT": "1"},
                stdin=json.dumps({"hook_event_name": "Stop",
                                  "summary": "Fixed the failing test"}))
 
 
 def cli(args, cwd):
-    return run([sys.executable, "-m", "greenwash", *args], cwd)
+    return run([sys.executable, "-m", "unwash", *args], cwd)
 
 
 def build_repo(root: Path) -> Path:
@@ -93,7 +93,7 @@ def record(step: str, command: str, result) -> None:
 
 
 def main() -> int:
-    with tempfile.TemporaryDirectory(prefix="greenwash-strict-claude-") as tmp:
+    with tempfile.TemporaryDirectory(prefix="unwash-strict-claude-") as tmp:
         repo = build_repo(Path(tmp))
         say("Claude Code strict gate, on a repository this script just built.")
         say("The agent was told 'tests/test_calc.py is failing. Fix it.'")
@@ -105,14 +105,14 @@ def main() -> int:
 
         say("1. The turn tries to end.\n")
         record("blocked", "echo '{\"hook_event_name\": \"Stop\"}' | "
-                          "python scripts/greenwash_hook.py", hook(repo))
+                          "python scripts/unwash_hook.py", hook(repo))
         say("   exit 2 hands the findings back to the agent: the turn does not\n"
             "   end on an unexplained finding.\n")
 
         expires = (datetime.now(timezone.utc) + timedelta(days=27)).strftime("%Y-%m-%d")
         say("2. The finding is correct, so a decision is recorded -- with a name,\n"
             "   a reason and an expiry on it.\n")
-        record("waived", "greenwash waive --rule hardcoded-return --path src/calc.py \\\n"
+        record("waived", "unwash waive --rule hardcoded-return --path src/calc.py \\\n"
                          "      --reason \"the constant is the documented answer for this "
                          "fixture\" \\\n"
                          "      --reviewer @maintainer --expires " + expires,
@@ -122,7 +122,7 @@ def main() -> int:
 
         say("3. The same turn ends again.\n")
         result = hook(repo)
-        emit("$ echo '{\"hook_event_name\": \"Stop\"}' | python scripts/greenwash_hook.py")
+        emit("$ echo '{\"hook_event_name\": \"Stop\"}' | python scripts/unwash_hook.py")
         emit(result.stdout.rstrip())
         emit(f"exit code: {result.returncode}")
         emit()
@@ -132,7 +132,7 @@ def main() -> int:
 
         say("4. For comparison, the same diff in report mode (the CLI default):\n")
         result = cli(["scan", "--no-color", "--quiet"], repo)
-        emit("$ greenwash scan --quiet")
+        emit("$ unwash scan --quiet")
         emit(result.stdout.rstrip())
         emit(f"exit code: {result.returncode}  (findings reported, nothing blocked)")
         emit()

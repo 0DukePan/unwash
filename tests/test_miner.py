@@ -32,8 +32,8 @@ import pytest
 HERE = Path(__file__).resolve().parent
 sys.path.insert(0, str(HERE.parent))
 
-from greenwash import corpus, miner  # noqa: E402
-from greenwash.evidence import EvidenceError  # noqa: E402
+from unwash import corpus, miner  # noqa: E402
+from unwash.evidence import EvidenceError  # noqa: E402
 
 IDENTITY = {"repository": "https://example.org/org/project", "license": "MIT"}
 
@@ -172,7 +172,7 @@ def test_the_technique_is_one_the_taxonomy_knows(tmp_path):
 
 
 def taxonomy_ids():
-    from greenwash.taxonomy import BY_ID
+    from unwash.taxonomy import BY_ID
     return set(BY_ID)
 
 

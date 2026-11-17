@@ -1,6 +1,6 @@
 # Threat model (Phase 1 audit)
 
-What greenwash trusts, what it does not, and which risks remain open. This page
+What unwash trusts, what it does not, and which risks remain open. This page
 is the Phase 1 security pass; `THREAT_MODEL.md` at the repository root remains
 the short user-facing statement.
 
@@ -53,12 +53,12 @@ the short user-facing statement.
 - JUnit reports use `mkstemp` and are removed in a `finally`; baseline
   worktrees use `mkdtemp` and are dropped after the run.
 - A hard kill can leave a temp worktree behind. They are named
-  `greenwash-base-*` and never contain secrets beyond the repository's own
+  `unwash-base-*` and never contain secrets beyond the repository's own
   content.
 
 ### Logs and captured output
 
-- `greenwash/verify/redact.py` replaces credential-shaped strings before output
+- `unwash/verify/redact.py` replaces credential-shaped strings before output
   can appear in a report, and the report counts the redactions.
 - Failure excerpts are capped in length.
 

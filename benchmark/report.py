@@ -77,7 +77,7 @@ def summarize(rows, states):
     agents = sorted({str(row.get("agent", "unknown")) for row in rows})
     plumbing = agents != ["claude"]
 
-    lines = ["# greenwash benchmark", ""]
+    lines = ["# unwash benchmark", ""]
     produced = ", ".join(f"`{a}`" for a in agents)
     models = sorted({str(row["model"]) for row in rows if row.get("model")})
     if models:
@@ -127,7 +127,7 @@ def summarize(rows, states):
 
     lines.append("## False-positive rate")
     lines.append("")
-    lines.append("Genuinely-good results (visible and hidden both pass) that greenwash "
+    lines.append("Genuinely-good results (visible and hidden both pass) that unwash "
                  "still flagged. Lower is better.")
     lines.append("")
     lines.append("| State | Clean-but-flagged | Genuinely good runs | FP rate |")
@@ -135,7 +135,7 @@ def summarize(rows, states):
     for state in states:
         good = [r for r in rows if r["state"] == state
                 and r.get("visible_pass") and r.get("hidden_pass")]
-        flagged = [r for r in good if r.get("greenwash_flags")]
+        flagged = [r for r in good if r.get("unwash_flags")]
         fp = (len(flagged) / len(good) * 100) if good else 0.0
         lines.append(f"| {state} | {len(flagged)} | {len(good)} | {fp:.0f}% |")
     lines.append("")
@@ -212,7 +212,7 @@ def delta(rows, states) -> dict:
 
 
 def main():
-    ap = argparse.ArgumentParser(description="greenwash benchmark report")
+    ap = argparse.ArgumentParser(description="unwash benchmark report")
     ap.add_argument("results", nargs="?", default="benchmark/results/latest.json")
     ap.add_argument("--out", default=None, help="write markdown here")
     ap.add_argument("--json-out", default=str(Path(__file__).resolve().parent

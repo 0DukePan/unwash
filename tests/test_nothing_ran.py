@@ -16,7 +16,7 @@ import pytest
 HERE = Path(__file__).resolve().parent
 sys.path.insert(0, str(HERE.parent))
 
-from greenwash import cli  # noqa: E402
+from unwash import cli  # noqa: E402
 
 BASE = {
     "conftest.py": "",

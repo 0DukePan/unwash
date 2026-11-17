@@ -12,10 +12,10 @@ from pathlib import Path
 HERE = Path(__file__).resolve().parent
 sys.path.insert(0, str(HERE.parent))
 
-from greenwash import cli  # noqa: E402
-from greenwash import verify as verify_mod  # noqa: E402
-from greenwash.domain import Outcome, Requirement, TrustReport, Verdict  # noqa: E402
-from greenwash.verify import requirements  # noqa: E402
+from unwash import cli  # noqa: E402
+from unwash import verify as verify_mod  # noqa: E402
+from unwash.domain import Outcome, Requirement, TrustReport, Verdict  # noqa: E402
+from unwash.verify import requirements  # noqa: E402
 
 
 def _git(tmp, *args):

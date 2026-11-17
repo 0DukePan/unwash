@@ -31,22 +31,22 @@ Both blocks below are captured output from the two demo scripts in this
 repository, on the same throwaway repo: a test asserting `add(2, 3) == 5` and an
 implementation that returns the literal `5`.
 
-**Report mode** -- `greenwash scan` on that diff:
+**Report mode** -- `unwash scan` on that diff:
 
 ```
-$ greenwash scan --quiet
-⚠ greenwash: suspicious (low confidence) -- 1 signal(s)
+$ unwash scan --quiet
+⚠ unwash: suspicious (low confidence) -- 1 signal(s)
 exit code: 1
 ```
 
 Findings reported, nothing blocked. (The `scan` subcommand exits 1 on findings
-in every mode; a bare `greenwash` in report mode exits 0 and prints the whole
+in every mode; a bare `unwash` in report mode exits 0 and prints the whole
 report.)
 
 **Strict mode** -- the Claude hook, on the same diff, at the end of a turn:
 
 ```
-greenwash: SUSPICIOUS (medium confidence)
+unwash: SUSPICIOUS (medium confidence)
   strict gate: blocked -- the diff contains a pattern that needs an explanation: [hardcoded-return] src/calc.py:2
   visible tests: 1/1
 
@@ -70,8 +70,8 @@ It is not free, and the cost is reviews.
   any `conftest.py` edit. In report mode those are questions. In strict mode
   they are a stopped turn until a human (or the agent, with a named reviewer
   recorded) decides.
-- **The escape hatch is a waiver, not a config key.** `greenwash waive` writes
-  one decision to `.greenwash/waivers.json`: one rule, one path, one
+- **The escape hatch is a waiver, not a config key.** `unwash waive` writes
+  one decision to `.unwash/waivers.json`: one rule, one path, one
   fingerprint, a reason, a reviewer, and an expiry no more than 30 days out.
   It is more work than adding a rule to an ignore list. That is the point --
   and the reason strict mode refuses to run past `ignore_rules` rather than

@@ -47,7 +47,7 @@ about, and each fixable one became a regression test:
 
 ## Reducing noise
 
-`.greenwash/config.json` accepts `ignore_rules`:
+`.unwash/config.json` accepts `ignore_rules`:
 
 ```json
 { "ignore_rules": ["mock-in-test"] }

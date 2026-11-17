@@ -34,12 +34,12 @@ def _future(days: int = 28) -> str:
     return (date.today() + timedelta(days=days)).isoformat()
 sys.path.insert(0, str(ROOT))
 
-from greenwash import strict, waivers  # noqa: E402
-from greenwash.domain import (Outcome, Signal, TrustReport, VerificationResult,  # noqa: E402
+from unwash import strict, waivers  # noqa: E402
+from unwash.domain import (Outcome, Signal, TrustReport, VerificationResult,  # noqa: E402
                               Verdict)
 
-HOOK = ROOT / "scripts" / "greenwash_hook.py"
-CODEX_HOOK = ROOT / "codex" / "scripts" / "greenwash_hook.py"
+HOOK = ROOT / "scripts" / "unwash_hook.py"
+CODEX_HOOK = ROOT / "codex" / "scripts" / "unwash_hook.py"
 
 BASE = {
     "src/calc.py": "def add(a, b):\n    return a - b\n",
@@ -48,14 +48,14 @@ BASE = {
 }
 
 
-def review_signal(path="src/loan.py", code="GW-DIV-002"):
+def review_signal(path="src/loan.py", code="UW-DIV-002"):
     return Signal(rule_id="error-path-default", code=code, title="Error path returns a default",
                   severity="MEDIUM", confidence="MEDIUM", requires_review=True,
                   files=[path], line=12, evidence={"function": "load"})
 
 
 def strong_signal(path="src/calc.py"):
-    return Signal(rule_id="hardcoded-return", code="GW-TEST-004", title="Hardcoded return",
+    return Signal(rule_id="hardcoded-return", code="UW-TEST-004", title="Hardcoded return",
                   severity="HIGH", confidence="MEDIUM", files=[path], line=2,
                   evidence={"literal": "5"})
 
@@ -108,10 +108,10 @@ def test_a_review_finding_blocks_until_it_is_decided():
 
 def test_a_waived_review_finding_is_allowed_and_still_visible():
     signal = review_signal()
-    signal.waiver = {"id": "GW-2026-0001", "reviewer": "@maintainer",
+    signal.waiver = {"id": "UW-2026-0001", "reviewer": "@maintainer",
                      "expires_at": _future(), "status": waivers.ACTIVE}
     row = waivers.Row(waiver=waivers.Waiver(
-        id="GW-2026-0001", rule_id="GW-DIV-002", path="src/loan.py",
+        id="UW-2026-0001", rule_id="UW-DIV-002", path="src/loan.py",
         signal_fingerprint="sha256:" + "0" * 64,
         reason="the fallback is documented and an integration test covers it",
         reviewer="@maintainer", created_at="2026-09-25", expires_at=_future()),
@@ -126,9 +126,9 @@ def test_a_waived_review_finding_is_allowed_and_still_visible():
 
 def test_evidence_is_not_waivable():
     """A signature does not change what the held-out suite did."""
-    signal = Signal(rule_id="heldout-failed", code="GW-VER-002", severity="HIGH",
+    signal = Signal(rule_id="heldout-failed", code="UW-VER-002", severity="HIGH",
                     files=["src/calc.py"])
-    signal.waiver = {"id": "GW-2026-0001", "reviewer": "@maintainer",
+    signal.waiver = {"id": "UW-2026-0001", "reviewer": "@maintainer",
                      "status": waivers.ACTIVE}
     report = TrustReport(verdict=Verdict.NOT_VERIFIED.value, signals=[signal],
                          verification=verification(heldout=Outcome.FAIL.value))
@@ -155,7 +155,7 @@ def test_ignore_rules_is_refused_rather_than_honoured():
 
 def test_a_lapsed_waiver_blocks():
     lapsed = waivers.Row(waiver=waivers.Waiver(
-        id="GW-2026-0002", rule_id="GW-DIV-002", path="src/loan.py",
+        id="UW-2026-0002", rule_id="UW-DIV-002", path="src/loan.py",
         signal_fingerprint="sha256:" + "0" * 64, reason="a long enough reason to count",
         reviewer="@maintainer", created_at="2026-08-01", expires_at="2026-08-31"),
         status=waivers.EXPIRED, note="waiver expired")
@@ -166,7 +166,7 @@ def test_a_lapsed_waiver_blocks():
 
 def test_an_unreadable_ledger_blocks():
     report = TrustReport(verdict=Verdict.VERIFIED.value, verification=verification())
-    gate = strict.decide(report, ledger_problems=["could not read .greenwash/waivers.json"])
+    gate = strict.decide(report, ledger_problems=["could not read .unwash/waivers.json"])
     assert gate.exit_code == 3 and "ledger could not be read" in gate.reasons[0]
 
 
@@ -179,7 +179,7 @@ def git(cwd, *args):
 def cli(cwd, *args, env=None):
     environment = {**os.environ, "PYTHONPATH": str(ROOT), "PYTHONIOENCODING": "utf-8",
                    **(env or {})}
-    return subprocess.run([sys.executable, "-m", "greenwash", *args], cwd=cwd,
+    return subprocess.run([sys.executable, "-m", "unwash", *args], cwd=cwd,
                           capture_output=True, text=True, encoding="utf-8",
                           errors="replace", env=environment)
 
@@ -225,7 +225,7 @@ def test_expiring_the_waiver_restores_the_block(cheat):
     cli(cheat, "waive", "--rule", "hardcoded-return", "--path", "src/calc.py",
         "--reason", "the constant is the documented answer for this fixture",
         "--reviewer", "@maintainer", "--expires", _future())
-    store = cheat / ".greenwash" / "waivers.json"
+    store = cheat / ".unwash" / "waivers.json"
     data = json.loads(store.read_text(encoding="utf-8"))
     # a waiver that was valid when written and lapsed since -- the ordinary way
     # one expires, as opposed to the nonsense entry the next test covers
@@ -244,7 +244,7 @@ def test_a_waiver_that_lapsed_before_it_was_written_is_malformed(cheat):
     cli(cheat, "waive", "--rule", "hardcoded-return", "--path", "src/calc.py",
         "--reason", "the constant is the documented answer for this fixture",
         "--reviewer", "@maintainer", "--expires", _future())
-    store = cheat / ".greenwash" / "waivers.json"
+    store = cheat / ".unwash" / "waivers.json"
     data = json.loads(store.read_text(encoding="utf-8"))
     data["waivers"][0]["expires_at"] = "2026-09-01"
     store.write_text(json.dumps(data), encoding="utf-8")
@@ -255,8 +255,8 @@ def test_a_waiver_that_lapsed_before_it_was_written_is_malformed(cheat):
 
 
 def test_config_mode_strict_is_the_same_gate(cheat):
-    (cheat / ".greenwash").mkdir()
-    (cheat / ".greenwash" / "config.json").write_text(
+    (cheat / ".unwash").mkdir()
+    (cheat / ".unwash" / "config.json").write_text(
         json.dumps({"mode": "strict"}), encoding="utf-8")
     result = cli(cheat, "scan", "--no-color")
     assert result.returncode == 2
@@ -264,8 +264,8 @@ def test_config_mode_strict_is_the_same_gate(cheat):
 
 
 def test_strict_refuses_ignore_rules_and_shows_what_they_hid(cheat, tmp_path):
-    (cheat / ".greenwash").mkdir()
-    (cheat / ".greenwash" / "config.json").write_text(
+    (cheat / ".unwash").mkdir()
+    (cheat / ".unwash" / "config.json").write_text(
         json.dumps({"mode": "strict", "ignore_rules": ["hardcoded-return"]}),
         encoding="utf-8")
     result = cli(cheat, "scan", "--no-color")
@@ -275,8 +275,8 @@ def test_strict_refuses_ignore_rules_and_shows_what_they_hid(cheat, tmp_path):
 
 
 def test_report_mode_still_honours_ignore_rules_and_names_them(cheat):
-    (cheat / ".greenwash").mkdir()
-    (cheat / ".greenwash" / "config.json").write_text(
+    (cheat / ".unwash").mkdir()
+    (cheat / ".unwash" / "config.json").write_text(
         json.dumps({"ignore_rules": ["hardcoded-return"]}), encoding="utf-8")
     result = cli(cheat, "scan", "--no-color")
     assert "suppressed by config.ignore_rules: hardcoded-return" in result.stdout
@@ -303,8 +303,8 @@ def test_the_gate_is_in_the_json(tmp_path):
 def test_doctor_describes_the_profile_it_is_actually_running(cheat):
     """Strict blocks on more than block_on; a doctor line that said otherwise
     would be a confident description of a policy the tool does not run."""
-    (cheat / ".greenwash").mkdir()
-    (cheat / ".greenwash" / "config.json").write_text(
+    (cheat / ".unwash").mkdir()
+    (cheat / ".unwash" / "config.json").write_text(
         json.dumps({"mode": "strict"}), encoding="utf-8")
     cli(cheat, "waive", "--rule", "hardcoded-return", "--path", "src/calc.py",
         "--reason", "the constant is the documented answer for this fixture",
@@ -319,8 +319,8 @@ def test_doctor_describes_the_profile_it_is_actually_running(cheat):
 
 
 def test_doctor_flags_a_ledger_it_cannot_read(cheat):
-    (cheat / ".greenwash").mkdir()
-    (cheat / ".greenwash" / "waivers.json").write_text("{not json", encoding="utf-8")
+    (cheat / ".unwash").mkdir()
+    (cheat / ".unwash" / "waivers.json").write_text("{not json", encoding="utf-8")
     result = cli(cheat, "doctor")
     assert result.returncode == 1, result.stdout
     assert "waiver ledger" in result.stdout
@@ -342,7 +342,7 @@ def stop(hook, cwd, payload=None, env=None):
 
 @pytest.mark.parametrize("hook", [HOOK, CODEX_HOOK], ids=["claude", "codex"])
 def test_strict_hook_blocks_a_faked_pass(cheat, hook):
-    result = stop(hook, cheat, env={"GREENWASH_STRICT": "1"})
+    result = stop(hook, cheat, env={"UNWASH_STRICT": "1"})
     assert result.returncode == 2, (result.stdout, result.stderr)
     combined = result.stdout + result.stderr
     assert "hardcoded-return" in combined
@@ -353,7 +353,7 @@ def test_strict_hook_blocks_a_faked_pass(cheat, hook):
 def test_strict_hook_allows_a_clean_tree(cheat, hook):
     (cheat / "src" / "calc.py").write_text("def add(a, b):\n    return a + b\n",
                                            encoding="utf-8")
-    result = stop(hook, cheat, env={"GREENWASH_STRICT": "1"})
+    result = stop(hook, cheat, env={"UNWASH_STRICT": "1"})
     assert result.returncode == 0, (result.stdout, result.stderr)
 
 
@@ -362,7 +362,7 @@ def test_strict_hook_allows_a_waived_finding_and_still_reports_it(cheat, hook):
     cli(cheat, "waive", "--rule", "hardcoded-return", "--path", "src/calc.py",
         "--reason", "the constant is the documented answer for this fixture",
         "--reviewer", "@maintainer", "--expires", _future())
-    result = stop(hook, cheat, env={"GREENWASH_STRICT": "1"})
+    result = stop(hook, cheat, env={"UNWASH_STRICT": "1"})
     assert result.returncode == 0, (result.stdout, result.stderr)
     assert "waiv" in (result.stdout + result.stderr).lower()
 
@@ -378,9 +378,9 @@ def test_a_broken_checker_blocks_bounded_in_strict(tmp_path, hook):
     """
     tmp_path.joinpath("notes.txt").write_text("not a repository\n", encoding="utf-8")
     for attempt in (1, 2, 3):
-        result = stop(hook, tmp_path, env={"GREENWASH_STRICT": "1"})
+        result = stop(hook, tmp_path, env={"UNWASH_STRICT": "1"})
         assert result.returncode == 2, (attempt, result.stdout, result.stderr)
-    result = stop(hook, tmp_path, env={"GREENWASH_STRICT": "1"})
+    result = stop(hook, tmp_path, env={"UNWASH_STRICT": "1"})
     assert result.returncode == 0
     combined = (result.stdout + result.stderr).lower()
     assert "could not" in combined
@@ -395,12 +395,12 @@ def test_a_state_directory_override_starts_a_fresh_budget(tmp_path, monkeypatch)
     under -- which made the suite non-idempotent on a machine whose home
     directory is a repository.
     """
-    from greenwash import hooking
+    from unwash import hooking
 
-    monkeypatch.setenv("GREENWASH_STATE_DIR", str(tmp_path / "one"))
+    monkeypatch.setenv("UNWASH_STATE_DIR", str(tmp_path / "one"))
     assert [hooking.take_block(tmp_path, "s") for _ in range(4)] == [
         True, True, True, False]
-    monkeypatch.setenv("GREENWASH_STATE_DIR", str(tmp_path / "two"))
+    monkeypatch.setenv("UNWASH_STATE_DIR", str(tmp_path / "two"))
     assert hooking.take_block(tmp_path, "s") is True
 
 
@@ -410,9 +410,9 @@ def test_the_budget_flow_is_repeatable_in_a_fresh_state_directory(
     """The same four-call flow must answer the same way on a second run."""
     tmp_path.joinpath("notes.txt").write_text("not a repository\n", encoding="utf-8")
     for run_index in (1, 2):
-        monkeypatch.setenv("GREENWASH_STATE_DIR", str(tmp_path / f"run-{run_index}"))
+        monkeypatch.setenv("UNWASH_STATE_DIR", str(tmp_path / f"run-{run_index}"))
         codes = [stop(hook, tmp_path,
-                      env={"GREENWASH_STRICT": "1"}).returncode
+                      env={"UNWASH_STRICT": "1"}).returncode
                  for _ in range(4)]
         assert codes == [2, 2, 2, 0], (run_index, codes)
 

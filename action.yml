@@ -1,6 +1,6 @@
-name: greenwash
+name: unwash
 description: Flag an agent's diff that fakes a passing test suite
-author: greenwash
+author: unwash
 
 inputs:
   base:
@@ -19,7 +19,7 @@ inputs:
 runs:
   using: composite
   steps:
-    - name: greenwash
+    - name: unwash
       shell: bash
       env:
         GW_BASE: ${{ inputs.base }}
@@ -27,13 +27,13 @@ runs:
         GW_HELDOUT: ${{ inputs.heldout }}
       run: |
         set -euo pipefail
-        cmd=(python "$GITHUB_ACTION_PATH/scripts/greenwash_check.py" all)
+        cmd=(python "$GITHUB_ACTION_PATH/scripts/unwash_check.py" all)
         [ -n "$GW_BASE" ]      && cmd+=(--base "$GW_BASE")
         [ -n "$GW_RUN_TESTS" ] && cmd+=(--run-tests "$GW_RUN_TESTS")
         [ -n "$GW_HELDOUT" ]   && cmd+=(--heldout "$GW_HELDOUT")
         if "${cmd[@]}"; then
-          echo "greenwash: clean"
+          echo "unwash: clean"
         else
-          echo "::error::greenwash flagged a faked passing suite (see log above)"
+          echo "::error::unwash flagged a faked passing suite (see log above)"
           exit 1
         fi

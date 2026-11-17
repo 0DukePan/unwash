@@ -60,7 +60,7 @@ call "this could alter what runs".
 9. As a developer, I want `pytest.ini`, `tox.ini` and `noxfile.py` to remain
    whole-file watchers, because those files exist to configure the runner and a
    change to them is a change to what runs.
-10. As a developer, I want `.greenwash/config.json`, the hook wiring and the
+10. As a developer, I want `.unwash/config.json`, the hook wiring and the
     `.claude/` and `codex/hooks/` trees to remain whole-file watchers, because
     they are the gate itself.
 11. As a developer, I want a dependency named something like `test-utils` or
@@ -105,15 +105,15 @@ call "this could alter what runs".
   sets and the changed-line inspection. No other rule changes, and the registry
   gains no rule.
 - **No contract change.** The rule id (`verifier-config-changed`), code
-  (`GW-TEST-007`), category, severity (`MEDIUM`), confidence (`LOW`) and
+  (`UW-TEST-007`), category, severity (`MEDIUM`), confidence (`LOW`) and
   `requires_review=True` all stay. The emitted `Signal` shape is unchanged: one
   signal per file, carrying the path and the explanation.
 - **Three tiers of watched file, replacing two:**
   1. *Whole-file watchers* — files whose purpose is runner configuration:
      `pytest.ini`, `tox.ini`, `noxfile.py`, `action.yml`,
      `.pre-commit-hooks.yaml`, `hooks/hooks.json`, and the prefixes
-     `.greenwash/`, `codex/hooks/`, `.claude/`. Unchanged from today, and
-     `.greenwash/waivers.json` stays exempt so writing a waiver does not open a
+     `.unwash/`, `codex/hooks/`, `.claude/`. Unchanged from today, and
+     `.unwash/waivers.json` stays exempt so writing a waiver does not open a
      finding.
   2. *Changed-line watchers* — files that mix runner configuration with ordinary
      metadata: `.github/workflows/*`, `.pre-commit-config.yaml`,
@@ -173,7 +173,7 @@ Behaviours pinned by tests:
 - A removed test step, `continue-on-error: true`, `if: false`, a runner command
   gaining `--ignore`/`-k`/`--no-cov`, a pre-commit `entry` change, a removed
   pre-commit hook, and a removed `addopts` line — all fire.
-- The existing whole-file watchers still fire (`.greenwash/config.json`,
+- The existing whole-file watchers still fire (`.unwash/config.json`,
   `pytest.ini`, `tox.ini`).
 - The tampering benchmark's two verifier-config attacks still fire, and its
   benign twins still do not.

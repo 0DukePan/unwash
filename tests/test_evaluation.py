@@ -38,8 +38,8 @@ sys.path.insert(0, str(ROOT))
 sys.path.insert(0, str(ROOT / "benchmark"))
 
 import evaluation  # noqa: E402
-from greenwash import baselines, corpus  # noqa: E402
-from greenwash.evidence import EvidenceError  # noqa: E402
+from unwash import baselines, corpus  # noqa: E402
+from unwash.evidence import EvidenceError  # noqa: E402
 
 FIXTURE_CORPUS = HERE / "fixtures" / "evaluation"
 

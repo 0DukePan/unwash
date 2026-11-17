@@ -1,9 +1,9 @@
 {
-  "name": "greenwash",
-  "version": "0.4.2",
+  "name": "unwash",
+  "version": "1.0.0",
   "description": "A trust report on what a coding agent's \"done\" claim is actually worth. This package is a thin wrapper: it runs the Python implementation.",
   "bin": {
-    "greenwash": "cli.js"
+    "unwash": "cli.js"
   },
   "files": [
     "cli.js",
@@ -28,11 +28,11 @@
   "license": "MIT",
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/0DukePan/greenwash.git",
+    "url": "git+https://github.com/0DukePan/unwash.git",
     "directory": "npm"
   },
-  "homepage": "https://github.com/0DukePan/greenwash#readme",
+  "homepage": "https://github.com/0DukePan/unwash#readme",
   "bugs": {
-    "url": "https://github.com/0DukePan/greenwash/issues"
+    "url": "https://github.com/0DukePan/unwash/issues"
   }
 }

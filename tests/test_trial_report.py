@@ -211,11 +211,11 @@ def test_the_report_states_the_checker_version_and_configuration(tmp_path):
                                 [OVERHEAD], CHECKER)
 
     assert report["checker"] == {
-        "version": "greenwash report-only beta (skill-only snapshot)",
+        "version": "unwash report-only beta (skill-only snapshot)",
         "configuration": {"mode": "report-only", "run_tests": False,
                           "strict": False}}
     rendered = trial_report.render(report)
-    assert "version: greenwash report-only beta (skill-only snapshot)" \
+    assert "version: unwash report-only beta (skill-only snapshot)" \
         in rendered
     assert '"mode": "report-only"' in rendered
 

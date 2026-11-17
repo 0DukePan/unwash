@@ -20,9 +20,9 @@ HERE = Path(__file__).resolve().parent
 ROOT = HERE.parent
 sys.path.insert(0, str(ROOT))
 
-from greenwash.confidence import verdict_for  # noqa: E402
-from greenwash.domain import Signal, Verdict, VerificationResult  # noqa: E402
-from greenwash.scan import scan_diff  # noqa: E402
+from unwash.confidence import verdict_for  # noqa: E402
+from unwash.domain import Signal, Verdict, VerificationResult  # noqa: E402
+from unwash.scan import scan_diff  # noqa: E402
 
 CORPUS = ROOT / "benchmark" / "inconclusive"
 CASES = sorted(path.name for path in CORPUS.iterdir() if (path / "case.json").is_file())
@@ -57,7 +57,7 @@ def load(name: str):
     case = json.loads((case_dir / "case.json").read_text(encoding="utf-8"))
     files = case_dir / "files"
     # `root` is explicit: these paths are relative to the case directory, not to
-    # the greenwash checkout that happens to contain it.
+    # the unwash checkout that happens to contain it.
     signals = scan_diff(synth_diff(case_dir), cwd=str(files), root=str(files))
     return case, signals
 

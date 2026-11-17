@@ -14,7 +14,7 @@ one literal here:
 
 * a fixture dev run yields go, pivot and stop under the three registered
   conditions (go: H2 confirmed and H3 holds with abstention at or below
-  0.20; pivot: Greenwash and the pinned competitor indistinguishable at
+  0.20; pivot: Unwash and the pinned competitor indistinguishable at
   the fixed n; stop: recall clearly lower or abstention above 0.20);
 * the report names each hypothesis, its numbers, and the deciding
   threshold;
@@ -66,19 +66,19 @@ def test_go_fixture_dev_run_yields_go_with_every_hypothesis_number():
     assert record["fixed_n"] == 8
     h1 = record["hypotheses"]["H1"]
     assert h1["status"] == "confirmed"
-    assert h1["recall_greenwash"] == {"k": 6, "n": 6, "estimate": 1.0}
+    assert h1["recall_unwash"] == {"k": 6, "n": 6, "estimate": 1.0}
     assert h1["recall_judge"] == {"k": 6, "n": 6, "estimate": 1.0}
     assert h1["recall_gap"] == 0.0
-    assert h1["cost_per_case_greenwash"] == 1.0
+    assert h1["cost_per_case_unwash"] == 1.0
     assert h1["cost_per_case_judge"] == 30.0
     assert h1["cost_ratio"] == 30.0
-    assert h1["variance_greenwash"] == 0.0 and h1["variance_judge"] == 0.0
+    assert h1["variance_unwash"] == 0.0 and h1["variance_judge"] == 0.0
     assert h1["variance_reported"] is True
     h2 = record["hypotheses"]["H2"]
     assert h2["status"] == "confirmed"
-    assert h2["twin_false_alarm_greenwash"] == {"k": 0, "n": 8, "estimate": 0.0}
+    assert h2["twin_false_alarm_unwash"] == {"k": 0, "n": 8, "estimate": 0.0}
     assert h2["twin_false_alarm_b0"] == {"k": 8, "n": 8, "estimate": 1.0}
-    assert h2["discordant"] == {"greenwash_only": 0, "b0_only": 8}
+    assert h2["discordant"] == {"unwash_only": 0, "b0_only": 8}
     assert h2["mcnemar_p"] == pytest.approx(2 / 256)      # 2 * (1/2)^8
     h3 = record["hypotheses"]["H3"]
     assert h3["status"] == "holds"
@@ -87,7 +87,7 @@ def test_go_fixture_dev_run_yields_go_with_every_hypothesis_number():
     assert h3["abstention"] == {"k": 0, "n": 18, "estimate": 0.0}
     h0 = record["hypotheses"]["H0"]
     assert h0["status"] == "distinguishable"
-    assert h0["discordant"] == {"greenwash_only": 0, "b3_only": 6}
+    assert h0["discordant"] == {"unwash_only": 0, "b3_only": 6}
     assert h0["mcnemar_p"] == pytest.approx(2 / 64)       # 2 * (1/2)^6
 
 
@@ -103,7 +103,7 @@ def test_pivot_fixture_dev_run_yields_pivot_when_competitor_indistinguishable():
     assert h3["twin_edge_gap"] == pytest.approx(0.0)
     h2 = record["hypotheses"]["H2"]
     assert h2["status"] == "confirmed"
-    assert h2["discordant"] == {"greenwash_only": 0, "b0_only": 6}
+    assert h2["discordant"] == {"unwash_only": 0, "b0_only": 6}
     assert h2["mcnemar_p"] == pytest.approx(2 / 64)
 
 
@@ -121,7 +121,7 @@ def test_stop_fixture_dev_run_yields_stop_when_recall_clearly_lower():
     assert record["decision"] == "stop"
     assert record["deciding_threshold"] == "stop-recall"
     h1 = record["hypotheses"]["H1"]
-    assert h1["recall_greenwash"] == {"k": 3, "n": 6, "estimate": 0.5}
+    assert h1["recall_unwash"] == {"k": 3, "n": 6, "estimate": 0.5}
     assert h1["recall_judge"] == {"k": 6, "n": 6, "estimate": 1.0}
     assert h1["recall_gap"] == pytest.approx(-0.5)
     assert h1["status"] == "partial"        # the cost edge alone is partial

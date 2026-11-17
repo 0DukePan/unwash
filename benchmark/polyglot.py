@@ -24,7 +24,7 @@ HERE = Path(__file__).resolve().parent
 ROOT = HERE.parent
 sys.path.insert(0, str(ROOT))
 
-from greenwash.scan import scan_diff  # noqa: E402
+from unwash.scan import scan_diff  # noqa: E402
 
 CORPUS = HERE / "polyglot"
 TEXT_SUFFIXES = {".go", ".rs", ".rb", ".java", ".js", ".mjs", ".ts", ".py", ".txt", ".md"}

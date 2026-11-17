@@ -37,7 +37,7 @@ HERE = Path(__file__).resolve().parent
 ROOT = HERE.parent
 sys.path.insert(0, str(ROOT))
 
-from greenwash.scan import scan_diff as scan_diff  # noqa: E402
+from unwash.scan import scan_diff as scan_diff  # noqa: E402
 
 OUT = HERE / "results" / "fp-survey.json"
 

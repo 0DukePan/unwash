@@ -14,7 +14,7 @@ from pathlib import Path
 HERE = Path(__file__).resolve().parent
 sys.path.insert(0, str(HERE.parent))
 
-from greenwash import gitutil  # noqa: E402
+from unwash import gitutil  # noqa: E402
 
 
 def _repo(tmp):

@@ -1,0 +1,8 @@
+{
+  "name": "unwash-skill-only",
+  "description": "Control variant for the unwash benchmark: the same skill and checker script as the full plugin, but with NO Stop hook. Isolates the hook's causal effect from the skill's.",
+  "version": "1.0.0",
+  "author": {
+    "name": "unwash contributors"
+  }
+}

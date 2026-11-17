@@ -5,12 +5,12 @@ import json
 
 import pytest
 
-from greenwash.domain import (Claim, Evidence, FileChange, Outcome, Requirement, Run,
+from unwash.domain import (Claim, Evidence, FileChange, Outcome, Requirement, Run,
                               Signal, TrustReport, VerificationResult, Verdict)
-from greenwash.report import render, terminal
-from greenwash.scan.rules import BY_ID
+from unwash.report import render, terminal
+from unwash.scan.rules import BY_ID
 
-CAUGHT = Signal(rule_id="hardcoded-return", code="GW-TEST-004", title="Hardcoded return",
+CAUGHT = Signal(rule_id="hardcoded-return", code="UW-TEST-004", title="Hardcoded return",
                 category="test-integrity", severity="HIGH", confidence="MEDIUM",
                 explanation="returns literal 200, which a test asserts against",
                 files=["src/api.py"], line=42, remediation="Compute the value.")
@@ -33,7 +33,7 @@ def caught(**kwargs) -> TrustReport:
 
 def test_terminal_report_reads_like_a_report():
     text = render(caught())
-    assert "GREENWASH TRUST REPORT" in text
+    assert "UNWASH TRUST REPORT" in text
     assert 'Agent claim: "Fixed payment validation"' in text
     assert "1 file changed, +40/-9" in text
     assert "Verdict: NOT_VERIFIED" in text
@@ -62,7 +62,7 @@ def test_a_never_verified_report_says_so():
 
 
 def test_requires_review_is_spelled_out():
-    review = Signal(rule_id="mock-in-test", code="GW-TEST-005", severity="MEDIUM",
+    review = Signal(rule_id="mock-in-test", code="UW-TEST-005", severity="MEDIUM",
                     explanation="new MagicMock( in a test file", files=["tests/t.py"],
                     requires_review=True)
     text = render(TrustReport.build(signals=[review], verification=VerificationResult()))
@@ -114,7 +114,7 @@ def test_a_gap_does_not_mask_a_finding_that_did_run():
     """
     gap = BY_ID["unreadable-file"].signal(
         "src/api.py", None, "the static layer could not read this changed file")
-    skipped = Signal(rule_id="test-skipped", code="GW-TEST-001", severity="HIGH",
+    skipped = Signal(rule_id="test-skipped", code="UW-TEST-001", severity="HIGH",
                      explanation="a bare @pytest.mark.skip disables the test",
                      files=["tests/test_api.py"])
     report = TrustReport.build(
@@ -141,7 +141,7 @@ def test_verbose_adds_the_change_list_and_every_reason():
 
 def test_markdown_is_paste_ready():
     text = render(caught(), fmt="markdown")
-    assert text.startswith("## Greenwash trust report")
+    assert text.startswith("## Unwash trust report")
     assert "| Check | Result | Detail |" in text
     assert "**FAIL**" in text
     assert "<html" not in text and "<div" not in text
@@ -180,7 +180,7 @@ def test_colour_is_opt_out():
 def test_signals_are_listed_with_their_code_and_location():
     text = render(caught())
     assert "[hardcoded-return]" in text
-    assert "GW-TEST-004" in text
+    assert "UW-TEST-004" in text
     assert "src/api.py:42" in text
 
 

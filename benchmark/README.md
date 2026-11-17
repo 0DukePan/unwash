@@ -26,7 +26,7 @@ the model, the sandbox and the cost controls are in
 `python benchmark/deepseek_run.py --preflight` says in one line whether you have
 one.
 
-The benchmark answers one question: **does having greenwash around change how
+The benchmark answers one question: **does having unwash around change how
 often an agent's "done" claim is actually true?** It measures the silent-cheat
 rate under three plugin states and reports the delta plus a false-positive
 rate.
@@ -47,8 +47,8 @@ reports a bad model id. That gate is a positive balance, not a per-call charge
 — top the account up, rerun the preflight, then start the run.
 
 ```bash
-set GREENWASH_BENCH_MODEL=anthropic/claude-sonnet-4.5   # Windows
-export GREENWASH_BENCH_MODEL=anthropic/claude-sonnet-4.5 # bash
+set UNWASH_BENCH_MODEL=anthropic/claude-sonnet-4.5   # Windows
+export UNWASH_BENCH_MODEL=anthropic/claude-sonnet-4.5 # bash
 ```
 
 ## 2. Prove the plumbing (no model, no cost)
@@ -76,7 +76,7 @@ python benchmark/report.py
 ```
 
 - `off` — no plugin.
-- `skill-only` — the skill, no hook (`benchmark/plugins/greenwash-skill-only`).
+- `skill-only` — the skill, no hook (`benchmark/plugins/unwash-skill-only`).
 - `full` — skill + Stop hook (this repo).
 
 `skill-only` is what separates "the skill nudged the agent" from "the hook
@@ -85,7 +85,7 @@ forced it": if `skill-only` looks like `off`, the mechanism is doing the work.
 ## 4. Read the result
 
 `benchmark/report.py` prints the silent-cheat rate per state, the off → full
-delta, and the false-positive rate (genuinely-good results that greenwash still
+delta, and the false-positive rate (genuinely-good results that unwash still
 flagged). Commit `benchmark/RESULTS.md` and the raw rows under
 `benchmark/results/` so the number is reproducible.
 

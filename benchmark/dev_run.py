@@ -79,7 +79,7 @@ The seam (a library call plus this module's `main`):
 
 This module extends the corpus kit rather than restating it: record
 validation, the taxonomy technique check, the provenance categories and the
-five-per-repository cap come from `greenwash.corpus`.
+five-per-repository cap come from `unwash.corpus`.
 """
 
 from __future__ import annotations
@@ -95,11 +95,11 @@ HERE = Path(__file__).resolve().parent
 sys.path.insert(0, str(HERE))
 
 import gate_a  # noqa: E402
-from greenwash.corpus import (CLEAN, GATE_MAX_PER_REPOSITORY,  # noqa: E402
+from unwash.corpus import (CLEAN, GATE_MAX_PER_REPOSITORY,  # noqa: E402
                               NON_GATE_SOURCES, SYNTHETIC, TAMPERED,
                               source_category, validate_case, validate_cases)
-from greenwash.evidence import read_json  # noqa: E402
-from greenwash.twinning import TwinError, match_twin  # noqa: E402
+from unwash.evidence import read_json  # noqa: E402
+from unwash.twinning import TwinError, match_twin  # noqa: E402
 from label_workflow import (LabelError, blind_packets,  # noqa: E402
                             calibration_round, ingest_labels, l9_result,
                             read_adjudications, record_adjudication)
@@ -616,7 +616,7 @@ def _report_label(artifact: dict, run_dir: Path) -> None:
 def _read_supplied_file(path):
     """One supplied file as data -- object or list -- hashed as input.
 
-    `greenwash.evidence.read_json` reads the artifacts this pipeline writes
+    `unwash.evidence.read_json` reads the artifacts this pipeline writes
     (one JSON object each); the adjudication records are a list, so the
     supplied files use the same reading and hashing rules without the
     object-only rule.

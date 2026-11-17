@@ -68,7 +68,7 @@ This module extends the merged kits rather than restating them: the
 refusals and the burn ledger from `benchmark/preregistration.py`, the
 decision from `benchmark/criteria_engine.py`, the computed table and the
 interval arithmetic from `benchmark/evaluation.py`, the gate-input
-admission from `greenwash.corpus`, and the byte-stability habits from
+admission from `unwash.corpus`, and the byte-stability habits from
 `benchmark/reproduce.py`.
 """
 
@@ -93,8 +93,8 @@ import claim_ledger  # noqa: E402
 import criteria_engine  # noqa: E402
 import evaluation  # noqa: E402
 import preregistration  # noqa: E402
-from greenwash import baselines, corpus  # noqa: E402
-from greenwash.evidence import EvidenceError  # noqa: E402
+from unwash import baselines, corpus  # noqa: E402
+from unwash.evidence import EvidenceError  # noqa: E402
 
 EXIT_LAUNCH = 0
 EXIT_NARROW = 1

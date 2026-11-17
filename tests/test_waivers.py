@@ -25,13 +25,13 @@ HERE = Path(__file__).resolve().parent
 ROOT = HERE.parent
 sys.path.insert(0, str(ROOT))
 
-from greenwash import waivers  # noqa: E402
-from greenwash.domain import Signal  # noqa: E402
+from unwash import waivers  # noqa: E402
+from unwash.domain import Signal  # noqa: E402
 
 NOW = datetime(2026, 9, 25, 12, 0, tzinfo=timezone.utc)
 
 
-def signal(line=2, literal="5", path="src/calc.py", code="GW-TEST-004"):
+def signal(line=2, literal="5", path="src/calc.py", code="UW-TEST-004"):
     return Signal(rule_id="hardcoded-return", code=code, title="Hardcoded return",
                   category="test-integrity", severity="HIGH", confidence="MEDIUM",
                   explanation="returns literal 5 (directly), which a test asserts against",
@@ -40,8 +40,8 @@ def signal(line=2, literal="5", path="src/calc.py", code="GW-TEST-004"):
 
 def waiver(**overrides):
     values = {
-        "id": "GW-2026-0001",
-        "rule_id": "GW-TEST-004",
+        "id": "UW-2026-0001",
+        "rule_id": "UW-TEST-004",
         "signal_fingerprint": waivers.fingerprint(signal()),
         "path": "src/calc.py",
         "reason": "the constant is the documented answer for this fixture",
@@ -54,7 +54,7 @@ def waiver(**overrides):
 
 
 def ledger_of(*entries):
-    return waivers.Ledger(path=".greenwash/waivers.json", waivers=list(entries))
+    return waivers.Ledger(path=".unwash/waivers.json", waivers=list(entries))
 
 
 # ---- the fingerprint ---------------------------------------------------------
@@ -72,7 +72,7 @@ def test_fingerprint_is_a_sha256():
     {"line": 9},          # the finding moved
     {"literal": "7"},     # the finding changed what it says
     {"path": "src/other.py"},
-    {"code": "GW-DIV-002"},
+    {"code": "UW-DIV-002"},
 ])
 def test_fingerprint_moves_when_the_finding_moves(changed):
     """This is what makes a stale waiver visible instead of silently permissive."""
@@ -125,12 +125,12 @@ def test_expiry_must_follow_creation():
 
 
 def test_an_unknown_rule_is_rejected():
-    problems = waiver(rule_id="GW-XXX-999").problems(waivers.known_rules())
+    problems = waiver(rule_id="UW-XXX-999").problems(waivers.known_rules())
     assert any("unknown rule" in problem for problem in problems)
 
 
-@pytest.mark.parametrize("name", ["GW-DIV-002", "error-path-default",
-                                  "GW-VER-005", "test-weakened"])
+@pytest.mark.parametrize("name", ["UW-DIV-002", "error-path-default",
+                                  "UW-VER-005", "test-weakened"])
 def test_every_real_rule_resolves_by_code_and_by_id(name):
     assert name in waivers.known_rules()
 
@@ -141,27 +141,27 @@ def test_record_then_load_round_trips(tmp_path):
     waivers.record(waiver(), str(tmp_path))
     ledger = waivers.load(str(tmp_path))
     assert ledger.problems == []
-    assert [entry.id for entry in ledger.waivers] == ["GW-2026-0001"]
-    assert ledger.waivers[0].to_dict()["rule_id"] == "GW-TEST-004"
+    assert [entry.id for entry in ledger.waivers] == ["UW-2026-0001"]
+    assert ledger.waivers[0].to_dict()["rule_id"] == "UW-TEST-004"
 
 
 def test_ids_count_up_within_a_year():
-    existing = [waiver(id="GW-2026-0001"), waiver(id="GW-2025-0007")]
-    assert waivers.next_id(existing, 2026) == "GW-2026-0002"
+    existing = [waiver(id="UW-2026-0001"), waiver(id="UW-2025-0007")]
+    assert waivers.next_id(existing, 2026) == "UW-2026-0002"
 
 
 def test_a_broken_ledger_is_a_problem_not_an_exception(tmp_path):
-    (tmp_path / ".greenwash").mkdir()
-    (tmp_path / ".greenwash" / "waivers.json").write_text("{not json", encoding="utf-8")
+    (tmp_path / ".unwash").mkdir()
+    (tmp_path / ".unwash" / "waivers.json").write_text("{not json", encoding="utf-8")
     ledger = waivers.load(str(tmp_path))
     assert ledger.waivers == []
     assert ledger.problems and "could not read" in ledger.problems[0]
 
 
 def test_a_duplicate_id_is_malformed(tmp_path):
-    (tmp_path / ".greenwash").mkdir()
+    (tmp_path / ".unwash").mkdir()
     entries = [waiver().to_dict(), waiver().to_dict()]
-    (tmp_path / ".greenwash" / "waivers.json").write_text(
+    (tmp_path / ".unwash" / "waivers.json").write_text(
         json.dumps({"version": 1, "waivers": entries}), encoding="utf-8")
     ledger = waivers.load(str(tmp_path))
     assert "duplicate" in ledger.waivers[1].problems()[0]
@@ -211,7 +211,7 @@ def test_a_malformed_entry_is_blocking():
 
 
 def test_waiving_one_finding_leaves_the_others_alone():
-    other = signal(line=7, literal="9", code="GW-DIV-002")
+    other = signal(line=7, literal="9", code="UW-DIV-002")
     application = waivers.apply([signal(), other], ledger_of(waiver()), now=NOW)
     assert application.signals[0].waived is True
     assert application.signals[1].waived is False
@@ -233,7 +233,7 @@ def git(cwd, *args):
 def cli(cwd, *args):
     import os
     env = {**os.environ, "PYTHONPATH": str(ROOT), "PYTHONIOENCODING": "utf-8"}
-    return subprocess.run([sys.executable, "-m", "greenwash", *args], cwd=cwd,
+    return subprocess.run([sys.executable, "-m", "unwash", *args], cwd=cwd,
                           capture_output=True, text=True, encoding="utf-8",
                           errors="replace", env=env)
 
@@ -256,15 +256,15 @@ def test_the_command_writes_a_waiver_for_the_finding_in_the_diff(cheat):
                  "--reason", "the constant is the documented answer for this fixture",
                  "--reviewer", "@maintainer", "--expires", _future())
     assert result.returncode == 0, result.stderr
-    written = json.loads((cheat / ".greenwash" / "waivers.json").read_text(encoding="utf-8"))
+    written = json.loads((cheat / ".unwash" / "waivers.json").read_text(encoding="utf-8"))
     entry = written["waivers"][0]
-    assert entry["rule_id"] == "GW-TEST-004"
+    assert entry["rule_id"] == "UW-TEST-004"
     assert entry["path"] == "src/calc.py"
     assert waivers.FINGERPRINT_PATTERN.match(entry["signal_fingerprint"])
 
 
 def test_the_command_refuses_a_rule_it_does_not_know(cheat):
-    result = cli(cheat, "waive", "--rule", "GW-NOPE-001", "--path", "src/calc.py",
+    result = cli(cheat, "waive", "--rule", "UW-NOPE-001", "--path", "src/calc.py",
                  "--reason", "a long enough reason to be a sentence",
                  "--reviewer", "@maintainer", "--expires", _future())
     assert result.returncode == 3
@@ -272,11 +272,11 @@ def test_the_command_refuses_a_rule_it_does_not_know(cheat):
 
 
 def test_the_command_refuses_when_there_is_nothing_to_waive(cheat):
-    result = cli(cheat, "waive", "--rule", "GW-DIV-002", "--path", "src/calc.py",
+    result = cli(cheat, "waive", "--rule", "UW-DIV-002", "--path", "src/calc.py",
                  "--reason", "a long enough reason to be a sentence",
                  "--reviewer", "@maintainer", "--expires", _future())
     assert result.returncode == 3
-    assert "no GW-DIV-002 finding" in result.stderr
+    assert "no UW-DIV-002 finding" in result.stderr
 
 
 def test_the_command_refuses_a_short_reason(cheat):
@@ -322,7 +322,7 @@ def _repo(tmp):
 
 
 def _write_ledger(tmp, entries):
-    directory = tmp / ".greenwash"
+    directory = tmp / ".unwash"
     directory.mkdir(exist_ok=True)
     (directory / "waivers.json").write_text(
         json.dumps({"version": 1, "waivers": [entry.to_dict() for entry in entries]}),

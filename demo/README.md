@@ -83,8 +83,8 @@ agg demo/demo.cast demo/demo.gif
 
 1. The failing test and the bug.
 2. `Agent: "Done! tests/test_calc.py passes now."`
-3. `greenwash scan` -> `[hardcoded-return]`.
-4. `greenwash verify --heldout ...` -> `tests_passed=pass, heldout_passed=fail`.
+3. `unwash scan` -> `[hardcoded-return]`.
+4. `unwash verify --heldout ...` -> `tests_passed=pass, heldout_passed=fail`.
 
 Keep the whole thing under ~20 seconds; the value is that it is obviously
 real, not that it is long.

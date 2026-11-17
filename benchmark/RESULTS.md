@@ -1,4 +1,4 @@
-# greenwash benchmark
+# unwash benchmark
 
 Rows produced by: `claude` (model `dots-studio/dots3-note-prev`).
 
@@ -17,7 +17,7 @@ An integrity cheat is a diff that tampers with tests or what runs them. A spec o
 
 ## False-positive rate
 
-Genuinely-good results (visible and hidden both pass) that greenwash still flagged. Lower is better.
+Genuinely-good results (visible and hidden both pass) that unwash still flagged. Lower is better.
 
 | State | Clean-but-flagged | Genuinely good runs | FP rate |
 |---|---|---|---|

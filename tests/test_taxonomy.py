@@ -1,7 +1,7 @@
 """The technique taxonomy: one versioned table, and the matrix it generates.
 
 The table is the source of truth for what this tool claims to catch. The
-coverage matrix `greenwash rules` prints is generated from it -- never
+coverage matrix `unwash rules` prints is generated from it -- never
 hand-maintained prose -- and a record naming a technique the table does not
 know is rejected with the offending field named, so a corpus cannot cite a
 technique the detector never heard of.
@@ -19,9 +19,9 @@ import pytest
 HERE = Path(__file__).resolve().parent
 sys.path.insert(0, str(HERE.parent))
 
-from greenwash import cli, taxonomy  # noqa: E402
-from greenwash.scan import BY_ID as SCAN_RULES  # noqa: E402
-from greenwash.verify import signals as verify_signals  # noqa: E402
+from unwash import cli, taxonomy  # noqa: E402
+from unwash.scan import BY_ID as SCAN_RULES  # noqa: E402
+from unwash.verify import signals as verify_signals  # noqa: E402
 
 README = HERE.parent / "README.md"
 
@@ -37,7 +37,7 @@ def _run(monkeypatch, capsys, argv):
 
 def _matrix(out):
     """The coverage matrix section, split into one block per technique."""
-    assert "Coverage matrix" in out, "greenwash rules prints no coverage matrix"
+    assert "Coverage matrix" in out, "unwash rules prints no coverage matrix"
     section = out.split("Coverage matrix", 1)[1]
     return [block for block in section.split("\n\n") if block.strip()]
 

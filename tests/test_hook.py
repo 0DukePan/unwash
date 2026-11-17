@@ -3,13 +3,13 @@
 Documented behaviour (https://code.claude.com/docs/en/hooks): exit 0 allows
 the agent to stop; exit 2 blocks the stop and hands stderr back to the agent.
 
-greenwash's own contract, which these pin down:
+unwash's own contract, which these pin down:
 
   report mode (default)  exit 0 and the report on stdout -- the agent may stop,
                          the developer still sees what the claim was worth
   enforce mode           exit 2 and the report on stderr, so the stop is
                          blocked and the agent gets the findings
-                         (GREENWASH_ENFORCE=1, or "mode": "enforce" in config)
+                         (UNWASH_ENFORCE=1, or "mode": "enforce" in config)
 """
 
 import json
@@ -19,7 +19,7 @@ import sys
 from pathlib import Path
 
 HERE = Path(__file__).resolve().parent
-HOOK = HERE.parent / "scripts" / "greenwash_hook.py"
+HOOK = HERE.parent / "scripts" / "unwash_hook.py"
 
 BASE = {
     "src/calc.py": "def add(a, b):\n    return a - b\n",
@@ -49,7 +49,7 @@ def _repo(tmp):
 def _stop(tmp, payload=None, enforce=False):
     env = dict(os.environ)
     if enforce:
-        env["GREENWASH_ENFORCE"] = "1"
+        env["UNWASH_ENFORCE"] = "1"
     message = {"hook_event_name": "Stop", **(payload or {})}
     message.setdefault("session_id", str(Path(tmp).resolve()))
     return subprocess.run(

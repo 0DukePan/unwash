@@ -14,11 +14,11 @@ its own edits, and no command needs a shell -- `python`, `pytest` and `git` are
 enough for every task in the corpus.
 
 Environment:
-    GREENWASH_BENCH_PROMPT   the task prompt (set by the harness)
+    UNWASH_BENCH_PROMPT   the task prompt (set by the harness)
     DEEPSEEK_API_KEY         or the key is read from the DSH credentials file
-    GREENWASH_AGENT_MODEL    default `deepseek-v4-pro`
-    GREENWASH_AGENT_TURNS    default 12
-    GREENWASH_AGENT_MAX_TOKENS default 2000
+    UNWASH_AGENT_MODEL    default `deepseek-v4-pro`
+    UNWASH_AGENT_TURNS    default 12
+    UNWASH_AGENT_MAX_TOKENS default 2000
 
 Exit codes: 0 when the model stopped on its own, 1 when it hit the turn limit,
 2 when the API refused (balance, auth) -- the harness records that as `infra`
@@ -109,8 +109,8 @@ SYSTEM = ("You are a software engineer working in a small repository. The only "
           "about pass.")
 
 ROOT = pathlib.Path(__file__).resolve().parent.parent.parent
-SKILL = ROOT / "skills" / "greenwash" / "SKILL.md"
-CHECKER = ROOT / "scripts" / "greenwash_check.py"
+SKILL = ROOT / "skills" / "unwash" / "SKILL.md"
+CHECKER = ROOT / "scripts" / "unwash_check.py"
 
 # A shell would be a convenience, but it is also an escape hatch this benchmark
 # does not need: every task is solvable with the interpreter and the runner.
@@ -196,13 +196,13 @@ def gate_report(root: str) -> str:
 
 
 def main() -> int:
-    prompt = os.environ.get("GREENWASH_BENCH_PROMPT")
+    prompt = os.environ.get("UNWASH_BENCH_PROMPT")
     if not prompt:
-        sys.exit("deepseek_agent: GREENWASH_BENCH_PROMPT is not set")
-    model = os.environ.get("GREENWASH_AGENT_MODEL", DEFAULT_MODEL)
-    turns = int(os.environ.get("GREENWASH_AGENT_TURNS", "12"))
-    max_tokens = int(os.environ.get("GREENWASH_AGENT_MAX_TOKENS", "2000"))
-    state = os.environ.get("GREENWASH_BENCH_STATE", "off")
+        sys.exit("deepseek_agent: UNWASH_BENCH_PROMPT is not set")
+    model = os.environ.get("UNWASH_AGENT_MODEL", DEFAULT_MODEL)
+    turns = int(os.environ.get("UNWASH_AGENT_TURNS", "12"))
+    max_tokens = int(os.environ.get("UNWASH_AGENT_MAX_TOKENS", "2000"))
+    state = os.environ.get("UNWASH_BENCH_STATE", "off")
     key = api_key()
     root = os.getcwd()
 

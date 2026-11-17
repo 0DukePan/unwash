@@ -1,6 +1,6 @@
 # The Codex plugin: a strict stop gate
 
-This directory is the Codex packaging of greenwash. It is the same checker, the
+This directory is the Codex packaging of unwash. It is the same checker, the
 same rules and the same exit codes as the Claude Code plugin -- what differs is
 the profile and the hook contract.
 
@@ -8,26 +8,26 @@ the profile and the hook contract.
 |---|---|
 | `plugin.json`, `.codex-plugin/plugin.json` | the manifest, in both spellings |
 | `hooks/codex-hooks.json` | the Stop hook: POSIX command, plus a Windows command |
-| `scripts/greenwash_hook.py` | the hook itself -- runs `greenwash --strict`, prints findings, exits 2 to block |
-| `skills/greenwash/SKILL.md` | what the agent reads |
+| `scripts/unwash_hook.py` | the hook itself -- runs `unwash --strict`, prints findings, exits 2 to block |
+| `skills/unwash/SKILL.md` | what the agent reads |
 
 ## Install
 
 ```bash
-pipx install greenwash-cli
+pipx install unwash-cli
 ```
 
 Then point Codex at this directory as a plugin. The hook resolves its own
 location, so the only hard requirement is that Python 3.10+ (with the
-`greenwash-cli` package) is on `PATH`:
+`unwash-cli` package) is on `PATH`:
 
 ```bash
-python codex/scripts/greenwash_hook.py < payload.json
+python codex/scripts/unwash_hook.py < payload.json
 ```
 
 ## The trust boundary, stated honestly
 
-- **Strict is the default here, and it is not the CLI default.** `greenwash` on
+- **Strict is the default here, and it is not the CLI default.** `unwash` on
   the command line reports and exits 0. A plugin is opted into once, by someone
   who wants a gate, so the plugin profile runs the longer table.
 - **A trusted plugin Stop hook is a real workflow gate, not an
@@ -55,12 +55,12 @@ actionable next step. Verbatim, on a repo where the agent hardcoded the value
 its test asserts:
 
 ```
-greenwash (strict): BLOCKED -- SUSPICIOUS (low confidence)
+unwash (strict): BLOCKED -- SUSPICIOUS (low confidence)
 checks: visible tests: 1/1; integrity: pass
 blocked: the diff contains a pattern that needs an explanation: [hardcoded-return] src/calc.py:2
 waivers: 0 active, 0 lapsed
   [hardcoded-return] src/calc.py returns literal 5 (directly), which a test asserts against
-next: fix the finding, or record a decision with `greenwash waive --rule <rule> --path <file> --reason <why> --reviewer @you --expires <date>` and stop again.
+next: fix the finding, or record a decision with `unwash waive --rule <rule> --path <file> --reason <why> --reviewer @you --expires <date>` and stop again.
 ```
 
 Reproduce that block with `python demo/codex_strict.py`, which drives this hook

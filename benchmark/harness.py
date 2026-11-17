@@ -1,13 +1,13 @@
 #!/usr/bin/env python3
 """
-harness.py -- run greenwash benchmark tasks under different plugin states.
+harness.py -- run unwash benchmark tasks under different plugin states.
 
 For every (task x state x run):
   1. copy the task's workspace/ into a fresh temp dir
   2. git init + commit the buggy baseline, so `git diff HEAD` has a base
   3. drive the agent (default: claude -p ... [--plugin-dir <state>])
   4. score from what is on disk AFTER the run, independently of the plugin:
-       - run scripts/greenwash_check.py scan --json  (the detector's flags)
+       - run scripts/unwash_check.py scan --json  (the detector's flags)
        - run the visible test
        - drop in the hidden test, run it
   5. classify the outcome and record a row.
@@ -42,13 +42,13 @@ from typing import Optional
 
 HERE = Path(__file__).resolve().parent
 ROOT = HERE.parent
-CHECKER = ROOT / "scripts" / "greenwash_check.py"
+CHECKER = ROOT / "scripts" / "unwash_check.py"
 TASKS_DIR = HERE / "tasks"
 RESULTS_DIR = HERE / "results"
 
 PLUGIN_DIRS = {
     "off": None,
-    "skill-only": HERE / "plugins" / "greenwash-skill-only",
+    "skill-only": HERE / "plugins" / "unwash-skill-only",
     "full": ROOT,
 }
 
@@ -244,13 +244,13 @@ def run_tests(path, cwd, language):
     return p.returncode == 0
 
 
-def run_greenwash(cwd):
+def run_unwash(cwd):
     p = subprocess.run([sys.executable, str(CHECKER), "scan", "--json"],
                        cwd=cwd, capture_output=True, text=True)
     try:
         return json.loads(p.stdout).get("flags", [])
     except json.JSONDecodeError:
-        return [{"kind": "greenwash-error", "file": "", "detail": p.stdout.strip()[:200]}]
+        return [{"kind": "unwash-error", "file": "", "detail": p.stdout.strip()[:200]}]
 
 
 def claims_success(text):
@@ -334,7 +334,7 @@ def classify(agent_ok, visible_pass, hidden_pass, flags, result_text="",
 
 
 def run_one(task, state, run_idx, args):
-    tmp = tempfile.mkdtemp(prefix="greenwash-bench-")
+    tmp = tempfile.mkdtemp(prefix="unwash-bench-")
     try:
         language = task.get("language", "python")
         missing = missing_toolchain(language)
@@ -355,7 +355,7 @@ def run_one(task, state, run_idx, args):
                 "cost_usd": None,
                 "visible_pass": None,
                 "hidden_pass": None,
-                "greenwash_flags": [],
+                "unwash_flags": [],
                 "api_error": f"{missing} is not installed",
             }
 
@@ -368,10 +368,10 @@ def run_one(task, state, run_idx, args):
             # (which holds the recorded solution and the held-out test) is for
             # the scripted double only; handing it to a model would be scoring
             # it against an answer key.
-            env = {**os.environ, "GREENWASH_BENCH_PROMPT": prompt,
-                   "GREENWASH_BENCH_STATE": state}
+            env = {**os.environ, "UNWASH_BENCH_PROMPT": prompt,
+                   "UNWASH_BENCH_STATE": state}
             if args.agent_task_dir:
-                env["GREENWASH_BENCH_TASK_DIR"] = str(task["_dir"])
+                env["UNWASH_BENCH_TASK_DIR"] = str(task["_dir"])
         else:
             cmd = build_claude_cmd(prompt, PLUGIN_DIRS[state], args.model,
                                    not args.permission_mode)
@@ -401,7 +401,7 @@ def run_one(task, state, run_idx, args):
                 agent_ok = False
                 api_error = (err or out)[:180]
 
-        flags = run_greenwash(tmp)
+        flags = run_unwash(tmp)
         visible_pass = run_tests(task["visible_test"], tmp, language)
         # The evidence diff is the agent's work against the scaffold commit --
         # two-dot, so committed work stays in scope exactly as uncommitted work
@@ -435,7 +435,7 @@ def run_one(task, state, run_idx, args):
             # A runner names its own model through the environment; without
             # this the row says `null` and two models cannot be told apart.
             "model": (args.model if not args.agent_cmd
-                      else os.environ.get("GREENWASH_AGENT_MODEL", "unrecorded")),
+                      else os.environ.get("UNWASH_AGENT_MODEL", "unrecorded")),
             "cheat_type": task.get("cheat_type", "unknown"),
             "outcome": outcome,
             "exit_code": code,
@@ -443,7 +443,7 @@ def run_one(task, state, run_idx, args):
             "cost_usd": cost,
             "visible_pass": visible_pass,
             "hidden_pass": hidden_pass,
-            "greenwash_flags": [f.get("kind") for f in flags],
+            "unwash_flags": [f.get("kind") for f in flags],
             "claims_success": claims,
             "api_error": api_error,
             "result_text": result_text[:400],
@@ -476,11 +476,11 @@ def summarize(rows, states):
 
 
 def main():
-    ap = argparse.ArgumentParser(description="greenwash benchmark harness")
+    ap = argparse.ArgumentParser(description="unwash benchmark harness")
     ap.add_argument("--task", action="append", default=[], help="task name (repeatable)")
     ap.add_argument("--states", default="off,skill-only,full")
     ap.add_argument("--runs", type=int, default=1)
-    ap.add_argument("--model", default=os.environ.get("GREENWASH_BENCH_MODEL"))
+    ap.add_argument("--model", default=os.environ.get("UNWASH_BENCH_MODEL"))
     ap.add_argument("--timeout", type=int, default=900)
     ap.add_argument("--permission-mode", action="store_true",
                     help="use --permission-mode acceptEdits instead of --dangerously-skip-permissions")
@@ -535,7 +535,7 @@ def main():
                 tag = f"{row['task']:<20} {state:<11} run{row['run']}"
                 print(f"{tag} -> {row['outcome']:<18} "
                       f"visible={row['visible_pass']} hidden={row['hidden_pass']} "
-                      f"flags={row['greenwash_flags']}")
+                      f"flags={row['unwash_flags']}")
                 if row["api_error"]:
                     print(f"{'':<34} API error: {row['api_error']}")
 

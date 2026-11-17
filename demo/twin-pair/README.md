@@ -19,7 +19,7 @@ not be quoted as one.
 Command, run inside a scratch repository at the change:
 
 ```
-python scripts/greenwash_check.py scan --json
+python scripts/unwash_check.py scan --json
 ```
 
 Captured output (`tamper.json`): exit code 1, and

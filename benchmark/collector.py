@@ -56,8 +56,8 @@ HERE = Path(__file__).resolve().parent
 ROOT = HERE.parent
 sys.path.insert(0, str(ROOT))
 
-from greenwash.scan import scan_diff, summarize  # noqa: E402
-from greenwash.scan.languages.packs import is_test_file  # noqa: E402
+from unwash.scan import scan_diff, summarize  # noqa: E402
+from unwash.scan.languages.packs import is_test_file  # noqa: E402
 
 EXIT_OK = 0
 EXIT_REFUSED = 2

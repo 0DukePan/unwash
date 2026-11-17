@@ -1,15 +1,15 @@
 # Report-only beta
 
-The smallest useful way to try greenwash on a real repository: run it, read its
+The smallest useful way to try unwash on a real repository: run it, read its
 report, and let it fail nothing. No account, no telemetry, no network calls, no
 dependencies beyond Python 3.10+.
 
 ## Install
 
 ```
-git clone https://github.com/0DukePan/greenwash
-cd greenwash
-python scripts/greenwash_check.py --help
+git clone https://github.com/0DukePan/unwash
+cd unwash
+python scripts/unwash_check.py --help
 ```
 
 The checker is stdlib-only. There is nothing to pip-install.
@@ -19,13 +19,13 @@ The checker is stdlib-only. There is nothing to pip-install.
 From your repository, with the change in the working tree:
 
 ```
-python /path/to/greenwash/scripts/greenwash_check.py scan --json
+python /path/to/unwash/scripts/unwash_check.py scan --json
 ```
 
 With tests and the stronger checks (this runs your test command):
 
 ```
-python /path/to/greenwash/scripts/greenwash_check.py all \
+python /path/to/unwash/scripts/unwash_check.py all \
   --run-tests "pytest -q" --json
 ```
 
@@ -35,7 +35,7 @@ ignore all of them except `3`/`4`.
 
 ## CI, report-only
 
-`.github/workflows/greenwash-report-only.yml` in this repository is the
+`.github/workflows/unwash-report-only.yml` in this repository is the
 template. It runs on `pull_request` with read-only permissions and no secrets,
 captures the JSON, writes a job summary, uploads an artifact, and never fails
 the job. Drop it into a repository and read the artifact for a week before

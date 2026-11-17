@@ -61,7 +61,7 @@ BADGE, BADGE_BG = (255, 183, 109), (67, 42, 25)
 
 # Above the card: enough framing that GitHub's poster frame reads as an
 # explanation, but the evidence inside the terminal remains verbatim.
-EYEBROW = "GREENWASH  /  LIVE LOCAL REPLAY"
+EYEBROW = "UNWASH  /  LIVE LOCAL REPLAY"
 KICKER = [("The visible test passed.", 19, CMD),
           ("The held-out test did not.", 17, FLAG)]
 EYEBROW_TOP, KICKER_TOP, KICKER_L1, KICKER_L2, KICKER_X = 18, 43, 27, 24, INSET + 7
@@ -69,7 +69,7 @@ EYEBROW_TOP, KICKER_TOP, KICKER_L1, KICKER_L2, KICKER_X = 18, 43, 27, 24, INSET 
 # The chrome identifies the command without making the window look like a
 # generic editor. The right-hand badge makes the loop's poster frame useful in
 # a README, a link preview, or a paused social clip.
-TITLE = "greenwash  /  trust report"
+TITLE = "unwash  /  trust report"
 COMMAND_LABEL = "python demo/run_demo.py --terse --with-diff"
 STATUS = "HELD-OUT FAILED"
 

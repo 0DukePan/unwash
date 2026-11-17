@@ -347,7 +347,7 @@ def test_the_citation_parses_as_yaml():
     yaml = __import__("pytest").importorskip("yaml", reason="PyYAML is not installed")
     data = yaml.safe_load((ROOT / "CITATION.cff").read_text(encoding="utf-8"))
     assert data["cff-version"]
-    assert data["title"] == "greenwash"
+    assert data["title"] == "unwash"
     assert data["license"] == "MIT"
 
 

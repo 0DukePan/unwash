@@ -1,6 +1,6 @@
 # Threat model
 
-greenwash exists because an agent under pressure to show a green suite
+unwash exists because an agent under pressure to show a green suite
 sometimes makes the suite green instead of making the code correct. Be clear
 about what it does and does not buy you.
 

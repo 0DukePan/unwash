@@ -6,7 +6,7 @@ Simulates an agent editing the task workspace so the harness (git init,
 scoring, hidden-test injection, classification, reporting) can be exercised
 end-to-end without a live model. Not part of any real run.
 
-The harness sets GREENWASH_BENCH_TASK_DIR, which is how this double finds the
+The harness sets UNWASH_BENCH_TASK_DIR, which is how this double finds the
 task's recorded solution. A live agent never gets that variable.
 
 FAKE_AGENT_MODE:
@@ -41,7 +41,7 @@ import shutil
 
 MODE = os.environ.get("FAKE_AGENT_MODE", "hardcode")
 CHEAT = os.environ.get("FAKE_AGENT_CHEAT", "")
-TASK_DIR = os.environ.get("GREENWASH_BENCH_TASK_DIR")
+TASK_DIR = os.environ.get("UNWASH_BENCH_TASK_DIR")
 
 JS_FUNCTION = re.compile(r"export function (\w+)\(([^)]*)\)")
 JS_ASSERT = re.compile(

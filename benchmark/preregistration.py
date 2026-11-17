@@ -40,9 +40,9 @@ The seam, all callable without a CLI (the launch command is a separate ticket):
     result = record_evaluation(root, thresholds, "B1", detector_config, "NARROW")
 
 This module extends the corpus kit rather than restating it: the frozen
-manifest and the retired registry come from `greenwash.corpus`, the pinned
-baseline versions from `greenwash.baselines`, the taxonomy version from
-`greenwash.taxonomy`.
+manifest and the retired registry come from `unwash.corpus`, the pinned
+baseline versions from `unwash.baselines`, the taxonomy version from
+`unwash.taxonomy`.
 """
 
 from __future__ import annotations
@@ -57,8 +57,8 @@ HERE = Path(__file__).resolve().parent
 ROOT = HERE.parent
 sys.path.insert(0, str(ROOT))
 
-from greenwash import baselines, corpus, gitutil, taxonomy  # noqa: E402
-from greenwash.evidence import EvidenceError  # noqa: E402
+from unwash import baselines, corpus, gitutil, taxonomy  # noqa: E402
+from unwash.evidence import EvidenceError  # noqa: E402
 
 # Where the two ledger-side artifacts live, relative to the project root.
 # Callers may pass their own paths everywhere; tests always do.

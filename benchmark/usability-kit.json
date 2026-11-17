@@ -56,7 +56,7 @@
       "evidence": [
         "Expected: a test command to replay",
         "Observed: the verification request carries no test command",
-        "Source:   greenwash verify, not requested"
+        "Source:   unwash verify, not requested"
       ],
       "next_step": "Supply the test command and rerun, so the report rests on evidence rather than the diff alone."
     },

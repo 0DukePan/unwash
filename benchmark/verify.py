@@ -63,7 +63,7 @@ def main() -> int:
     parser.add_argument("--out", type=pathlib.Path, default=SUMMARY)
     args = parser.parse_args()
 
-    print("greenwash offline verification -- no model, no network, no clone")
+    print("unwash offline verification -- no model, no network, no clone")
     print(f"python {sys.version.split()[0]} on {sys.platform}")
 
     measurements = []

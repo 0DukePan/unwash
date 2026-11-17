@@ -8,7 +8,7 @@ shared one budget across runs, and running the suite a second time failed the
 strict-gate tests with an already-exhausted budget.
 
 A per-session directory makes the suite idempotent. `hooking._state_path`
-honours `GREENWASH_STATE_DIR`, and every hook subprocess inherits it through
+honours `UNWASH_STATE_DIR`, and every hook subprocess inherits it through
 the environment.
 """
 
@@ -21,13 +21,13 @@ import pytest
 @pytest.fixture(scope="session", autouse=True)
 def isolated_hook_state():
     """Point the hook's block budget at a directory that dies with this run."""
-    previous = os.environ.get("GREENWASH_STATE_DIR")
-    state_dir = tempfile.mkdtemp(prefix="greenwash-hook-state-")
-    os.environ["GREENWASH_STATE_DIR"] = state_dir
+    previous = os.environ.get("UNWASH_STATE_DIR")
+    state_dir = tempfile.mkdtemp(prefix="unwash-hook-state-")
+    os.environ["UNWASH_STATE_DIR"] = state_dir
     try:
         yield state_dir
     finally:
         if previous is None:
-            os.environ.pop("GREENWASH_STATE_DIR", None)
+            os.environ.pop("UNWASH_STATE_DIR", None)
         else:
-            os.environ["GREENWASH_STATE_DIR"] = previous
+            os.environ["UNWASH_STATE_DIR"] = previous

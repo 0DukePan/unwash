@@ -1,14 +1,42 @@
 # Changelog
 
+## 1.0.0 -- 2026-11-17
+
+### Changed
+
+- **The project is named `unwash`.** The old name described the problem rather
+  than the tool, and it collided with an unrelated PyPI package, which forced a
+  different distribution name and an explanation in every install instruction.
+  Now the distribution, the import, the command and the repository are one name:
+  `pip install unwash-cli`, `import unwash`, `unwash`.
+- **Rule codes moved from `GW-` to `UW-`.** `GW-TEST-001` is now
+  `UW-TEST-001`. A waiver written against an old code still resolves -- the
+  ledger accepts both -- and a new waiver counts on from whichever ids the
+  ledger already holds, so an id is never reissued.
+- **The config directory is `.unwash/`** and the environment variables are
+  `UNWASH_*`. An existing `.greenwash/` directory is not read: this is a major
+  version precisely because that path is load-bearing.
+- **Every URL, badge and install line** points at
+  `github.com/0DukePan/unwash`. GitHub redirects the old repository name, so
+  existing clones keep working.
+
+### Fixed
+
+- **The nightly suite was red for five days.** A repaired task
+  (`json-load-default`) now labels `spec overfit` rather than `underspecified`,
+  because its prompt was corrected to state the requirement it tests; the test
+  still expected the old label. Both branches are pinned now, and the
+  underspecified branch asserts that a task still exercises it.
+
 ## 0.5.1 -- 2026-11-12
 
 ### Fixed
 
 - **The release tag now contains what the README documents.** `v0.5.0` was cut
   before the Requirement Coverage Engine landed, so the documented install
-  produced a CLI without `greenwash coverage`. This tag is the first one whose
+  produced a CLI without `unwash coverage`. This tag is the first one whose
   Contents match the documentation; the release workflow fails the build when
-  the tag and `greenwash.__version__` disagree, which is what would have caught
+  the tag and `unwash.__version__` disagree, which is what would have caught
   it.
 - **The README's version badge and install lines** pointed at 0.4.2 and 0.5.0.
 
@@ -16,10 +44,10 @@
 
 ### Added
 
-- **`greenwash coverage` — the Requirement Coverage Engine.**
+- **`unwash coverage` — the Requirement Coverage Engine.**
   `--require` already bound one sentence to one test. Repeating the sentence
   binds more evidence to it, which is what makes contradictory evidence
-  visible: `greenwash coverage --require "Login succeeds => tests/a.py::test_one"
+  visible: `unwash coverage --require "Login succeeds => tests/a.py::test_one"
   --require "Login succeeds => tests/a.py::test_two"`. Each requirement comes out
   **verified**, **failed**, **contradictory** (one bound test passes and another
   fails), **unverified** (nothing bound) or **could not check** (the evidence
@@ -28,7 +56,7 @@
   ladder as `scan`/`verify`: 0 verified, 1 failed or contradictory, 2 unverified,
   3 could not check. Every report ends with the sentence the counts cannot carry:
   *coverage counts requirements with passing evidence; it is not a claim that
-  the code is correct.* `greenwash/coverage.py`.
+  the code is correct.* `unwash/coverage.py`.
 - **`python benchmark/verify.py` — one command, ninety seconds, no model.**
   Runs the three offline measurements (the task corpus, the attack/twin pairs,
   the language packs), prints each result and exits non-zero on the first
@@ -47,7 +75,7 @@
   `off` arm: 6 genuine fixes, 2 underspecified, 0 integrity cheats. Both
   non-fixes were corpus defects and both prompts were repaired afterwards; the
   rows are kept as they ran. See `benchmark/DEEPSEEK-PILOT.md`.
-- **`GREENWASH_STATE_DIR` pins the Stop hook's block budget.** Without it the
+- **`UNWASH_STATE_DIR` pins the Stop hook's block budget.** Without it the
   budget follows the git directory, so a target that is not itself a repository
   inherits whichever ancestor repository it sits under. On a machine whose home
   directory is a repository, every temporary directory under it shared one
@@ -99,7 +127,7 @@
   non-zero agent exit through as a failed fix with an empty reason, so 261
   dead-key rows would have looked exactly like 261 crashed agents.
 - **A changed file the static layer cannot read now produces a finding.**
-  `unreadable-file` (GW-DIV-003) covers both a file that will not parse and one
+  `unreadable-file` (UW-DIV-003) covers both a file that will not parse and one
   git reports as binary -- a UTF-16 source file used to slip past every AST rule
   and read as clean. Missing paths are still not findings.
 - **No published page quotes a wall-clock runtime.** The README said 44s and a
@@ -120,8 +148,8 @@
   different statements and only the first one is auditable. Two lines are drawn
   deliberately -- evidence is not waivable (a held-out suite that failed is an
   observation, not an opinion), and a broken check is not a pass. This is the
-  profile the Claude and Codex plugins run. `greenwash/strict.py`.
-- **Waivers: `greenwash waive`, and `.greenwash/waivers.json`.** The resolution
+  profile the Claude and Codex plugins run. `unwash/strict.py`.
+- **Waivers: `unwash waive`, and `.unwash/waivers.json`.** The resolution
   for a finding that is correct is a decision with a name, a reason and an
   expiry on it -- not a rule switched off. A waiver binds one rule, one path and
   one fingerprint; the fingerprint covers the rule, path, line and evidence, so
@@ -130,7 +158,7 @@
   as expired and permits nothing; a valid one is reported as **waived with
   review**, never as clean. `--fingerprint` is optional -- without it the
   command finds the finding in the current diff and refuses (listing the
-  candidates) when a path holds more than one. `greenwash/waivers.py`.
+  candidates) when a path holds more than one. `unwash/waivers.py`.
 - **The Codex plugin (`codex/`), strict by default.** Manifests in both
   spellings (`.codex-plugin/plugin.json` and `plugin.json`), a Stop hook
   (`hooks/codex-hooks.json`) with a POSIX command and a Windows one, its own
@@ -151,7 +179,7 @@
   drive the real hooks and print captured output -- block, waive, allow, and the
   could-not-check path. A `strict-hooks` CI job runs both, and the flows behind
   them, on every push.
-- **`unreadable-file` (GW-DIV-003): a changed Python file the static layer could
+- **`unreadable-file` (UW-DIV-003): a changed Python file the static layer could
   not parse is reported, not skipped.** Every AST rule is silent on a file that
   will not parse, and that silence was indistinguishable from a clean result --
   the defect recorded in [docs/what-did-not-work.md](docs/what-did-not-work.md)
@@ -165,15 +193,15 @@
 
 ### Changed
 
-- **The distribution is `greenwash-cli`, not `greenwash`.** The PyPI name
-  `greenwash` belongs to an unrelated project, so every install line in the
+- **The distribution is `unwash-cli`, not `unwash`.** The PyPI name
+  `unwash` belongs to an unrelated project, so every install line in the
   README, the npm shim's guidance and the package metadata now name the
   distribution this repository actually publishes. The import name and the
-  command stay `greenwash`. Public install commands installing this project
+  command stay `unwash`. Public install commands installing this project
   rather than a namesake is a release gate, not a nicety.
 - **npm is no longer advertised as an install path.** The shim is real and
   still tested, but the npm name is not owned by this project, so `npx
-  greenwash` installs someone else's package today. `README.md` and
+  unwash` installs someone else's package today. `README.md` and
   `npm/README.md` say so, and `npm/README.md` documents the local `npm pack`
   path instead of a registry install.
 - **`--fail-on` alongside `--strict` is ignored, and says so**, because strict
@@ -216,7 +244,7 @@
   where a planted `@pytest.mark.skip` came back as `0 signal(s)`. Sources are
   read as `utf-8-sig` now, and both cases are regression tests. The related
   silence -- a file that genuinely cannot be parsed produced no note -- is closed
-  by `unreadable-file` (GW-DIV-003, above): the changed file is named and the
+  by `unreadable-file` (UW-DIV-003, above): the changed file is named and the
   report cannot read as clean. The history is recorded in
   [docs/what-did-not-work.md](docs/what-did-not-work.md) section 8 rather than
   left as a surprise.
@@ -253,7 +281,7 @@
   Running the committed test against the current implementation is the missing
   combination, and it is *derived* rather than configured -- the worktree at
   `HEAD` already holds the committed test, so only the changed implementation
-  files are overlaid onto it. Reported as `test-weakened` (GW-VER-005) at
+  files are overlaid onto it. Reported as `test-weakened` (UW-VER-005) at
   `SUSPICIOUS` rather than `NOT_VERIFIED`, because a genuine specification
   change produces an identical signal; `--fail-on suspicious` is the opt-in
   gate, and a collection error is `unavailable` rather than a failure.
@@ -267,7 +295,7 @@
   *replaces* the policy rather than adding to it, so the list on the command
   line is the whole policy and `--fail-on not_verified` lets a merely-suspicious
   report through. An unknown verdict name is exit 3, not a silently open gate.
-- **`error-path-default` (GW-DIV-002).** `GW-DIV-001` fires only when a handler
+- **`error-path-default` (UW-DIV-002).** `UW-DIV-001` fires only when a handler
   holds nothing but a `pass` or a bare literal; `except JSONDecodeError: return
   {}` -- the shape the swallow tasks are made of -- slid past it. The new rule
   fires when a handler returns a default and no related test file mentions the
@@ -280,14 +308,14 @@
 
 #### Fixed
 
-- **`greenwash_check.py` exited 1 on a tool error, where its own docstring and
+- **`unwash_check.py` exited 1 on a tool error, where its own docstring and
   `adapters/README.md` both publish 2.** `sys.exit(message)` exits 1, and 1 means
   "flags raised" -- so a CI job, the Action and the pre-commit hook read "not a
   git repository" as "your code was flagged". The same class of bug as the
   enforce-mode codes in 0.4.1, and found the same way: by finally writing a
   functional test for the file. That entry point -- the one every integration
   actually calls -- had only a byte-comparison against the benchmark's copy.
-- **Every CI path skipped the integrity check.** `greenwash_check.py` called the
+- **Every CI path skipped the integrity check.** `unwash_check.py` called the
   verifier without the change list, so the verifier could not tell that a test
   file had been touched: the GitHub Action, `adapters/ci.sh` and the pre-commit
   hook would all have missed the one check that catches a suite edited to fit
@@ -299,9 +327,9 @@
 - **The verdict table reads `verification.integrity`, not only its signal.** A
   signal is always raised with it, but a report that prints "2 case(s) fail in
   the committed version" and then `VERIFIED` contradicts itself on its own page.
-- **`greenwash doctor` and `greenwash init` report the integrity capability**,
+- **`unwash doctor` and `unwash init` report the integrity capability**,
   alongside the test command and the held-out suite. Their job is saying what
-  greenwash can and cannot see, and a check that is switched off belongs in that
+  unwash can and cannot see, and a check that is switched off belongs in that
   list.
 - **The agent-behaviour null is stated next to the headline.** The README led
   with detector numbers (24/24 planted cheats caught) while the number the whole
@@ -364,7 +392,7 @@
   seconds in `results/detection.json`; the README states the re-measured value
   (172s for 24 scored tasks x 3 variants) instead of the unbacked 154s, and a
   README guard keeps the two together.
-- Added `greenwash/py.typed` (declared in package-data since 0.4.0, absent on
+- Added `unwash/py.typed` (declared in package-data since 0.4.0, absent on
   disk), removed dead code (`Signal.matches`, `_Model.from_dict`), and pointed
   a stale docstring at the README's rule table.
 
@@ -433,10 +461,10 @@
   confidence is capped at `MEDIUM`. Severity is unchanged -- a skipped test is a
   skipped test -- but the tool no longer claims the certainty of a parser it
   did not use.
-- **`npx greenwash` exists.** `npm/` is a shim that finds Python, checks the
+- **`npx unwash` exists.** `npm/` is a shim that finds Python, checks the
   package is importable, and forwards argv and the exit code untouched. Packed
   and installed with `npm pack` + `npm install`, then run: `--version` prints
-  `greenwash 0.4.0`, report mode exits 0, `scan` exits 1 on a planted cheat, and
+  `unwash 0.4.0`, report mode exits 0, `scan` exits 1 on a planted cheat, and
   a missing Python or a missing package produces one actionable message and exit
   3. It is not a second implementation -- two codebases that can disagree about
   whether your tests pass is the failure this tool exists to catch.
@@ -449,7 +477,7 @@
 
 ### Closing the last of the 10/10
 
-- **The behavioral layer is on by default.** A plain `greenwash` -- and the
+- **The behavioral layer is on by default.** A plain `unwash` -- and the
   Stop hook -- now discovers the test command, runs it, and compares the
   working tree against a detached worktree of `HEAD` whenever nothing is
   configured. That was `verify --auto`'s job, and the zero-config promise
@@ -480,12 +508,12 @@
 
 ### The v1 surface: a trust report instead of a flag list
 
-- **A package you can install.** `greenwash/` is a real package with
-  `pyproject.toml` and a console script, so `pipx install greenwash` works.
-  `scripts/greenwash_check.py` stays as the compatibility entry point that the
+- **A package you can install.** `unwash/` is a real package with
+  `pyproject.toml` and a console script, so `pipx install unwash` works.
+  `scripts/unwash_check.py` stays as the compatibility entry point that the
   Action, the pre-commit hook, CI, the benchmark harness and the demo all call,
   with its command line, stdout and exit codes unchanged.
-- **A domain model with a versioned wire format** (`greenwash/domain.py`):
+- **A domain model with a versioned wire format** (`unwash/domain.py`):
   `Run`, `Claim`, `FileChange`, `Evidence`, `Signal`, `VerificationResult`,
   `Verdict`, `Confidence`, `TrustReport`. `schema_version: "1"`. Serialization
   never raises: unknown keys are ignored, wrong types degrade to defaults, and
@@ -494,16 +522,16 @@
   `NOT_VERIFIED`, `VERIFICATION_FAILED`, `INCONCLUSIVE`) from a documented
   decision table, and **a deterministic confidence score** whose every point is
   a sentence in the report. No percentages -- see `docs/confidence.md`.
-- **Signals carry their own metadata**: rule id, stable code (`GW-TEST-004`),
+- **Signals carry their own metadata**: rule id, stable code (`UW-TEST-004`),
   title, category, severity, confidence, files, line, evidence, remediation,
   and `requires_review` for the two rules that ask rather than accuse.
 - **Three report formats** (terminal, JSON, markdown) from one `TrustReport`,
   with `--quiet` and `--verbose`. Every failing verdict carries
   expected-vs-observed evidence; there is no path that prints a bare `FAILED`.
-- **Zero-config activation**: `greenwash init` detects the repo and the test
-  command, writes `.greenwash/config.json`, and says what it could not find;
-  `greenwash doctor` diagnoses the same things. The report is the default
-  action: `greenwash` with no arguments.
+- **Zero-config activation**: `unwash init` detects the repo and the test
+  command, writes `.unwash/config.json`, and says what it could not find;
+  `unwash doctor` diagnoses the same things. The report is the default
+  action: `unwash` with no arguments.
 - **Enforcement is opt-in** (`--enforce` or `"mode": "enforce"`) with stable
   exit codes 0/1/2/3. Report mode always exits 0 -- the report is the product.
 - **The Stop hook reports by default** and only blocks the agent's turn in
@@ -555,7 +583,7 @@
   `python -m pytest -q tests/x.py` into `pytest -q "python -m pytest ..."` --
   which fails with "file or directory not found" and looks like a real
   held-out failure.
-- **The CLI forced ANSI colour on when piped**, so `greenwash > report.txt` and
+- **The CLI forced ANSI colour on when piped**, so `unwash > report.txt` and
   every CI log filled up with escapes. Colour is now decided from the stream,
   with `--color` to force it.
 - **A report with no behavioral evidence claimed MEDIUM confidence**, because
@@ -700,7 +728,7 @@
   drifted) and a test now enforces the two staying identical;
   `benchmark/tools/sync_skill_only.py` does the copying.
 - `benchmark/tools/fake_agent.py` works for every task (not just
-  `src/calc.py`) via `GREENWASH_BENCH_TASK_DIR`, and benchmark rows carry an
+  `src/calc.py`) via `UNWASH_BENCH_TASK_DIR`, and benchmark rows carry an
   `agent` field; `benchmark/report.py` banners any run that was not a live
   model.
 - Added `benchmark/tasks/_template/`; task directories whose name starts with
@@ -719,8 +747,8 @@
 
 ## 0.3.0
 
-- Renamed the project to **greenwash**.
-- Split the checker into a package (`scripts/greenwash/`) with a real CLI:
+- Renamed the project to **unwash**.
+- Split the checker into a package (`scripts/unwash/`) with a real CLI:
   `scan`, `verify`, `all`.
 - **Zero-config behavioral verification**: `verify --auto` discovers the test
   command, runs the suite on the current tree and on a detached worktree of
@@ -738,13 +766,13 @@
 - Added: `LICENSE` (MIT), CI (Linux + Windows, Python 3.10/3.12),
   `.pre-commit-hooks.yaml`, `action.yml`, `adapters/`, `demo/run_demo.py`,
   `THREAT_MODEL.md`, `CONTRIBUTING.md`, `.claude-plugin/marketplace.json`.
-- Stop hook now honours `GREENWASH_AUTO`, `GREENWASH_TEST_CMD`,
-  `GREENWASH_HELDOUT`.
+- Stop hook now honours `UNWASH_AUTO`, `UNWASH_TEST_CMD`,
+  `UNWASH_HELDOUT`.
 
 ## 0.2.0
 
 - Restructured into a valid Claude Code plugin (`.claude-plugin/plugin.json`,
-  `hooks/hooks.json`, `skills/greenwash/SKILL.md`, `scripts/`).
+  `hooks/hooks.json`, `skills/unwash/SKILL.md`, `scripts/`).
 - Fixed `hardcoded-return` missing a literal followed by a trailing comment.
 - Documented the `result = 5; return result` limitation (since closed in 0.3.0).
 

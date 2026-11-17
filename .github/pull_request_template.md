@@ -4,7 +4,7 @@
 
 ## The receipt
 
-<!-- Greenwash's own rule: no claim without the command and its output. -->
+<!-- Unwash's own rule: no claim without the command and its output. -->
 
 ```
 $ command
@@ -13,8 +13,8 @@ output
 
 ## Which gate does this belong to
 
-- [ ] Shipped behaviour (`greenwash/`, hooks, plugins) — run `pytest -q -m "not program"`
-- [ ] The detector (`greenwash/scan/rules/`) — the README rule table and a positive + negative test
+- [ ] Shipped behaviour (`unwash/`, hooks, plugins) — run `pytest -q -m "not program"`
+- [ ] The detector (`unwash/scan/rules/`) — the README rule table and a positive + negative test
 - [ ] The benchmark or corpus (`benchmark/`) — `python benchmark/verify.py`
 - [ ] Documentation only
 

@@ -56,7 +56,7 @@ jobs:
 
           rows = json.load(open("benchmark/results/ci.json", encoding="utf-8"))
           caught = [r for r in rows
-                    if r["outcome"] == "integrity cheat" and "hardcoded-return" in r["greenwash_flags"]]
+                    if r["outcome"] == "integrity cheat" and "hardcoded-return" in r["unwash_flags"]]
           assert caught, "plumbing run: the planted hardcode was no longer detected"
           print(f"plumbing: {len(caught)}/{len(rows)} hardcode runs classified as integrity cheat")
           PY
@@ -119,7 +119,7 @@ jobs:
           PY
 
   npm:
-    name: npm shim (npx greenwash)
+    name: npm shim (npx unwash)
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
@@ -134,18 +134,18 @@ jobs:
         run: |
           cd npm
           npm pack
-          npm install -g ./greenwash-*.tgz
+          npm install -g ./unwash-*.tgz
       - name: It reports a version
-        run: greenwash --version | grep -q "greenwash 0"
+        run: unwash --version | grep -q "unwash 0"
       - name: It forwards a non-zero exit code (the planted skip must be caught)
         run: |
-          printf '\n\n@pytest.mark.skip(reason="planted by the npm self-test")\ndef test_planted():\n    pass\n' >> tests/test_greenwash.py
+          printf '\n\n@pytest.mark.skip(reason="planted by the npm self-test")\ndef test_planted():\n    pass\n' >> tests/test_unwash.py
           git add -A
           set +e
-          greenwash scan --staged --no-color
+          unwash scan --staged --no-color
           status=$?
           set -e
-          test "$status" = "1" || { echo "::error::npx greenwash scan exited $status, expected 1"; exit 1; }
+          test "$status" = "1" || { echo "::error::npx unwash scan exited $status, expected 1"; exit 1; }
           echo "npm shim: exit codes forwarded unchanged"
 
   strict-hooks:
@@ -177,9 +177,9 @@ jobs:
         run: python -m pip install --upgrade pip pre-commit
       - name: Plant a faked diff
         run: |
-          printf '\n\n@pytest.mark.skip(reason="planted by the self-test")\ndef test_planted():\n    pass\n' >> tests/test_greenwash.py
+          printf '\n\n@pytest.mark.skip(reason="planted by the self-test")\ndef test_planted():\n    pass\n' >> tests/test_unwash.py
       - name: GitHub Action (must fail)
-        id: greenwash
+        id: unwash
         continue-on-error: true
         uses: ./
       - name: pre-commit hook (must fail)
@@ -190,17 +190,17 @@ jobs:
           repos:
             - repo: local
               hooks:
-                - id: greenwash
-                  name: greenwash
-                  entry: python scripts/greenwash_check.py scan --staged
+                - id: unwash
+                  name: unwash
+                  entry: python scripts/unwash_check.py scan --staged
                   language: system
                   pass_filenames: false
                   always_run: true
           YAML
           git add -A
-          pre-commit run greenwash
+          pre-commit run unwash
       - name: Assert both caught the planted skip
         run: |
-          test "${{ steps.greenwash.outcome }}" = "failure" || { echo "::error::the GitHub Action missed the planted @pytest.mark.skip"; exit 1; }
+          test "${{ steps.unwash.outcome }}" = "failure" || { echo "::error::the GitHub Action missed the planted @pytest.mark.skip"; exit 1; }
           test "${{ steps.precommit.outcome }}" = "failure" || { echo "::error::the pre-commit hook missed the planted @pytest.mark.skip"; exit 1; }
           echo "integrations: action and pre-commit both failed on the planted skip, as they should"

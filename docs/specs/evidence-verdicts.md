@@ -8,7 +8,7 @@ A developer who asks a coding agent to fix a failing test currently has two opti
 
 ## Solution
 
-Greenwash returns one evidence-bearing verdict per run, from a fixed set with explicit precedence, plus secondary flags so nothing is lost. It resolves a changed expected value with a pinned-evidence rule: evidence must come from sources fixed before the agent ran, never from files the agent edited in the diff. It runs the pinned original tests against the agent's code, three times, and treats flakiness as inconclusive rather than clean. It checks its own integrity, so a verdict cannot be edited from inside the sandbox it inspects.
+Unwash returns one evidence-bearing verdict per run, from a fixed set with explicit precedence, plus secondary flags so nothing is lost. It resolves a changed expected value with a pinned-evidence rule: evidence must come from sources fixed before the agent ran, never from files the agent edited in the diff. It runs the pinned original tests against the agent's code, three times, and treats flakiness as inconclusive rather than clean. It checks its own integrity, so a verdict cannot be edited from inside the sandbox it inspects.
 
 Around the detector, an evaluation kit makes the public numbers auditable. A corpus with independent positive sources, matched legitimate twins, and a task-level frozen split. Baseline adapters for the competitor, a test-file-edit rule, held-out tests, and an LLM judge. Pre-registered gates with exact statistics. A behavioral protocol in which the treatment is never the measuring instrument. A claim ledger that maps every public sentence to the evidence that licenses it, and one command that reproduces the headline table from pinned artifacts.
 
@@ -74,7 +74,7 @@ Around the detector, an evaluation kit makes the public numbers auditable. A cor
 - **Evaluation runner.** One command turns a corpus plus detector configurations into per-cell confusion matrices, strict and decided recall, twin and natural false-alarm rates, abstention, cost, wall time and run-to-run variance, with exact Clopper-Pearson intervals as primary and Wilson as sensitivity. Gate evaluation is mechanical against pre-registered thresholds.
 - **Behavioral protocol.** Arms: no skill, skill only, skill plus feedback, optionally read-only tests. Primary contrast is feedback versus none, with Holm correction across the secondary contrasts. The primary outcome comes from an instrument independent of the treatment (hidden-test gap plus blinded review of flagged and sampled-unflagged runs). The checker's own flag rate is reported separately as a gate-hit rate. Analysis uses a task random effect or cluster bootstrap; the sample size follows the pre-registered table.
 - **Claim ledger as data.** Each public claim is a record with its evidence requirement, current status and the strongest allowed wording. A docs test fails when a public page states more than the ledger allows.
-- **Reproduction command.** `greenwash verify` rebuilds the headline table from pinned artifacts: corpus manifest, frozen annotations, detector configurations, seeds.
+- **Reproduction command.** `unwash verify` rebuilds the headline table from pinned artifacts: corpus manifest, frozen annotations, detector configurations, seeds.
 - **Statistics module.** Exact intervals, exact McNemar, design effect and non-inferiority sizing live in one tested module; published tables are generated from it so no hand-computed number can drift.
 
 ## Testing Decisions

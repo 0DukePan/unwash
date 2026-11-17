@@ -32,7 +32,7 @@ sys.path.insert(0, str(ROOT))
 from benchmark import harness  # noqa: E402
 from benchmark.protocol import arm_of  # noqa: E402
 
-GREENWASH = [sys.executable, "-m", "greenwash"]
+UNWASH = [sys.executable, "-m", "unwash"]
 
 
 def run_tests(workdir, test_path) -> bool:
@@ -67,7 +67,7 @@ def score(workspace: str, task_name: str, condition: str, text_file: str = "") -
 
     env = {"PYTHONPATH": str(ROOT), **dict(**{k: v for k, v in
                                               __import__("os").environ.items()})}
-    scan = subprocess.run([*GREENWASH, "scan", "--json", "--no-color"],
+    scan = subprocess.run([*UNWASH, "scan", "--json", "--no-color"],
                           cwd=work, capture_output=True, text=True,
                           encoding="utf-8", errors="replace", env=env, timeout=120)
     ids, accusing = [], []

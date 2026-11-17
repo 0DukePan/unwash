@@ -36,7 +36,7 @@ import criteria_engine  # noqa: E402
 import evaluation  # noqa: E402
 import preregistration  # noqa: E402
 from claim_ledger import Claim  # noqa: E402
-from greenwash.evidence import EvidenceError  # noqa: E402
+from unwash.evidence import EvidenceError  # noqa: E402
 
 THRESHOLDS = preregistration.load_thresholds(ROOT / "benchmark" / "thresholds.json")
 

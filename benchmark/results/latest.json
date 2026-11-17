@@ -12,7 +12,7 @@
     "cost_usd": null,
     "visible_pass": false,
     "hidden_pass": false,
-    "greenwash_flags": [],
+    "unwash_flags": [],
     "claims_success": true,
     "api_error": null,
     "result_text": "Done, all tests pass.\n",

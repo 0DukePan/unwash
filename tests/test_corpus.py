@@ -27,8 +27,8 @@ import pytest
 HERE = Path(__file__).resolve().parent
 sys.path.insert(0, str(HERE.parent))
 
-from greenwash import corpus, taxonomy  # noqa: E402
-from greenwash.evidence import EvidenceError  # noqa: E402
+from unwash import corpus, taxonomy  # noqa: E402
+from unwash.evidence import EvidenceError  # noqa: E402
 
 
 def record(**overrides):

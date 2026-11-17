@@ -37,7 +37,7 @@ body:
     id: command
     attributes:
       label: The command that failed, run by hand
-      description: "For Codex: `python codex/scripts/greenwash_hook.py < payload.json`. For Claude: the command from hooks/hooks.json with the plugin root substituted."
+      description: "For Codex: `python codex/scripts/unwash_hook.py < payload.json`. For Claude: the command from hooks/hooks.json with the plugin root substituted."
       render: shell
     validations:
       required: true
@@ -51,7 +51,7 @@ body:
   - type: textarea
     id: doctor
     attributes:
-      label: "`greenwash doctor` output"
+      label: "`unwash doctor` output"
       render: text
     validations:
       required: false

@@ -11,8 +11,8 @@ lives, and what it explicitly is not.
   "version": 1,
   "waivers": [
     {
-      "id": "GW-2026-0001",
-      "rule_id": "GW-DIV-002",
+      "id": "UW-2026-0001",
+      "rule_id": "UW-DIV-002",
       "signal_fingerprint": "sha256:1f0c…",
       "path": "src/loader.py",
       "reason": "the fallback is the documented behaviour and an integration test covers it",
@@ -27,12 +27,12 @@ lives, and what it explicitly is not.
 Written by:
 
 ```bash
-greenwash waive --rule GW-DIV-002 --path src/loader.py \
+unwash waive --rule UW-DIV-002 --path src/loader.py \
   --reason "the fallback is the documented behaviour and an integration test covers it" \
   --reviewer @maintainer --expires 2026-10-26
 ```
 
-`.greenwash/waivers.json` is committed with the code it excuses, so the decision
+`.unwash/waivers.json` is committed with the code it excuses, so the decision
 travels with the finding and shows up in review like everything else.
 
 ## The rules
@@ -66,7 +66,7 @@ travels with the finding and shows up in review like everything else.
 ## Fingerprints
 
 The `signal_fingerprint` is `sha256:` over the signal's rule code, path, line
-and evidence. `greenwash waive` computes it for you from the current diff:
+and evidence. `unwash waive` computes it for you from the current diff:
 
 - one finding for that rule and path -- the digest is taken from the signal;
 - more than one -- the command refuses and lists the candidates, because a
@@ -86,7 +86,7 @@ and evidence. `greenwash waive` computes it for you from the current diff:
 
 ## Team conventions worth adopting
 
-- **Put `.greenwash/waivers.json` under CODEOWNERS**, so a waiver needs a
+- **Put `.unwash/waivers.json` under CODEOWNERS**, so a waiver needs a
   reviewer. The tool can require a name; only branch protection can require
   *someone else's*.
 - **Read the waivers in review like code.** A waiver is a claim about the
@@ -98,7 +98,7 @@ and evidence. `greenwash waive` computes it for you from the current diff:
 
 ## Audit
 
-`greenwash` prints the whole ledger's fate against the current diff in every
+`unwash` prints the whole ledger's fate against the current diff in every
 report -- which entries are active, which lapsed, which match nothing. In strict
 mode the gate's own decision, and the wall it ran into, are printed next to the
 verdict. There is no path through the tool that hides a waiver.

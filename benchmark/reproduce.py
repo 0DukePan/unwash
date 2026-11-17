@@ -61,8 +61,8 @@ sys.path.insert(0, str(ROOT))
 sys.path.insert(0, str(HERE))
 
 import evaluation  # noqa: E402
-from greenwash import baselines, corpus  # noqa: E402
-from greenwash.evidence import EvidenceError  # noqa: E402
+from unwash import baselines, corpus  # noqa: E402
+from unwash.evidence import EvidenceError  # noqa: E402
 
 EXIT_OK = 0
 EXIT_REFUSED = 2
@@ -103,7 +103,7 @@ class _Seeded:
 
     def run(self, record):
         seed = self._seeds[self._calls % len(self._seeds)]
-        random.seed(f"greenwash-reproduce/{seed}/{record.case.id}/{self._calls}")
+        random.seed(f"unwash-reproduce/{seed}/{record.case.id}/{self._calls}")
         self._calls += 1
         return self._detector.run(record)
 

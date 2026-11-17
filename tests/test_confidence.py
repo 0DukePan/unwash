@@ -6,10 +6,10 @@ changes a weight, a test states what changed and by how much.
 
 import pytest
 
-from greenwash.confidence import (BASE, BASELINE_PASS, FAILED_REQUIREMENT, HELDOUT_PASS,
+from unwash.confidence import (BASE, BASELINE_PASS, FAILED_REQUIREMENT, HELDOUT_PASS,
                                   HIGH_SIGNAL, LOW_COVERAGE, MEDIUM_SIGNAL, VISIBLE_PASS,
                                   level_for, score, verdict_for)
-from greenwash.domain import (Level, Outcome, Requirement, Signal, TrustReport,
+from unwash.domain import (Level, Outcome, Requirement, Signal, TrustReport,
                               VerificationResult, Verdict)
 
 PASS = Outcome.PASS.value

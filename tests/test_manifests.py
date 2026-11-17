@@ -40,7 +40,7 @@ def test_workflow_and_action_are_valid_yaml():
 
 def test_plugin_manifest():
     manifest = json.loads((ROOT / ".claude-plugin" / "plugin.json").read_text(encoding="utf-8"))
-    assert manifest["name"] == "greenwash"
+    assert manifest["name"] == "unwash"
     assert manifest["version"]
     assert manifest.get("author"), "plugin.json should credit an author"
 
@@ -49,7 +49,7 @@ def test_marketplace_manifest():
     manifest = json.loads((ROOT / ".claude-plugin" / "marketplace.json").read_text(encoding="utf-8"))
     assert manifest["name"]
     assert manifest["owner"]["name"]
-    assert any(p["name"] == "greenwash" for p in manifest["plugins"])
+    assert any(p["name"] == "unwash" for p in manifest["plugins"])
 
 
 def test_stop_hook_points_at_an_existing_script():
@@ -57,14 +57,14 @@ def test_stop_hook_points_at_an_existing_script():
     handler = hooks["hooks"]["Stop"][0]["hooks"][0]
     assert handler["type"] == "command"
     referenced = " ".join([handler.get("command", ""), *handler.get("args", [])])
-    assert "greenwash_hook.py" in referenced
-    assert (ROOT / "scripts" / "greenwash_hook.py").is_file()
+    assert "unwash_hook.py" in referenced
+    assert (ROOT / "scripts" / "unwash_hook.py").is_file()
 
 
 def test_skill_frontmatter_names_the_skill():
-    text = (ROOT / "skills" / "greenwash" / "SKILL.md").read_text(encoding="utf-8")
+    text = (ROOT / "skills" / "unwash" / "SKILL.md").read_text(encoding="utf-8")
     assert text.startswith("---")
-    assert "name: greenwash" in text.split("---")[1]
+    assert "name: unwash" in text.split("---")[1]
 
 
 def test_host_instruction_files_are_in_sync():
@@ -84,12 +84,12 @@ def test_pytest_config_restricts_collection_to_the_unit_tests():
     assert config["pytest"]["testpaths"].split() == ["tests"]
 
 
-PLUGIN = ROOT / "benchmark" / "plugins" / "greenwash-skill-only"
+PLUGIN = ROOT / "benchmark" / "plugins" / "unwash-skill-only"
 SYNCED = [
-    "scripts/greenwash_check.py",
-    "skills/greenwash/SKILL.md",
+    "scripts/unwash_check.py",
+    "skills/unwash/SKILL.md",
     *[path.relative_to(ROOT).as_posix()
-      for path in sorted((ROOT / "greenwash").rglob("*.py"))
+      for path in sorted((ROOT / "unwash").rglob("*.py"))
       if "__pycache__" not in path.parts],
 ]
 
@@ -110,7 +110,7 @@ def test_skill_only_plugin_matches_the_main_checker():
 
 def test_skill_only_plugin_has_no_hook():
     # The Stop hook is the one intended difference between the two states.
-    assert not (PLUGIN / "scripts" / "greenwash_hook.py").exists()
+    assert not (PLUGIN / "scripts" / "unwash_hook.py").exists()
     assert not (PLUGIN / "hooks").exists()
 
 # Excluded from the default gate: this module spawns a process

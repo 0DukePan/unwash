@@ -15,8 +15,8 @@ HERE = Path(__file__).resolve().parent
 ROOT = HERE.parent
 sys.path.insert(0, str(ROOT))
 
-from greenwash.confidence import verdict_for  # noqa: E402
-from greenwash.domain import Outcome, Verdict, VerificationResult  # noqa: E402
+from unwash.confidence import verdict_for  # noqa: E402
+from unwash.domain import Outcome, Verdict, VerificationResult  # noqa: E402
 
 PASSING = (Verdict.VERIFIED, Verdict.CLEAN)
 

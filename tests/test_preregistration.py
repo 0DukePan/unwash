@@ -29,8 +29,8 @@ sys.path.insert(0, str(ROOT))
 sys.path.insert(0, str(ROOT / "benchmark"))
 
 import preregistration  # noqa: E402
-from greenwash import baselines, corpus, taxonomy  # noqa: E402
-from greenwash.evidence import EvidenceError  # noqa: E402
+from unwash import baselines, corpus, taxonomy  # noqa: E402
+from unwash.evidence import EvidenceError  # noqa: E402
 
 THRESHOLDS = ROOT / "benchmark" / "thresholds.json"
 GENESIS = "0" * 64

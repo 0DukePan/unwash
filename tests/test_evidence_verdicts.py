@@ -10,7 +10,7 @@ beside a CI run -- the public report seam, at its literal wire values.
 
 import json
 
-from greenwash.domain import (Outcome, Signal, TrustReport, VerificationResult)
+from unwash.domain import (Outcome, Signal, TrustReport, VerificationResult)
 
 PASS = Outcome.PASS.value
 FAIL = Outcome.FAIL.value

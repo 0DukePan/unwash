@@ -18,7 +18,7 @@ ROOT = Path(__file__).resolve().parent.parent
 sys.path.insert(0, str(ROOT))
 sys.path.insert(0, str(ROOT / "benchmark"))
 
-from greenwash.report import terminal  # noqa: E402
+from unwash.report import terminal  # noqa: E402
 import claim_ledger  # noqa: E402
 
 # One implementation: `claim_ledger.ASKING` is what the public pages are
@@ -161,7 +161,7 @@ def test_readme_transcript_is_the_demo_output():
         return text
 
     blocks = re.findall(r"```[a-z]*\r?\n(.*?)\r?\n```", readme(), re.S)
-    transcripts = [block for block in blocks if "GREENWASH TRUST REPORT" in block]
+    transcripts = [block for block in blocks if "UNWASH TRUST REPORT" in block]
     assert transcripts, "the README has no transcript of the demo's output"
     assert normalise(transcripts[0]) == normalise(proc.stdout), (
         "the README transcript is not what `demo/run_demo.py --terse` prints")

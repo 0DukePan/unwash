@@ -1,4 +1,4 @@
-# greenwash in one page
+# unwash in one page
 
 Every number here is produced by a command in this repository. Nothing on this
 page is a projection, an estimate, or a target.
@@ -85,7 +85,7 @@ raw: [`benchmark/results/fp-survey.json`](../benchmark/results/fp-survey.json).
 
 ## What this page does not establish
 
-- That greenwash reduces reward hacking in general. Nothing here was measured
+- That unwash reduces reward hacking in general. Nothing here was measured
   outside the corpus described above, and the corpus is first-party.
 - That a clean report means the work is correct. It means the checks that ran
   did not find a problem -- the tool's own confidence level says how much that

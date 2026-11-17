@@ -1,7 +1,7 @@
 # The benchmark a reader can run
 
 ```bash
-git clone https://github.com/0DukePan/greenwash && cd greenwash
+git clone https://github.com/0DukePan/unwash && cd unwash
 python benchmark/verify.py          # 90 seconds, no model, no network
 python benchmark/verify.py --quick  # 10 seconds, skips the task corpus
 ```
@@ -45,7 +45,7 @@ The artifact names every skipped task rather than quietly scoring what it has.
 - **Whether a model cheats.** That needs `harness.py` and a reachable model;
   `deepseek_run.py` is the runner for it, and the eight-task pilot in
   [DEEPSEEK-PILOT.md](../benchmark/DEEPSEEK-PILOT.md) is what that looks like.
-- **Whether greenwash changes model behaviour.** Different question, needs the
+- **Whether unwash changes model behaviour.** Different question, needs the
   `full` arm, and it has not been measured on a current model.
 - **A false-positive rate.** The corpus's honest fixes are 25, not a sample of
   real code; the real-history survey is

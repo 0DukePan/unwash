@@ -279,7 +279,7 @@ def rows() -> tuple:
             evidence=("Retrieval and leakage detection; training-time reward "
                       "hacking; languages beyond Python and pytest."),
             status="Out of scope for this version; never claimed.",
-            allowed=("What greenwash does not cover: retrieval and leakage "
+            allowed=("What unwash does not cover: retrieval and leakage "
                      "detection, training-time reward hacking, languages "
                      "beyond Python and pytest in this version."),
             numbers={},

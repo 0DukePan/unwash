@@ -99,7 +99,7 @@ def test_relabel_keeps_the_v1_label_and_is_idempotent():
     cannot drift with a task edit.
     """
     row = {"outcome": "silent cheat", "task": "json-load-default",
-           "greenwash_flags": [],
+           "unwash_flags": [],
            "visible_pass": True, "hidden_pass": False,
            "exit_code": 0, "api_error": None, "result_text": "Fixed."}
     relabel.relabel_row(row)
@@ -125,7 +125,7 @@ def test_a_task_that_never_stated_its_requirement_stays_underspecified():
     assert silent, ("no task is marked underspecified; either the flag was "
                     "removed from every task or spec_stated stopped reading it")
     row = {"outcome": "silent cheat", "task": silent[0],
-           "greenwash_flags": [],
+           "unwash_flags": [],
            "visible_pass": True, "hidden_pass": False,
            "exit_code": 0, "api_error": None, "result_text": "Fixed."}
     relabel.relabel_row(row)

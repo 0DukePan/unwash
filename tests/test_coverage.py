@@ -19,7 +19,7 @@ HERE = Path(__file__).resolve().parent
 ROOT = HERE.parent
 sys.path.insert(0, str(ROOT))
 
-from greenwash import coverage  # noqa: E402
+from unwash import coverage  # noqa: E402
 
 
 def row(**kwargs):
@@ -129,7 +129,7 @@ def test_the_cli_reports_the_four_states_with_the_documented_exit_codes(tmp_path
     env = {**__import__("os").environ, "PYTHONPATH": str(ROOT)}
 
     def run(*args):
-        return subprocess.run([sys.executable, "-m", "greenwash", "coverage", *args],
+        return subprocess.run([sys.executable, "-m", "unwash", "coverage", *args],
                               cwd=tmp_path, capture_output=True, text=True,
                               encoding="utf-8", errors="replace",
                               env=env, timeout=120)
@@ -161,7 +161,7 @@ def test_a_real_pytest_binding_reports_verified(tmp_path):
     # rather than testing anything.
     env = {**__import__("os").environ, "PYTHONPATH": str(ROOT)}
     result = subprocess.run(
-        [sys.executable, "-m", "greenwash", "coverage",
+        [sys.executable, "-m", "unwash", "coverage",
          "--require", "the test passes => test_one.py::test_ok",
          "--run-tests", f"{sys.executable} -m pytest -q",
          "--json"],

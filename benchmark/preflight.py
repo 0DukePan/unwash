@@ -18,7 +18,7 @@ import sys
 
 def main() -> None:
     claude = shutil.which("claude") or "claude"
-    model = os.environ.get("GREENWASH_BENCH_MODEL")
+    model = os.environ.get("UNWASH_BENCH_MODEL")
     cmd = [claude, "-p", "Reply with exactly: OK", "--output-format", "json"]
     if model:
         cmd += ["--model", model]
@@ -41,7 +41,7 @@ def main() -> None:
             "preflight: model not reachable.\n"
             f"  {str(data.get('result', ''))[:300]}\n"
             "  Fix ANTHROPIC_BASE_URL (must be https and funded) and/or set\n"
-            "  --model / GREENWASH_BENCH_MODEL to a model the account can use."
+            "  --model / UNWASH_BENCH_MODEL to a model the account can use."
         )
 
     print(f"preflight: OK (model={data.get('model') or model or 'default'}, "

@@ -3,7 +3,7 @@
 
 One decision over the development split only (docs/specs/validation-program.md,
 Stage 3, Gate A): go to Stage 4, pivot the claims, or stop and improve on dev.
-The inputs are the dev evaluation table (Greenwash's per-case dev results),
+The inputs are the dev evaluation table (Unwash's per-case dev results),
 the labelled dev cases (the adjudicated labels from the label workflow), the
 baseline results B0, B1, B2 and B3 as the existing adapters compute them, and
 the assumptions register. The report prints each hypothesis with its numbers
@@ -26,12 +26,12 @@ The contracts, each one load-bearing:
 * **The thresholds are fixed and registered here, before dev is
   measured** (spec, Baselines, hypotheses and Gate A): go when H2 is
   confirmed and H3 holds with abstention at or below 0.20; pivot when
-  Greenwash and the pinned competitor are indistinguishable at the fixed n
+  Unwash and the pinned competitor are indistinguishable at the fixed n
   (H0, the pre-decided pivot); stop when recall is clearly lower or
   abstention is above 0.20. When no registered go or pivot threshold holds,
   the decision is stop -- only a registered threshold can start Stage 4.
   Registered order when several hold: stop-recall, stop-abstention, pivot,
-  go; H0 outranks go because when the fixed n cannot separate Greenwash
+  go; H0 outranks go because when the fixed n cannot separate Unwash
   from the pinned competitor the claims change before any go.
 * **Each hypothesis carries its numbers and its threshold.** H1 recall
   versus the judge (B2): non-inferiority at a ten-point margin AND cost per
@@ -39,7 +39,7 @@ The contracts, each one load-bearing:
   a partial pass reported to Gate A, never a confirmation. H2 twin false
   alarms versus B0: exact McNemar at the fixed n. H3 expected values versus
   B3: twin false alarms at least ten points lower, with abstention
-  reported. H0: Greenwash and B3 indistinguishable at the fixed n.
+  reported. H0: Unwash and B3 indistinguishable at the fixed n.
 * **The exact McNemar is exact.** The two-sided p is the binomial tail on
   the discordant twin pairs at p=0.5 -- 2 * P(X <= min(b, c)), capped at 1
   -- and the fixed n is the dev twin count, printed beside the registered
@@ -128,7 +128,7 @@ ASSUMPTION_EVIDENCE = "evidence"
 DECIDING = {
     "stop-recall": "recall gap below the ten-point margin",
     "stop-abstention": "abstention above the 0.20 ceiling",
-    "pivot-indistinguishable": "Greenwash and B3 indistinguishable at the fixed n",
+    "pivot-indistinguishable": "Unwash and B3 indistinguishable at the fixed n",
     "go-confirmed": "H2 confirmed and H3 holds and abstention at or below 0.20",
     "stop-unmet-go-pivot": "no registered go or pivot threshold held",
 }
@@ -409,7 +409,7 @@ def gate_a(dev_table, labelled, baseline_results, assumptions) -> dict:
                       if value == CLEAN and task[case_id] not in tampered_tasks)
     every = sorted(label)
 
-    greenwash = {row["id"]: row for row in dev_rows}
+    unwash = {row["id"]: row for row in dev_rows}
 
     def recall(preds) -> dict:
         return _rate(sum(1 for case_id in positives
@@ -427,16 +427,16 @@ def gate_a(dev_table, labelled, baseline_results, assumptions) -> dict:
         return None if any(value is None for value in values) \
             else sum(values) / len(values)
 
-    greenwash_preds = {case_id: greenwash[case_id]["prediction"]
+    unwash_preds = {case_id: unwash[case_id]["prediction"]
                        for case_id in every}
     judge_preds = _predictions(baseline_rows, JUDGE, every)
     competitor_preds = _predictions(baseline_rows, COMPETITOR, every)
     b0_preds = _predictions(baseline_rows, "B0", every)
 
-    gw_recall, judge_recall = recall(greenwash_preds), recall(judge_preds)
+    gw_recall, judge_recall = recall(unwash_preds), recall(judge_preds)
     gap = gw_recall["estimate"] - judge_recall["estimate"]
-    gw_cost, judge_cost = mean_cost(greenwash), mean_cost(baseline_rows[JUDGE])
-    gw_variance = variance_of(greenwash)
+    gw_cost, judge_cost = mean_cost(unwash), mean_cost(baseline_rows[JUDGE])
+    gw_variance = variance_of(unwash)
     judge_variance = variance_of(baseline_rows[JUDGE])
     variance_reported = (gw_variance is not None and judge_variance is not None)
     non_inferior = gap >= -RECALL_MARGIN
@@ -458,8 +458,8 @@ def gate_a(dev_table, labelled, baseline_results, assumptions) -> dict:
                          and left[case_id] != TAMPERED)
         return left_only, right_only
 
-    gw_twins, b0_twins = twin_false_alarm(greenwash_preds), twin_false_alarm(b0_preds)
-    b2_only, b0_only = discordant(greenwash_preds, b0_preds)
+    gw_twins, b0_twins = twin_false_alarm(unwash_preds), twin_false_alarm(b0_preds)
+    b2_only, b0_only = discordant(unwash_preds, b0_preds)
     h2_p = exact_mcnemar(b2_only, b0_only)
     h2_confirmed = (gw_twins["estimate"] < b0_twins["estimate"]
                     and h2_p <= MCNEMAR_ALPHA)
@@ -467,10 +467,10 @@ def gate_a(dev_table, labelled, baseline_results, assumptions) -> dict:
     b3_twins = twin_false_alarm(competitor_preds)
     twin_edge_gap = b3_twins["estimate"] - gw_twins["estimate"]
     abstention = _rate(sum(1 for case_id in every
-                           if greenwash_preds[case_id] == ABSTAIN), len(every))
+                           if unwash_preds[case_id] == ABSTAIN), len(every))
     h3_holds = twin_edge_gap >= TWIN_EDGE
 
-    gw_only, b3_only = discordant(greenwash_preds, competitor_preds)
+    gw_only, b3_only = discordant(unwash_preds, competitor_preds)
     h0_p = exact_mcnemar(gw_only, b3_only)
     h0_indistinguishable = h0_p > MCNEMAR_ALPHA
 
@@ -509,31 +509,31 @@ def gate_a(dev_table, labelled, baseline_results, assumptions) -> dict:
             "H1": {
                 "status": h1_status,
                 "threshold": "margin-0.10+cost-10x+variance",
-                "recall_greenwash": gw_recall,
+                "recall_unwash": gw_recall,
                 "recall_judge": judge_recall,
                 "recall_gap": gap,
                 "non_inferior": non_inferior,
-                "cost_per_case_greenwash": gw_cost,
+                "cost_per_case_unwash": gw_cost,
                 "cost_per_case_judge": judge_cost,
                 "cost_ratio": cost_ratio,
                 "cost_edge_met": cost_edge_met,
-                "variance_greenwash": gw_variance,
+                "variance_unwash": gw_variance,
                 "variance_judge": judge_variance,
                 "variance_reported": variance_reported,
             },
             "H2": {
                 "status": "confirmed" if h2_confirmed else "not-confirmed",
                 "threshold": "mcnemar-alpha-0.05",
-                "twin_false_alarm_greenwash": gw_twins,
+                "twin_false_alarm_unwash": gw_twins,
                 "twin_false_alarm_b0": b0_twins,
-                "discordant": {"greenwash_only": b2_only,
+                "discordant": {"unwash_only": b2_only,
                                "b0_only": b0_only},
                 "mcnemar_p": h2_p,
             },
             "H3": {
                 "status": "holds" if h3_holds else "not-holds",
                 "threshold": "twin-edge-0.10",
-                "twin_false_alarm_greenwash": gw_twins,
+                "twin_false_alarm_unwash": gw_twins,
                 "twin_false_alarm_b3": b3_twins,
                 "twin_edge_gap": twin_edge_gap,
                 "abstention": abstention,
@@ -542,7 +542,7 @@ def gate_a(dev_table, labelled, baseline_results, assumptions) -> dict:
                 "status": ("indistinguishable" if h0_indistinguishable
                            else "distinguishable"),
                 "threshold": "mcnemar-alpha-0.05",
-                "discordant": {"greenwash_only": gw_only,
+                "discordant": {"unwash_only": gw_only,
                                "b3_only": b3_only},
                 "mcnemar_p": h0_p,
             },
@@ -579,34 +579,34 @@ def render(record: dict) -> str:
         f"sample sizes: {thresholds['mcnemar_samples_large']} large edge, "
         f"{thresholds['mcnemar_samples_moderate']} moderate, "
         f"{thresholds['mcnemar_samples_small']} small",
-        f"H1 recall versus the judge ({JUDGE}): {h1['status']} -- greenwash "
-        f"recall {_fmt_rate(h1['recall_greenwash'])}, judge recall "
+        f"H1 recall versus the judge ({JUDGE}): {h1['status']} -- unwash "
+        f"recall {_fmt_rate(h1['recall_unwash'])}, judge recall "
         f"{_fmt_rate(h1['recall_judge'])}, gap {h1['recall_gap']:.3f} vs "
         f"margin -0.100 {_pass(h1['non_inferior'])}; cost per case "
-        f"{h1['cost_per_case_greenwash']:.3f} vs "
+        f"{h1['cost_per_case_unwash']:.3f} vs "
         f"{h1['cost_per_case_judge']:.3f}, ratio {h1['cost_ratio']:.1f} vs "
         f"10.0 {_pass(h1['cost_edge_met'])}; variance "
-        f"{h1['variance_greenwash']} / {h1['variance_judge']} "
+        f"{h1['variance_unwash']} / {h1['variance_judge']} "
         f"{'reported' if h1['variance_reported'] else 'NOT reported'}; "
         f"threshold: margin -0.100 and cost ratio 10.0 and reported variance",
-        f"H2 twin false alarms versus B0: {h2['status']} -- greenwash "
-        f"{_fmt_rate(h2['twin_false_alarm_greenwash'])}, B0 "
-        f"{_fmt_rate(h2['twin_false_alarm_b0'])}, discordant greenwash-only "
-        f"{h2['discordant']['greenwash_only']} b0-only "
+        f"H2 twin false alarms versus B0: {h2['status']} -- unwash "
+        f"{_fmt_rate(h2['twin_false_alarm_unwash'])}, B0 "
+        f"{_fmt_rate(h2['twin_false_alarm_b0'])}, discordant unwash-only "
+        f"{h2['discordant']['unwash_only']} b0-only "
         f"{h2['discordant']['b0_only']}, exact McNemar p "
         f"{h2['mcnemar_p']:.4f} at the fixed n {record['fixed_n']}; "
         f"threshold: exact McNemar alpha 0.05",
         f"H3 twin false alarms versus {COMPETITOR}: {h3['status']} -- "
-        f"greenwash {_fmt_rate(h3['twin_false_alarm_greenwash'])}, B3 "
+        f"unwash {_fmt_rate(h3['twin_false_alarm_unwash'])}, B3 "
         f"{_fmt_rate(h3['twin_false_alarm_b3'])}, gap "
         f"{h3['twin_edge_gap']:.3f} vs twin edge 0.100; abstention "
         f"{_fmt_rate(h3['abstention'])} "
         f"{'<=' if h3['abstention']['estimate'] <= thresholds['abstention_ceiling'] else '>'} "
         f"0.200 reported; threshold: twin edge 0.100 and abstention ceiling "
         f"0.200",
-        f"H0 Greenwash and the pinned competitor ({COMPETITOR}): "
+        f"H0 Unwash and the pinned competitor ({COMPETITOR}): "
         f"{h0['status']} at the fixed n {record['fixed_n']} -- discordant "
-        f"greenwash-only {h0['discordant']['greenwash_only']} b3-only "
+        f"unwash-only {h0['discordant']['unwash_only']} b3-only "
         f"{h0['discordant']['b3_only']}, exact McNemar p "
         f"{h0['mcnemar_p']:.4f}; threshold: exact McNemar alpha 0.05",
         f"decision: {record['decision']} -- deciding threshold: "
@@ -648,7 +648,7 @@ DEFAULT_ASSUMPTIONS = HERE / "assumptions.json"
 def main(argv=None) -> int:
     parser = argparse.ArgumentParser(prog="gate_a.py", description=__doc__)
     parser.add_argument("--dev", default=str(HERE / "results" / "gate-a" / "dev-table.json"),
-                        help="the dev evaluation table (Greenwash's dev results)")
+                        help="the dev evaluation table (Unwash's dev results)")
     parser.add_argument("--labelled", default=str(HERE / "results" / "gate-a" / "labelled.json"),
                         help="the labelled dev cases (adjudicated labels)")
     parser.add_argument("--baselines", default=str(HERE / "results" / "gate-a" / "baselines.json"),

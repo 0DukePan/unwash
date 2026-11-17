@@ -30,8 +30,8 @@ sys.path.insert(0, str(ROOT))
 sys.path.insert(0, str(ROOT / "benchmark"))
 
 import usability  # noqa: E402
-from greenwash.domain import Evidence, Signal, TrustReport, VerificationResult  # noqa: E402
-from greenwash.report import terminal  # noqa: E402
+from unwash.domain import Evidence, Signal, TrustReport, VerificationResult  # noqa: E402
+from unwash.report import terminal  # noqa: E402
 
 
 def test_the_kit_is_the_four_two_two_split_with_every_message_part():
@@ -60,7 +60,7 @@ def test_load_kit_refuses_a_sample_without_its_next_step_naming_the_field():
 
 # -- the message, and its fidelity to what the tool prints -------------------
 
-# The evidence-line prefixes, exactly as greenwash.report.terminal prints them.
+# The evidence-line prefixes, exactly as unwash.report.terminal prints them.
 EVIDENCE_PREFIXES = {"Expected: ": "expected", "Observed: ": "observed",
                      "Source:   ": "source", "Command:  ": "command"}
 

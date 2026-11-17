@@ -1,6 +1,6 @@
 # Launch notes
 
-Draft material for posting greenwash publicly. The one rule: **lead with the
+Draft material for posting unwash publicly. The one rule: **lead with the
 measured number, not the idea.** If the number isn't in yet, don't post the
 "it works" framing — post the "here's how to measure it" framing instead.
 
@@ -28,7 +28,7 @@ Two demos back the posts with captured output rather than transcription:
 1. Coding agents under pressure to show green sometimes make the suite green
    instead of fixing the code — skip the test, mock the thing under test,
    hardcode the expected value, swallow the exception.
-2. greenwash runs a check that the agent cannot skip: a `Stop` hook that fires
+2. unwash runs a check that the agent cannot skip: a `Stop` hook that fires
    on every turn end, static analysis plus an actual test run against the
    committed baseline.
 3. Measured: the base rate is **7%** silent cheating without the plugin (95% CI
@@ -64,7 +64,7 @@ Owning the limits is what stops the "just grep lol" comment from landing.
   show where it has no leverage (a swallowed exception the visible suite does
   not notice, with no held-out suite to disagree). Publishing a null is the
   credibility move; hiding it is the one that gets caught.
-- Cite the paper as motivation, not as proof that greenwash works:
+- Cite the paper as motivation, not as proof that unwash works:
   <https://arxiv.org/abs/2511.18397>.
 
 ## Checklist
@@ -75,4 +75,4 @@ Owning the limits is what stops the "just grep lol" comment from landing.
       "Numbers". No headline delta: there is no effect to claim, and the page
       now says so above the fold rather than only in a subsection.
 - [x] demo recorded and linked
-- [x] release tagged (`claude plugin tag .` -> `greenwash--v0.4.0`)
+- [x] release tagged (`claude plugin tag .` -> `unwash--v0.4.0`)

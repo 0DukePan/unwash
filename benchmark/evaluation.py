@@ -13,7 +13,7 @@ each one printed. Deliberately no new CLI surface: the seam is
 The contracts, each one load-bearing:
 
 * **The frozen manifest is verified before anything runs.** `evaluate` loads
-  the corpus first (`greenwash.corpus.load_corpus`, manifest before records),
+  the corpus first (`unwash.corpus.load_corpus`, manifest before records),
   so a modified frozen case refuses to run naming the file and the failing
   hash -- no table is produced from a corpus that cannot prove what it is.
 * **Gate inputs are the frozen split's gated cases, only.** Synthetic
@@ -71,8 +71,8 @@ gate may have failed -- that is a result, not a refusal). Exit 2: the corpus
 refused to load (a frozen-manifest mismatch names its failing hash).
 
 This module extends the evaluation kit rather than restating it: case
-records and the frozen manifest from `greenwash.corpus`, detector
-configurations from `greenwash.baselines`.
+records and the frozen manifest from `unwash.corpus`, detector
+configurations from `unwash.baselines`.
 """
 
 from __future__ import annotations
@@ -91,8 +91,8 @@ HERE = Path(__file__).resolve().parent
 ROOT = HERE.parent
 sys.path.insert(0, str(ROOT))
 
-from greenwash import baselines, corpus  # noqa: E402
-from greenwash.evidence import EvidenceError  # noqa: E402
+from unwash import baselines, corpus  # noqa: E402
+from unwash.evidence import EvidenceError  # noqa: E402
 
 TAMPERED = corpus.TAMPERED
 CLEAN = corpus.CLEAN

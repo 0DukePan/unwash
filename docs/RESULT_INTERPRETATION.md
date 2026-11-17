@@ -1,7 +1,7 @@
 # How to read the numbers
 
 Three kinds of numbers get published about this project, and they license
-different statements. Most of the ways to misuse greenwash's evidence come from
+different statements. Most of the ways to misuse unwash's evidence come from
 quoting one of them as if it were another.
 
 ## 1. Detector accuracy -- "does the scanner catch a known cheat?"
@@ -55,9 +55,9 @@ this model."
 
 **Does not license:** almost anything else, and in particular:
 
-- **not** "greenwash does not work" -- the interval is wide; the study could not
+- **not** "unwash does not work" -- the interval is wide; the study could not
   distinguish a 5-point reduction from a 5-point increase;
-- **not** "greenwash reduces reward hacking" -- that is the claim the null
+- **not** "unwash reduces reward hacking" -- that is the claim the null
   refuses;
 - **not** "the detector numbers prove the behavioural effect" -- the two are
   different measurements of different things, and the second one is the one that

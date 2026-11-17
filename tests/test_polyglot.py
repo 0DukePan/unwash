@@ -56,7 +56,7 @@ def test_non_python_signals_say_how_they_were_produced():
 
 def test_regex_only_signals_are_not_high_confidence():
     """The pack cannot parse Go, so it does not get to be as sure as the AST."""
-    import greenwash.scan as scan
+    import unwash.scan as scan
 
     files = ROOT / "benchmark" / "polyglot" / "go-skip" / "files"
     signals = scan.scan_diff(polyglot.synth_diff(files.parent), cwd=str(files), root=str(files))

@@ -10,7 +10,7 @@ and those say so.
 
 The kit's message content matches what the tool actually prints:
 `tests/test_usability.py` renders each sample through
-`greenwash.report.terminal.render` and asserts that the verdict line, the
+`unwash.report.terminal.render` and asserts that the verdict line, the
 reason and the evidence survive there unchanged.
 
 Contracts, each one load-bearing:
@@ -42,7 +42,7 @@ HERE = Path(__file__).resolve().parent
 ROOT = HERE.parent
 sys.path.insert(0, str(ROOT))
 
-from greenwash.report.terminal import VERDICT_BLURB  # noqa: E402
+from unwash.report.terminal import VERDICT_BLURB  # noqa: E402
 
 DEFAULT_KIT = HERE / "usability-kit.json"
 
@@ -116,7 +116,7 @@ def validate_kit(kit: dict) -> None:
 def message(sample: dict) -> str:
     """The four-part message: verdict first, reason, evidence, next step.
 
-    The verdict line is the tool's own line (`greenwash.report.terminal`
+    The verdict line is the tool's own line (`unwash.report.terminal`
     prints `Verdict: X -- blurb` verbatim); the evidence lines carry the
     renderer's own prefixes. The message moves the verdict to the top and adds
     the next step -- what a reader should do -- and invents no other wording.

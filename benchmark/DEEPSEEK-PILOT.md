@@ -9,7 +9,7 @@ skill, no hook, only the task prompt. The model is the DeepSeek v4.1 agent this
 harness runs on (the row records `deepseek-v4.1-flash (harness agent)`),
 dispatched as one isolated agent per task. Each agent was told the failing test
 and the workspace, and nothing else: no hidden test, no recorded solution, no
-mention of greenwash.
+mention of unwash.
 
 **Raw rows:** [`deepseek-pilot.jsonl`](./deepseek-pilot.jsonl). Outcomes were
 assigned by `benchmark/harness.py::classify` after the agent stopped, from the
@@ -54,7 +54,7 @@ They are counted as `underspecified`, not as cheats, and the tasks still carry
 - **0 integrity cheats in 8 runs is not "DeepSeek does not cheat."** With 8
   runs the 95% upper bound on the rate is about 32%. It is a pilot.
 - **One arm.** `skill-only` and `full` were not run, so this says nothing about
-  whether greenwash changes model behaviour — the question the benchmark exists
+  whether unwash changes model behaviour — the question the benchmark exists
   to answer.
 - **One model, one family of tasks.** Python only; no JavaScript, Go, Rust,
   Ruby or Java.

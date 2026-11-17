@@ -25,7 +25,7 @@ not been repeated**, because that needs a funded model.
 
 Two further limits are visible in the data rather than in the prose. The 252 rows
 in `benchmark/results/delta.jsonl` carry no diffs, no transcripts and no detector
-flags -- `greenwash_flags` is empty in every row -- so the 16-row correction
+flags -- `unwash_flags` is empty in every row -- so the 16-row correction
 rests on a manual reading the repository cannot reproduce. And the run predates
 the test-integrity check, so it describes the plugin as it was then.
 
@@ -117,7 +117,7 @@ It was added *because* of the misses in section 2, so it had never been run
 over the real-history survey. The first attempt to measure it reported nothing,
 and that zero was not a result: `benchmark/fp_survey.py` scanned every commit's
 diff without passing the surveyed repository, so the scanner resolved parsed
-Python files against the greenwash checkout. A rule that needs the file's tree
+Python files against the unwash checkout. A rule that needs the file's tree
 -- `error-path-default` is one -- found no file under `src/...` and returned no
 module. An instrument that cannot see reports zero whether or not the thing is
 there.
@@ -148,7 +148,7 @@ Visual Studio and Notepad write by default) made `ast.parse` fail, and a
 planted `@pytest.mark.skip` came back as `0 signal(s)` on a Windows machine.
 
 The BOM half was fixed first (`utf-8-sig`, with regression tests). The general
-half is fixed too: **`unreadable-file` (GW-DIV-003)** names the changed file,
+half is fixed too: **`unreadable-file` (UW-DIV-003)** names the changed file,
 says the static layer could not parse it, and appears in the text and JSON
 reports. It asks rather than accuses -- no mechanism, no grade relevance, so it
 never resolves to `TAMPERED` and never outranks a finding that did run -- and a
@@ -159,13 +159,13 @@ cannot produce this finding at all.
 
 ## 9. Two namesakes, and one install path that had to be withdrawn
 
-The PyPI name `greenwash` belongs to an unrelated project, and the npm name is
+The PyPI name `unwash` belongs to an unrelated project, and the npm name is
 not owned by this project either. Both facts were in the repository's own risk
 list before this release, and both had the same consequence: a public install
 command that installed something else.
 
-What changed: the distribution is now **`greenwash-cli`** (import name and
-command unchanged), and **`npx greenwash` is no longer advertised** -- the shim
+What changed: the distribution is now **`unwash-cli`** (import name and
+command unchanged), and **`npx unwash` is no longer advertised** -- the shim
 is real and tested, but `npm/README.md` documents the local `npm pack` path
 instead of a registry install, because the registry name is not verified.
 
@@ -198,7 +198,7 @@ table stops matching the data.
 | rate-claims | The frozen run at the pre-registered sample size; until then every number is a count with an interval. | Not available; the current corpus is first-party and small. | Every published number is an interval-qualified count on the internal corpus; a rate claim waits on the frozen run. |
 | strength-advisory | The strength check's error rate, measured; promotion to a verdict is deliberately deferred. | Ships as an advisory flag in this version. | The strength check ships as an advisory flag, not a verdict; promotion waits until its error rate is measured. |
 | verdict-vocabulary | Correctness proofs, which no run of this tool produces. | A verdict reports the checks that ran and the diff's shape. | A verdict reports the checks that ran; it is evidence, not proof of correctness. |
-| scope-exclusions | Retrieval and leakage detection; training-time reward hacking; languages beyond Python and pytest. | Out of scope for this version; never claimed. | What greenwash does not cover: retrieval and leakage detection, training-time reward hacking, languages beyond Python and pytest in this version. |
+| scope-exclusions | Retrieval and leakage detection; training-time reward hacking; languages beyond Python and pytest. | Out of scope for this version; never claimed. | What unwash does not cover: retrieval and leakage detection, training-time reward hacking, languages beyond Python and pytest in this version. |
 <!-- claim-ledger:end -->
 
 ## 12. The classifier could not label a cheat, and CI said so for three weeks

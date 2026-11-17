@@ -1,6 +1,6 @@
 """The compatibility entry point every integration actually calls.
 
-`scripts/greenwash_check.py` is what the GitHub Action, `adapters/ci.sh` and the
+`scripts/unwash_check.py` is what the GitHub Action, `adapters/ci.sh` and the
 pre-commit hook run, and its command line, stdout and exit codes are a published
 contract. It had no functional test -- only a byte-comparison against the
 benchmark's copy -- which is how the exit codes drifted from the table in its own
@@ -14,7 +14,7 @@ from pathlib import Path
 
 HERE = Path(__file__).resolve().parent
 ROOT = HERE.parent
-CHECK = ROOT / "scripts" / "greenwash_check.py"
+CHECK = ROOT / "scripts" / "unwash_check.py"
 
 GREEN = {
     "conftest.py": "",

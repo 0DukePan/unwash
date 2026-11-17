@@ -4,7 +4,7 @@
 The `skill-only` state must run the same detector as the full plugin -- the
 Stop hook is the only intended difference -- or the benchmark ends up
 comparing two different checkers instead of one checker with and without a
-hook. Run this after changing anything under greenwash/ or skills/;
+hook. Run this after changing anything under unwash/ or skills/;
 tests/test_manifests.py fails if the copies drift.
 
 Run:  python benchmark/tools/sync_skill_only.py
@@ -17,18 +17,18 @@ from pathlib import Path
 
 HERE = Path(__file__).resolve().parent
 ROOT = HERE.parent.parent
-PLUGIN = HERE.parent / "plugins" / "greenwash-skill-only"
+PLUGIN = HERE.parent / "plugins" / "unwash-skill-only"
 
 PACKAGE = [path.relative_to(ROOT).as_posix()
-           for path in sorted((ROOT / "greenwash").rglob("*.py")) if "__pycache__" not in path.parts]
+           for path in sorted((ROOT / "unwash").rglob("*.py")) if "__pycache__" not in path.parts]
 
 FILES = [
-    "scripts/greenwash_check.py",
-    "skills/greenwash/SKILL.md",
+    "scripts/unwash_check.py",
+    "skills/unwash/SKILL.md",
     *PACKAGE,
 ]
 
-SYNCED_DIRS = [PLUGIN / "scripts", PLUGIN / "greenwash"]
+SYNCED_DIRS = [PLUGIN / "scripts", PLUGIN / "unwash"]
 
 
 def main() -> None:

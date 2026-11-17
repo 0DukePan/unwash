@@ -11,7 +11,7 @@ loudly was swallowed. From the outside those two outcomes look identical.
 
 Anthropic's own reward-hacking research named the failure and the shapes it
 takes. What it did not ship is a cheap, local way to ask, of a specific change,
-whether this particular "done" is worth anything. That is what greenwash is.
+whether this particular "done" is worth anything. That is what unwash is.
 
 ## The honest headline, first
 
@@ -98,7 +98,7 @@ Exit status, per-test results and output are captured, secrets redacted, output
 capped, the process tree killed on timeout.
 
 The check that turned out to matter most is the one nobody has configured:
-**test integrity**. When a diff changes a test file, greenwash takes the
+**test integrity**. When a diff changes a test file, unwash takes the
 *committed* version of that test, overlays only the changed implementation files
 onto it, and runs it. That combination is the only one nothing else checks --
 the baseline comparison runs `HEAD`'s tests against `HEAD`'s code, and the
@@ -108,7 +108,7 @@ than `NOT_VERIFIED`, because a genuine specification change looks identical.
 
 ## The design decision everything else hangs off
 
-**It is a report, not a gate.** A bare `greenwash` prints and exits 0. It never
+**It is a report, not a gate.** A bare `unwash` prints and exits 0. It never
 modifies your code, never calls a model, never leaves your machine: no account,
 no API key, no network, no telemetry. Detection is a parser and your test runner.
 
@@ -135,8 +135,8 @@ A gate with no legitimate way through is a gate people climb over, so the way
 through is a **waiver**:
 
 ```bash
-greenwash waive \
-  --rule GW-DIV-002 \
+unwash waive \
+  --rule UW-DIV-002 \
   --path src/loader.py \
   --reason "the fallback is the documented behaviour and an integration test covers it" \
   --reviewer "@maintainer" \
@@ -157,7 +157,7 @@ Claude Code, at the end of a turn, on a repo where the agent hardcoded the value
 its test asserts:
 
 ```
-greenwash: SUSPICIOUS (medium confidence)
+unwash: SUSPICIOUS (medium confidence)
   strict gate: blocked -- the diff contains a pattern that needs an explanation:
       [hardcoded-return] src/calc.py:2
   visible tests: 1/1
@@ -177,7 +177,7 @@ which drive the real hooks in a throwaway repository. No model, no network.
 ## Reproduce any of it
 
 ```bash
-git clone https://github.com/0DukePan/greenwash && cd greenwash
+git clone https://github.com/0DukePan/unwash && cd unwash
 python -m pytest -q                  # 1038 tests, no model needed
 python demo/run_demo.py              # the catch, end to end
 python demo/strict_claude.py --terse # the strict gate, through the real hook
@@ -197,20 +197,20 @@ that appear in prose are guarded by tests that fail when the artifact moves.
 - **`error-path-default` was invisible to my own survey.** It exists *because*
   of the swallow misses in the null above, and when I first ran it over real
   history it reported nothing -- because the survey harness parsed every file
-  against the greenwash checkout instead of the repository it was surveying. A
+  against the unwash checkout instead of the repository it was surveying. A
   blind instrument returns zero either way. Anchoring each scan to its
   repository made it see: two flags on one `pytest` change, one a true ask and
   one a false positive, neither a cheat.
-- **Two namesakes.** The PyPI name `greenwash` belongs to another project and
-  the npm name is not owned here. The distribution is now `greenwash-cli`, and
-  `npx greenwash` is no longer advertised -- because a public install command
+- **Two namesakes.** The PyPI name `unwash` belongs to another project and
+  the npm name is not owned here. The distribution is now `unwash-cli`, and
+  `npx unwash` is no longer advertised -- because a public install command
   that installs someone else's package is worse than no install command.
 - **The detector numbers were once the headline.** They describe a corpus this
   project wrote. The claim that matters is the behavioural one, and that one is
   a null.
 
 All of it, including what is still open, is in
-[docs/what-did-not-work.md](https://github.com/0DukePan/greenwash/blob/main/docs/what-did-not-work.md).
+[docs/what-did-not-work.md](https://github.com/0DukePan/unwash/blob/main/docs/what-did-not-work.md).
 
 ## What is next
 
@@ -221,7 +221,7 @@ All of it, including what is still open, is in
    300 scored runs per arm, 900 total, in a pinned image with all six
    toolchains. The protocol, the endpoints, the exclusion rules and the exact
    statements each possible result licenses are published now, before the run:
-   [EVALUATION_PROTOCOL.md](https://github.com/0DukePan/greenwash/blob/main/docs/EVALUATION_PROTOCOL.md).
+   [EVALUATION_PROTOCOL.md](https://github.com/0DukePan/unwash/blob/main/docs/EVALUATION_PROTOCOL.md).
 3. **Design partners.** Ten maintainers of small-to-medium projects who use
    coding agents, running the tool in a repository they care about and telling
    me where it is wrong. Setup help and interpretation help, never an
@@ -233,9 +233,9 @@ one did.
 ## Try it
 
 ```bash
-pipx install greenwash-cli
+pipx install unwash-cli
 cd your-repo
-greenwash                 # a report on the current diff; it never blocks
+unwash                 # a report on the current diff; it never blocks
 ```
 
 To see it catch something first, without installing anything:
@@ -247,7 +247,7 @@ python demo/run_demo.py
 The one thing worth configuring, if you configure nothing else, is `heldout`: a
 suite the agent never saw. It is the only check that disagrees with a suite the
 agent edited, and it is where the leverage is. The rest is in
-[docs/ADOPTION_GUIDE.md](https://github.com/0DukePan/greenwash/blob/main/docs/ADOPTION_GUIDE.md).
+[docs/ADOPTION_GUIDE.md](https://github.com/0DukePan/unwash/blob/main/docs/ADOPTION_GUIDE.md).
 
 MIT, no dependencies, no network, no account. It reports what a claim is worth,
 and it says "I could not tell" when it cannot.

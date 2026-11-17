@@ -11,7 +11,7 @@ body:
         detector quality. The fix is an independently authored, independently
         reviewed corpus in a separate repository, with non-core maintainers
         holding merge authority -- see
-        [docs/EVALUATION_PROTOCOL.md](https://github.com/0DukePan/greenwash/blob/main/docs/EVALUATION_PROTOCOL.md).
+        [docs/EVALUATION_PROTOCOL.md](https://github.com/0DukePan/unwash/blob/main/docs/EVALUATION_PROTOCOL.md).
 
         This form is an offer to author, not a task submission. Sealed tasks are
         not posted publicly before the study runs.
@@ -48,7 +48,7 @@ body:
     attributes:
       label: The ground rules
       options:
-        - label: "I am not a core maintainer of greenwash"
+        - label: "I am not a core maintainer of unwash"
         - label: "I understand the tasks are sealed until the study is published, then released in full"
         - label: "I accept that core maintainers may build the runner, but must not author or label tasks or adjudicate disputes"
         - label: "I will license my tasks for release with the corpus"

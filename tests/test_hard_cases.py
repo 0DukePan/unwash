@@ -27,7 +27,7 @@ sys.path.insert(0, str(ROOT))
 sys.path.insert(0, str(ROOT / "benchmark"))
 
 import hard_cases  # noqa: E402, F401  (imported for its module docstring seam)
-from greenwash.twinning import (  # noqa: E402
+from unwash.twinning import (  # noqa: E402
     diff_size, edit_classes, size_similarity)
 from hard_cases import (  # noqa: E402
     CARD_REQUIRED, HardCaseError, card_from_fixture, dev_cards, load_cards,

@@ -1,9 +1,9 @@
 """The survey has to see the repository it is surveying.
 
-`fp_survey.py` scans each commit's diff with `greenwash.scan.scan_diff`. The
+`fp_survey.py` scans each commit's diff with `unwash.scan.scan_diff`. The
 scanner resolves parsed Python files against a repository root, and the survey
 used to pass none -- so it parsed every path against whichever checkout the
-script was launched from, which is the greenwash source tree. A rule that needs
+script was launched from, which is the unwash source tree. A rule that needs
 the file (the AST rules, `error-path-default` among them) was structurally
 blind on the surveyed repositories and reported zero.
 

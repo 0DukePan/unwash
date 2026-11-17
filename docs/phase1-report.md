@@ -2,7 +2,7 @@
 
 Branch `phase1-hardening`, cut from `spec/launch-benchmark` and never touching `main`. Eight commits plus one log-hygiene commit. Diff against the branch point: 21 files, 954 insertions, 254 deletions (the spec and questionnaire commit that predates Phase 1 is excluded).
 
-The phase brief named `greenwash-plan.md`; that file does not exist in the repository, so the brief itself was treated as the specification. The `/implement-spec` worktree machinery was not used because the brief prescribed its own branch-and-commit procedure.
+The phase brief named `unwash-plan.md`; that file does not exist in the repository, so the brief itself was treated as the specification. The `/implement-spec` worktree machinery was not used because the brief prescribed its own branch-and-commit procedure.
 
 ## Commands run, with their real results
 
@@ -18,7 +18,7 @@ The phase brief named `greenwash-plan.md`; that file does not exist in the repos
 | `python .scratch/phase1/demo_twin.py` | tamper: exit 1, `assertion-weakened`; twin: exit 0, clean |
 | scan overhead, medians of three runs | itsdangerous 352.3/401.2 ms, cachecontrol 726.6/397.1 ms, this repo 426.9/405.5 ms (clean/changed) |
 | `python -m pytest -q` at the final tip | `741 passed, 7 skipped in 1491.00s`, zero failures |
-| `python scripts/greenwash_check.py scan` | `clean -- nothing here fakes a passing suite` |
+| `python scripts/unwash_check.py scan` | `clean -- nothing here fakes a passing suite` |
 
 ## Step-by-step
 
@@ -27,7 +27,7 @@ The phase brief named `greenwash-plan.md`; that file does not exist in the repos
 2. **Decision criteria.** Criteria rows now carry `MEASURED` or `UNMEASURED`; the decision lists `unmeasured_criteria` and cannot return LAUNCH while any exists. Eight tests pin the L1/L2 boundaries, empty dataset, malformed report, conflicting cells, the sample floor, and that `benchmark/thresholds.json` matches the launch spec's L-table.
 3. **Statistics.** Recomputation above. The classes are now stated explicitly in the evaluation module: positives, twins, natural clean, weak verifier; planted and synthetic records never enter a rate.
 4. **Claims.** Every ledger row carries a source type from a fixed vocabulary and a limitation sentence; `docs/claim-matrix.md` is generated and drift-tested. README headline says "planted tampers", marks the figures maintainer-authored and preliminary, states the exact intervals, and defines the verdicts and the limits pointer.
-5. **Report-only beta.** `.github/workflows/greenwash-report-only.yml` (pull_request, read-only, artifact, never fails), `docs/beta.md` with install and exit codes, and `demo/twin-pair/` with captured real output. Overhead measured and published.
+5. **Report-only beta.** `.github/workflows/unwash-report-only.yml` (pull_request, read-only, artifact, never fails), `docs/beta.md` with install and exit codes, and `demo/twin-pair/` with captured real output. Overhead measured and published.
 6. **Security.** `docs/threat-model.md` with assets, adversaries, surfaces and six larger open issues. Fixed the one clear issue: the composite action interpolated workflow inputs into its shell script; inputs now arrive as environment variables passed as argv.
 
 ## Unfinished work

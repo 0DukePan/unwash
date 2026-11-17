@@ -38,7 +38,7 @@ Two properties are deliberate:
   nothing to try. A requirement with no evidence bound is the same kind of gap,
   and rule 9 keeps it out of `VERIFIED`.
 
-`test-weakened` (GW-VER-005) sits at rule 6 rather than rule 4 on purpose. The
+`test-weakened` (UW-VER-005) sits at rule 6 rather than rule 4 on purpose. The
 committed version of a changed test failing against the new code is real
 evidence, but a legitimate specification change produces an identical signal —
 so it asks for an explanation instead of convicting. `--fail-on suspicious` is
@@ -74,7 +74,7 @@ The secondary flags — `spec_edited`, `strength_low`, `edits_listed`,
 `flaky_original`, `replay_infra_error` — live **beside** the verdict in the
 JSON report and are never folded into it: a verdict is identical with the
 advisory on and off. Every verdict has its exit code, stated once in
-`greenwash/cli.py`'s module docstring and pinned by `tests/test_cli.py`.
+`unwash/cli.py`'s module docstring and pinned by `tests/test_cli.py`.
 
 ## The score
 
